@@ -78,4 +78,3 @@ server/**/*.coverage
 # context and test private directories
 
 buffer/
-lepismas/
