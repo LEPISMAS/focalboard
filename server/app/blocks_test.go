@@ -2,6 +2,7 @@ package app
 
 import (
 	"database/sql"
+	"errors"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -297,4 +298,471 @@ func TestInsertBlocks(t *testing.T) {
 		_, err := th.App.InsertBlocks([]*model.Block{view1, view2}, "user-id-1")
 		require.Error(t, err)
 	})
+}
+
+func TestGetBlocksEmptyBoardID(t *testing.T) {
+	th, tearDown := SetupTestHelper(t)
+	defer tearDown()
+
+	blocks, err := th.App.GetBlocks("", "", "")
+	require.NoError(t, err)
+	require.Len(t, blocks, 0)
+}
+
+func TestGetBlocksByParentAndType(t *testing.T) {
+	th, tearDown := SetupTestHelper(t)
+	defer tearDown()
+
+	expected := []*model.Block{{ID: "b1"}}
+
+	th.Store.EXPECT().
+		GetBlocksWithParentAndType(
+			"board1",
+			"parent1",
+			"card",
+		).
+		Return(expected, nil)
+
+	blocks, err := th.App.GetBlocks(
+		"board1",
+		"parent1",
+		"card",
+	)
+
+	require.NoError(t, err)
+	require.Equal(t, expected, blocks)
+}
+
+func TestGetBlocksByType(t *testing.T) {
+	th, tearDown := SetupTestHelper(t)
+	defer tearDown()
+
+	expected := []*model.Block{{ID: "b1"}}
+
+	th.Store.EXPECT().
+		GetBlocksWithType(
+			"board1",
+			"card",
+		).
+		Return(expected, nil)
+
+	blocks, err := th.App.GetBlocks(
+		"board1",
+		"",
+		"card",
+	)
+
+	require.NoError(t, err)
+	require.Equal(t, expected, blocks)
+}
+
+func TestGetBlocksByParent(t *testing.T) {
+	th, tearDown := SetupTestHelper(t)
+	defer tearDown()
+
+	expected := []*model.Block{{ID: "b1"}}
+
+	th.Store.EXPECT().
+		GetBlocksWithParent(
+			"board1",
+			"parent1",
+		).
+		Return(expected, nil)
+
+	blocks, err := th.App.GetBlocks(
+		"board1",
+		"parent1",
+		"",
+	)
+
+	require.NoError(t, err)
+	require.Equal(t, expected, blocks)
+}
+
+func TestGetBlockByID(t *testing.T) {
+	th, tearDown := SetupTestHelper(t)
+	defer tearDown()
+
+	expected := &model.Block{ID: "block1"}
+
+	th.Store.EXPECT().
+		GetBlock("block1").
+		Return(expected, nil)
+
+	block, err := th.App.GetBlockByID("block1")
+
+	require.NoError(t, err)
+	require.Equal(t, expected, block)
+}
+
+func TestGetLastBlockHistoryEntry(t *testing.T) {
+	th, tearDown := SetupTestHelper(t)
+	defer tearDown()
+
+	block := &model.Block{ID: "block1"}
+
+	th.Store.EXPECT().
+		GetBlockHistory(
+			"block1",
+			model.QueryBlockHistoryOptions{
+				Limit:      1,
+				Descending: true,
+			},
+		).
+		Return([]*model.Block{block}, nil)
+
+	result, err := th.App.GetLastBlockHistoryEntry("block1")
+
+	require.NoError(t, err)
+	require.Equal(t, block, result)
+}
+
+func TestGetLastBlockHistoryEntryEmpty(t *testing.T) {
+	th, tearDown := SetupTestHelper(t)
+	defer tearDown()
+
+	th.Store.EXPECT().
+		GetBlockHistory(
+			"block1",
+			model.QueryBlockHistoryOptions{
+				Limit:      1,
+				Descending: true,
+			},
+		).
+		Return([]*model.Block{}, nil)
+
+	result, err := th.App.GetLastBlockHistoryEntry("block1")
+
+	require.NoError(t, err)
+	require.Nil(t, result)
+}
+
+func TestGetBlockCountsByType(t *testing.T) {
+	th, tearDown := SetupTestHelper(t)
+	defer tearDown()
+
+	counts := map[string]int64{
+		"card": 10,
+	}
+
+	th.Store.EXPECT().
+		GetBlockCountsByType().
+		Return(counts, nil)
+
+	result, err := th.App.GetBlockCountsByType()
+
+	require.NoError(t, err)
+	require.Equal(t, counts, result)
+}
+
+func TestGetBlocksForBoard(t *testing.T) {
+	th, tearDown := SetupTestHelper(t)
+	defer tearDown()
+
+	expected := []*model.Block{
+		{ID: "b1"},
+	}
+
+	th.Store.EXPECT().
+		GetBlocksForBoard("board1").
+		Return(expected, nil)
+
+	result, err := th.App.GetBlocksForBoard("board1")
+
+	require.NoError(t, err)
+	require.Equal(t, expected, result)
+}
+
+func TestInsertBlocksMultipleBoards(t *testing.T) {
+	th, tearDown := SetupTestHelper(t)
+	defer tearDown()
+
+	blocks := []*model.Block{
+		{BoardID: "board1"},
+		{BoardID: "board2"},
+	}
+
+	_, err := th.App.InsertBlocks(
+		blocks,
+		"user-id",
+	)
+
+	require.ErrorIs(
+		t,
+		err,
+		ErrBlocksFromMultipleBoards,
+	)
+}
+
+func TestInsertBlocksEmpty(t *testing.T) {
+	th, tearDown := SetupTestHelper(t)
+	defer tearDown()
+
+	blocks, err := th.App.InsertBlocks(
+		[]*model.Block{},
+		"user-id",
+	)
+
+	require.NoError(t, err)
+	require.Len(t, blocks, 0)
+}
+
+func TestDeleteBlockGetBlockError(t *testing.T) {
+	th, tearDown := SetupTestHelper(t)
+	defer tearDown()
+
+	th.Store.EXPECT().
+		GetBlock("block-id").
+		Return(nil, errors.New("db error"))
+
+	err := th.App.DeleteBlock(
+		"block-id",
+		"user-id",
+	)
+
+	require.Error(t, err)
+}
+
+func TestUndeleteBlockHistoryEmpty(t *testing.T) {
+	th, tearDown := SetupTestHelper(t)
+	defer tearDown()
+
+	th.Store.EXPECT().
+		GetBlockHistory(
+			"block-id",
+			model.QueryBlockHistoryOptions{
+				Limit:      1,
+				Descending: true,
+			},
+		).
+		Return([]*model.Block{}, nil)
+
+	block, err := th.App.UndeleteBlock(
+		"block-id",
+		"user-id",
+	)
+
+	require.NoError(t, err)
+	require.Nil(t, block)
+}
+
+func TestGetLastBlockHistoryEntryError(t *testing.T) {
+	th, tearDown := SetupTestHelper(t)
+	defer tearDown()
+
+	th.Store.EXPECT().
+		GetBlockHistory(
+			"block1",
+			model.QueryBlockHistoryOptions{
+				Limit:      1,
+				Descending: true,
+			},
+		).
+		Return(nil, errors.New("history error"))
+
+	block, err := th.App.GetLastBlockHistoryEntry("block1")
+
+	require.Error(t, err)
+	require.Nil(t, block)
+}
+
+func TestDeleteBlockNilBlock(t *testing.T) {
+	th, tearDown := SetupTestHelper(t)
+	defer tearDown()
+
+	th.Store.EXPECT().
+		GetBlock("block-id").
+		Return(nil, nil)
+
+	err := th.App.DeleteBlock(
+		"block-id",
+		"user-id",
+	)
+
+	require.NoError(t, err)
+}
+
+func TestInsertBlockBoardError(t *testing.T) {
+	th, tearDown := SetupTestHelper(t)
+	defer tearDown()
+
+	block := &model.Block{
+		BoardID: "board1",
+	}
+
+	th.Store.EXPECT().
+		GetBoard("board1").
+		Return(nil, errors.New("board error"))
+
+	err := th.App.InsertBlock(
+		block,
+		"user-id",
+	)
+
+	require.Error(t, err)
+}
+
+func TestInsertBlocksGetBoardError(t *testing.T) {
+	th, tearDown := SetupTestHelper(t)
+	defer tearDown()
+
+	blocks := []*model.Block{
+		{BoardID: "board1"},
+	}
+
+	th.Store.EXPECT().
+		GetBoard("board1").
+		Return(nil, errors.New("board error"))
+
+	_, err := th.App.InsertBlocks(
+		blocks,
+		"user-id",
+	)
+
+	require.Error(t, err)
+}
+
+func TestPatchBlockGetBlockError(t *testing.T) {
+	th, tearDown := SetupTestHelper(t)
+	defer tearDown()
+
+	patch := &model.BlockPatch{}
+
+	th.Store.EXPECT().
+		GetBlock("block1").
+		Return(nil, errors.New("error"))
+
+	block, err := th.App.PatchBlock(
+		"block1",
+		patch,
+		"user-id",
+	)
+
+	require.Error(t, err)
+	require.Nil(t, block)
+}
+
+func TestPatchBlockBoardError(t *testing.T) {
+	th, tearDown := SetupTestHelper(t)
+	defer tearDown()
+
+	oldBlock := &model.Block{
+		ID:      "block1",
+		BoardID: "board1",
+	}
+
+	patch := &model.BlockPatch{}
+
+	th.Store.EXPECT().
+		GetBlock("block1").
+		Return(oldBlock, nil)
+
+	th.Store.EXPECT().
+		GetBoard("board1").
+		Return(nil, errors.New("board error"))
+
+	block, err := th.App.PatchBlock(
+		"block1",
+		patch,
+		"user-id",
+	)
+
+	require.Error(t, err)
+	require.Nil(t, block)
+}
+
+func TestPatchBlocksPatchError(t *testing.T) {
+	th, tearDown := SetupTestHelper(t)
+	defer tearDown()
+
+	batch := model.BlockPatchBatch{
+		BlockIDs: []string{"block1"},
+	}
+
+	th.Store.EXPECT().
+		GetBlocksByIDs([]string{"block1"}).
+		Return([]*model.Block{
+			{ID: "block1"},
+		}, nil)
+
+	th.Store.EXPECT().
+		PatchBlocks(
+			gomock.Any(),
+			"user-id",
+		).
+		Return(errors.New("patch error"))
+
+	err := th.App.PatchBlocks(
+		"team-id",
+		&batch,
+		"user-id",
+	)
+
+	require.Error(t, err)
+}
+
+func TestUndeleteBlockHistoryError(t *testing.T) {
+	th, tearDown := SetupTestHelper(t)
+	defer tearDown()
+
+	th.Store.EXPECT().
+		GetBlockHistory(
+			"block-id",
+			model.QueryBlockHistoryOptions{
+				Limit:      1,
+				Descending: true,
+			},
+		).
+		Return(nil, errors.New("history error"))
+
+	block, err := th.App.UndeleteBlock(
+		"block-id",
+		"user-id",
+	)
+
+	require.Error(t, err)
+	require.Nil(t, block)
+}
+
+func TestUndeleteBlockBoardError(t *testing.T) {
+	th, tearDown := SetupTestHelper(t)
+	defer tearDown()
+
+	block := &model.Block{
+		ID:      "block-id",
+		BoardID: "board1",
+	}
+
+	th.Store.EXPECT().
+		GetBlockHistory(
+			"block-id",
+			model.QueryBlockHistoryOptions{
+				Limit:      1,
+				Descending: true,
+			},
+		).
+		Return([]*model.Block{block}, nil)
+
+	th.Store.EXPECT().
+		UndeleteBlock(
+			"block-id",
+			"user-id",
+		).
+		Return(nil)
+
+	th.Store.EXPECT().
+		GetBlock("block-id").
+		Return(block, nil)
+
+	th.Store.EXPECT().
+		GetBoard("board1").
+		Return(nil, errors.New("board error"))
+
+	result, err := th.App.UndeleteBlock(
+		"block-id",
+		"user-id",
+	)
+
+	require.Error(t, err)
+	require.Nil(t, result)
 }
