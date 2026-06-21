@@ -11,7 +11,7 @@ Estamos realizando el trabajo final del curso de Pruebas de software.
 Esta es la carpeta del proyecto sobre el cual estamos realizando las pruebas de software.
 </contexto>
 Vas a realizar pruebas unitarias sobre los archivos en la carpeta server/model/ (los cuales estan relacionados a las declaraciones de bloques, tableros y campos) hasta llegar a una cobertura de sentencias al 90%.
-Vas a usar gomock y otras herramientas que el proyecto ya este usando para pruebas en el modulo de webapp (todo por terminal)
+Vas a usar gomock y otras herramientas que el proyecto ya este usando para pruebas en el modulo de server (todo por terminal)
 Todas las pruebas deben estar en la siguiente direccion server/model/tests/
 Luego vas a realizar:
 * un script para ejecutar todas las pruebas generadas de forma local (server/model/tests/run_tests_model.sh & server/model/tests/run_tests_model.bat)

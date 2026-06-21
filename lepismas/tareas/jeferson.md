@@ -11,7 +11,7 @@ Estamos realizando el trabajo final del curso de Pruebas de software.
 Esta es la carpeta del proyecto sobre el cual estamos realizando las pruebas de software.
 </contexto>
 Vas a realizar pruebas unitarias sobre los archivos en la carpeta server/ws/ (los cuales estan relacionados a la conexion de websockets para la actualizacion real de tablas colaborativas) hasta llegar a una cobertura de sentencias al 90%.
-Vas a usar gomock y otras herramientas que el proyecto ya este usando para pruebas en el modulo de webapp (todo por terminal)
+Vas a usar gomock y otras herramientas que el proyecto ya este usando para pruebas en el modulo de server (todo por terminal)
 Todas las pruebas deben estar en la siguiente direccion server/ws/tests/
 Luego vas a realizar:
 * un script para ejecutar todas las pruebas generadas de forma local (server/ws/tests/run_tests_ws.sh & server/ws/tests/run_tests_ws.bat)
