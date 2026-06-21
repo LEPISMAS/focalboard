@@ -218,14 +218,14 @@ func (a *App) DeleteBlockAndNotify(blockID string, modifiedBy string, disableNot
 		return err
 	}
 
-	board, err := a.store.GetBoard(block.BoardID)
-	if err != nil {
-		return err
-	}
-
 	if block == nil {
 		// deleting non-existing block not considered an error
 		return nil
+	}
+
+	board, err := a.store.GetBoard(block.BoardID)
+	if err != nil {
+		return err
 	}
 
 	err = a.store.DeleteBlock(blockID, modifiedBy)
