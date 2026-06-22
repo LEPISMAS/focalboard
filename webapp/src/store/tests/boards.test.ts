@@ -5,7 +5,6 @@ import {configureStore} from '@reduxjs/toolkit'
 
 import {
     reducer as boardsReducer,
-    fetchBoardMembers,
     updateMembersEnsuringBoardsAndUsers,
     updateBoards,
     setCurrent,
@@ -105,15 +104,15 @@ describe('boards reducer', () => {
         const store = makeStore()
         const board = makeBoard('b1', 'Board 1')
         store.dispatch(updateBoards([board]))
-        expect(store.getState().boards.boards['b1']).toBeTruthy()
+        expect(store.getState().boards.boards.b1).toBeTruthy()
     })
 
     test('updateBoards adds template board to templates', () => {
         const store = makeStore()
         const tmpl = makeBoard('tmpl1', 'Template 1', true)
         store.dispatch(updateBoards([tmpl]))
-        expect(store.getState().boards.templates['tmpl1']).toBeTruthy()
-        expect(store.getState().boards.boards['tmpl1']).toBeUndefined()
+        expect(store.getState().boards.templates.tmpl1).toBeTruthy()
+        expect(store.getState().boards.boards.tmpl1).toBeUndefined()
     })
 
     test('updateBoards removes board when deleteAt != 0', () => {
@@ -122,14 +121,14 @@ describe('boards reducer', () => {
         store.dispatch(updateBoards([board]))
         const deleted = makeBoard('b1', 'Board 1', false, 999)
         store.dispatch(updateBoards([deleted]))
-        expect(store.getState().boards.boards['b1']).toBeUndefined()
+        expect(store.getState().boards.boards.b1).toBeUndefined()
     })
 
     test('addMyBoardMemberships adds memberships', () => {
         const store = makeStore()
         const member = makeMember('b1', 'u1', true)
         store.dispatch(addMyBoardMemberships([member]))
-        expect(store.getState().boards.myBoardMemberships['b1']).toBeTruthy()
+        expect(store.getState().boards.myBoardMemberships.b1).toBeTruthy()
     })
 
     test('addMyBoardMemberships removes when no scheme perms', () => {
@@ -144,28 +143,28 @@ describe('boards reducer', () => {
             schemeCommenter: false,
         }
         store.dispatch(addMyBoardMemberships([removedMember]))
-        expect(store.getState().boards.myBoardMemberships['b1']).toBeUndefined()
+        expect(store.getState().boards.myBoardMemberships.b1).toBeUndefined()
     })
 
     test('updateMembers updates member in board', () => {
-    const state: any = {
-        membersInBoards: {b1: {}},
-        myBoardMemberships: {},
-        boards: {},
-        templates: {},
-        loadingBoard: false,
-        current: '',
-        linkToChannel: '',
-    }
+        const state: any = {
+            membersInBoards: {b1: {}},
+            myBoardMemberships: {},
+            boards: {},
+            templates: {},
+            loadingBoard: false,
+            current: '',
+            linkToChannel: '',
+        }
 
-    const member = makeMember('b1', 'u1')
+        const member = makeMember('b1', 'u1')
 
-    updateMembersHandler(state, {
-        payload: [member],
-    } as any)
+        updateMembersHandler(state, {
+            payload: [member],
+        } as any)
 
-    expect(state.membersInBoards.b1.u1).toBeTruthy()
-})
+        expect(state.membersInBoards.b1.u1).toBeTruthy()
+    })
 
     test('updateMembers with empty payload does nothing', () => {
         const store = makeStore()
@@ -174,36 +173,36 @@ describe('boards reducer', () => {
     })
 
     test('updateMembers removes member with no perms', () => {
-    const state: any = {
-        membersInBoards: {b1: {}},
-        myBoardMemberships: {},
-        boards: {},
-        templates: {},
-        loadingBoard: false,
-        current: '',
-        linkToChannel: '',
-    }
+        const state: any = {
+            membersInBoards: {b1: {}},
+            myBoardMemberships: {},
+            boards: {},
+            templates: {},
+            loadingBoard: false,
+            current: '',
+            linkToChannel: '',
+        }
 
-    const member = makeMember('b1', 'u1')
+        const member = makeMember('b1', 'u1')
 
-    updateMembersHandler(state, {
-        payload: [member],
-    } as any)
+        updateMembersHandler(state, {
+            payload: [member],
+        } as any)
 
-    const noPermMember = {
-        ...member,
-        schemeAdmin: false,
-        schemeEditor: false,
-        schemeViewer: false,
-        schemeCommenter: false,
-    }
+        const noPermMember = {
+            ...member,
+            schemeAdmin: false,
+            schemeEditor: false,
+            schemeViewer: false,
+            schemeCommenter: false,
+        }
 
-    updateMembersHandler(state, {
-        payload: [noPermMember],
-    } as any)
+        updateMembersHandler(state, {
+            payload: [noPermMember],
+        } as any)
 
-    expect(state.membersInBoards.b1.u1).toBeUndefined()
-})
+        expect(state.membersInBoards.b1.u1).toBeUndefined()
+    })
 
     test('extraReducer: loadBoardData.pending sets loadingBoard=true', () => {
         const store = makeStore()
@@ -232,7 +231,7 @@ describe('boards reducer', () => {
             type: 'initialReadOnlyLoad/fulfilled',
             payload: {board, blocks: []},
         })
-        expect(store.getState().boards.boards['b1']).toBeTruthy()
+        expect(store.getState().boards.boards.b1).toBeTruthy()
     })
 
     test('extraReducer: initialReadOnlyLoad.fulfilled with template board', () => {
@@ -242,7 +241,7 @@ describe('boards reducer', () => {
             type: 'initialReadOnlyLoad/fulfilled',
             payload: {board: tmpl, blocks: []},
         })
-        expect(store.getState().boards.templates['tmpl1']).toBeTruthy()
+        expect(store.getState().boards.templates.tmpl1).toBeTruthy()
     })
 
     test('extraReducer: initialReadOnlyLoad.fulfilled with no board', () => {
@@ -271,9 +270,9 @@ describe('boards reducer', () => {
                 myConfig: [],
             },
         })
-        expect(store.getState().boards.boards['b1']).toBeTruthy()
-        expect(store.getState().boards.templates['tmpl1']).toBeTruthy()
-        expect(store.getState().boards.myBoardMemberships['b1']).toBeTruthy()
+        expect(store.getState().boards.boards.b1).toBeTruthy()
+        expect(store.getState().boards.templates.tmpl1).toBeTruthy()
+        expect(store.getState().boards.myBoardMemberships.b1).toBeTruthy()
     })
 
     test('extraReducer: loadBoards.fulfilled populates boards', () => {
@@ -283,7 +282,7 @@ describe('boards reducer', () => {
             type: 'loadBoards/fulfilled',
             payload: {boards: [b1]},
         })
-        expect(store.getState().boards.boards['b1']).toBeTruthy()
+        expect(store.getState().boards.boards.b1).toBeTruthy()
     })
 
     test('extraReducer: loadMyBoardsMemberships.fulfilled populates myBoardMemberships', () => {
@@ -293,7 +292,7 @@ describe('boards reducer', () => {
             type: 'loadMyBoardsMemberships/fulfilled',
             payload: {boardsMemberships: [member]},
         })
-        expect(store.getState().boards.myBoardMemberships['b1']).toBeTruthy()
+        expect(store.getState().boards.myBoardMemberships.b1).toBeTruthy()
     })
 
     test('extraReducer: boardMembers/fetch/fulfilled populates membersInBoards', () => {
@@ -303,7 +302,7 @@ describe('boards reducer', () => {
             type: 'boardMembers/fetch/fulfilled',
             payload: [member],
         })
-        expect(store.getState().boards.membersInBoards['b1']['u1']).toBeTruthy()
+        expect(store.getState().boards.membersInBoards.b1.u1).toBeTruthy()
     })
 
     test('extraReducer: boardMembers/fetch/fulfilled with empty payload does nothing', () => {
@@ -415,25 +414,25 @@ describe('boards selectors', () => {
     })
 
     test('getCurrentBoardMembers returns members for current board', () => {
-    const state: any = {
-        boards: {
-            current: 'b1',
-            membersInBoards: {
-                b1: {
-                    u1: makeMember('b1', 'u1'),
+        const state: any = {
+            boards: {
+                current: 'b1',
+                membersInBoards: {
+                    b1: {
+                        u1: makeMember('b1', 'u1'),
+                    },
                 },
+                myBoardMemberships: {},
+                boards: {},
+                templates: {},
+                loadingBoard: false,
+                linkToChannel: '',
             },
-            myBoardMemberships: {},
-            boards: {},
-            templates: {},
-            loadingBoard: false,
-            linkToChannel: '',
-        },
-        users: {},
-    }
+            users: {},
+        }
 
-    expect(getCurrentBoardMembers(state).u1).toBeTruthy()
-})
+        expect(getCurrentBoardMembers(state).u1).toBeTruthy()
+    })
 
     test('getMyBoardMembership returns null for unknown board', () => {
         const store = makeStore()
@@ -466,8 +465,8 @@ describe('updateMembersHandler', () => {
 
     test('updates myBoardMemberships when member found', () => {
         const state: any = {
-            membersInBoards: {'b1': {}},
-            myBoardMemberships: {'b1': {boardId: 'b1', userId: 'u1', schemeAdmin: false, schemeEditor: true, schemeViewer: true, schemeCommenter: false}},
+            membersInBoards: {b1: {}},
+            myBoardMemberships: {b1: {boardId: 'b1', userId: 'u1', schemeAdmin: false, schemeEditor: true, schemeViewer: true, schemeCommenter: false}},
             boards: {},
             templates: {},
             loadingBoard: false,
@@ -477,13 +476,13 @@ describe('updateMembersHandler', () => {
         const member = makeMember('b1', 'u1', true)
         const action: any = {payload: [member]}
         updateMembersHandler(state, action)
-        expect(state.myBoardMemberships['b1'].schemeAdmin).toBe(true)
+        expect(state.myBoardMemberships.b1.schemeAdmin).toBe(true)
     })
 
     test('removes myBoardMembership when no perms', () => {
         const state: any = {
-            membersInBoards: {'b1': {}},
-            myBoardMemberships: {'b1': {boardId: 'b1', userId: 'u1', schemeAdmin: false, schemeEditor: true, schemeViewer: true, schemeCommenter: false}},
+            membersInBoards: {b1: {}},
+            myBoardMemberships: {b1: {boardId: 'b1', userId: 'u1', schemeAdmin: false, schemeEditor: true, schemeViewer: true, schemeCommenter: false}},
             boards: {},
             templates: {},
             loadingBoard: false,
@@ -499,13 +498,11 @@ describe('updateMembersHandler', () => {
         }
         const action: any = {payload: [noPermMember]}
         updateMembersHandler(state, action)
-        expect(state.myBoardMemberships['b1']).toBeUndefined()
+        expect(state.myBoardMemberships.b1).toBeUndefined()
     })
 })
 
-
 describe('boards async thunk coverage', () => {
-
     test('updateMembersEnsuringBoardsAndUsers marks board deleted when current user membership has no permissions', async () => {
         const member = makeMember('board-removed', 'me-user', false, false)
         member.schemeViewer = false

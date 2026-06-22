@@ -31,8 +31,8 @@ describe('attachments reducer', () => {
         const store = makeStore()
         const attachment = makeAttachment('att1', 'card1')
         store.dispatch(updateAttachments([attachment]))
-        expect(store.getState().attachments.attachments['att1']).toBeTruthy()
-        expect(store.getState().attachments.attachmentsByCard['card1']).toHaveLength(1)
+        expect(store.getState().attachments.attachments.att1).toBeTruthy()
+        expect(store.getState().attachments.attachmentsByCard.card1).toHaveLength(1)
     })
 
     test('updateAttachments adds to existing parent', () => {
@@ -41,7 +41,7 @@ describe('attachments reducer', () => {
         const att2 = makeAttachment('att2', 'card1', 0, 1001)
         store.dispatch(updateAttachments([att1]))
         store.dispatch(updateAttachments([att2]))
-        expect(store.getState().attachments.attachmentsByCard['card1']).toHaveLength(2)
+        expect(store.getState().attachments.attachmentsByCard.card1).toHaveLength(2)
     })
 
     test('updateAttachments does not duplicate if same id exists', () => {
@@ -49,7 +49,7 @@ describe('attachments reducer', () => {
         const att1 = makeAttachment('att1', 'card1')
         store.dispatch(updateAttachments([att1]))
         store.dispatch(updateAttachments([att1]))
-        expect(store.getState().attachments.attachmentsByCard['card1']).toHaveLength(1)
+        expect(store.getState().attachments.attachmentsByCard.card1).toHaveLength(1)
     })
 
     test('updateAttachments removes attachment when deleteAt != 0', () => {
@@ -58,16 +58,17 @@ describe('attachments reducer', () => {
         store.dispatch(updateAttachments([att1]))
         const deletedAtt = makeAttachment('att1', 'card1', 999)
         store.dispatch(updateAttachments([deletedAtt]))
-        expect(store.getState().attachments.attachments['att1']).toBeUndefined()
-        expect(store.getState().attachments.attachmentsByCard['card1']).toHaveLength(0)
+        expect(store.getState().attachments.attachments.att1).toBeUndefined()
+        expect(store.getState().attachments.attachmentsByCard.card1).toHaveLength(0)
     })
 
     test('updateAttachments delete with no existing parentId in byCard deletes from attachments', () => {
         const store = makeStore()
+
         // Attachment doesn't exist in store yet, so parentId lookup returns undefined
         const deletedAtt = makeAttachment('att99', 'card99', 999)
         store.dispatch(updateAttachments([deletedAtt]))
-        expect(store.getState().attachments.attachments['att99']).toBeUndefined()
+        expect(store.getState().attachments.attachments.att99).toBeUndefined()
     })
 
     test('updateUploadPrecent updates uploadingPercent on an attachment', () => {
@@ -75,7 +76,7 @@ describe('attachments reducer', () => {
         const att1 = makeAttachment('att1', 'card1')
         store.dispatch(updateAttachments([att1]))
         store.dispatch(updateUploadPrecent({blockId: 'att1', uploadPercent: 75}))
-        expect(store.getState().attachments.attachments['att1'].uploadingPercent).toBe(75)
+        expect(store.getState().attachments.attachments.att1.uploadingPercent).toBe(75)
     })
 
     test('extraReducer: initialReadOnlyLoad.fulfilled populates and sorts attachments', () => {
@@ -89,10 +90,11 @@ describe('attachments reducer', () => {
                 blocks: [att1, att2],
             },
         })
-        expect(store.getState().attachments.attachments['att1']).toBeTruthy()
-        expect(store.getState().attachments.attachments['att2']).toBeTruthy()
+        expect(store.getState().attachments.attachments.att1).toBeTruthy()
+        expect(store.getState().attachments.attachments.att2).toBeTruthy()
+
         // Should be sorted by createAt (att2=1000 first, att1=2000 second)
-        const byCard = store.getState().attachments.attachmentsByCard['card1']
+        const byCard = store.getState().attachments.attachmentsByCard.card1
         expect(byCard[0].id).toBe('att2')
         expect(byCard[1].id).toBe('att1')
     })
@@ -114,7 +116,7 @@ describe('attachments reducer', () => {
             type: 'loadBoardData/fulfilled',
             payload: {blocks: [att1]},
         })
-        expect(store.getState().attachments.attachments['att1']).toBeTruthy()
+        expect(store.getState().attachments.attachments.att1).toBeTruthy()
     })
 
     test('extraReducer: loadBoardData.fulfilled clears previous attachments', () => {
@@ -137,7 +139,7 @@ describe('attachments reducer', () => {
             type: 'loadBoardData/fulfilled',
             payload: {blocks: [att1, att2, att3]},
         })
-        const byCard = store.getState().attachments.attachmentsByCard['card1']
+        const byCard = store.getState().attachments.attachmentsByCard.card1
         expect(byCard[0].id).toBe('att2')
         expect(byCard[1].id).toBe('att3')
         expect(byCard[2].id).toBe('att1')

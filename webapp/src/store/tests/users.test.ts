@@ -88,8 +88,8 @@ describe('users reducer', () => {
         const u1 = makeUser('u1', 'alice')
         const u2 = makeUser('u2', 'bob')
         store.dispatch(setBoardUsers([u1, u2]))
-        expect(store.getState().users.boardUsers['u1']).toEqual(u1)
-        expect(store.getState().users.boardUsers['u2']).toEqual(u2)
+        expect(store.getState().users.boardUsers.u1).toEqual(u1)
+        expect(store.getState().users.boardUsers.u2).toEqual(u2)
     })
 
     test('setBoardUsers replaces existing users', () => {
@@ -99,7 +99,7 @@ describe('users reducer', () => {
         store.dispatch(setBoardUsers([u1]))
         store.dispatch(setBoardUsers([u2]))
         expect(Object.keys(store.getState().users.boardUsers)).toHaveLength(1)
-        expect(store.getState().users.boardUsers['u2']).toBeTruthy()
+        expect(store.getState().users.boardUsers.u2).toBeTruthy()
     })
 
     test('addBoardUsers adds users to existing map', () => {
@@ -117,8 +117,8 @@ describe('users reducer', () => {
         const u2 = makeUser('u2')
         store.dispatch(setBoardUsers([u1, u2]))
         store.dispatch(removeBoardUsersById(['u1']))
-        expect(store.getState().users.boardUsers['u1']).toBeUndefined()
-        expect(store.getState().users.boardUsers['u2']).toBeTruthy()
+        expect(store.getState().users.boardUsers.u1).toBeUndefined()
+        expect(store.getState().users.boardUsers.u2).toBeTruthy()
     })
 
     test('followBlock adds subscription', () => {
@@ -143,7 +143,7 @@ describe('users reducer', () => {
         const store = makeStore()
         const prefs = [{category: 'boards', name: 'onboardingTourStarted', value: 'true', userId: 'u1'}]
         store.dispatch(patchProps(prefs as any))
-        expect(store.getState().users.myConfig['onboardingTourStarted']).toBeTruthy()
+        expect(store.getState().users.myConfig.onboardingTourStarted).toBeTruthy()
     })
 
     test('extraReducer: users/fetchMe/fulfilled sets me and myConfig', () => {
@@ -202,7 +202,7 @@ describe('users reducer', () => {
                 myConfig: [{category: 'boards', name: 'tourCategory', value: 'boards', user_id: 'u1'}],
             },
         })
-        expect(store.getState().users.myConfig['tourCategory']).toBeTruthy()
+        expect(store.getState().users.myConfig.tourCategory).toBeTruthy()
     })
 
     test('extraReducer: initialLoad/fulfilled with no myConfig does not crash', () => {
@@ -219,6 +219,7 @@ describe('users reducer', () => {
                 myConfig: null,
             },
         })
+
         // Should not throw, myConfig remains as is
         expect(store.getState().users.myConfig).toBeTruthy()
     })

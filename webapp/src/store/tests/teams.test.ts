@@ -40,6 +40,7 @@ describe('teams reducer', () => {
     test('setTeam sets currentId and current team when found', () => {
         const store = makeStore()
         const team1 = makeTeam('t1', 'Alpha')
+
         // First load teams via initialLoad
         store.dispatch({
             type: 'initialLoad/fulfilled',
@@ -83,6 +84,7 @@ describe('teams reducer', () => {
         store.dispatch(setTeam('t1'))
         const currentAfterFirst = store.getState().teams.current
         store.dispatch(setTeam('t1'))
+
         // The current should remain the same reference
         expect(store.getState().teams.current).toEqual(currentAfterFirst)
     })

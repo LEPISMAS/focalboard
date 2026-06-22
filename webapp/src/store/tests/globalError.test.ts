@@ -1,10 +1,9 @@
-// Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
+﻿// Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See LICENSE.txt for license information.
 
 import {configureStore} from '@reduxjs/toolkit'
 
 import {reducer, setGlobalError, getGlobalError} from '../globalError'
-import {reducer as usersReducer} from '../users'
 
 // We mock initialLoad to avoid async thunk execution via client
 jest.mock('../initialLoad', () => ({
@@ -130,3 +129,4 @@ describe('getGlobalError selector', () => {
         expect(getGlobalError(state)).toBe('')
     })
 })
+

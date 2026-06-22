@@ -4,7 +4,7 @@
 import {configureStore} from '@reduxjs/toolkit'
 
 import {
-    reducer as cardsReducer,    updateCards,
+    reducer as cardsReducer, updateCards,
     addCard,
     addTemplate,
     setCurrent,
@@ -103,29 +103,29 @@ describe('cards reducer', () => {
         const store = makeStore()
         const card = makeCard('c1', 'board1')
         store.dispatch(addCard(card))
-        expect(store.getState().cards.cards['c1']).toBeTruthy()
+        expect(store.getState().cards.cards.c1).toBeTruthy()
     })
 
     test('addTemplate adds a template', () => {
         const store = makeStore()
         const card = makeCard('tmpl1', 'board1', 'Template', true)
         store.dispatch(addTemplate(card))
-        expect(store.getState().cards.templates['tmpl1']).toBeTruthy()
+        expect(store.getState().cards.templates.tmpl1).toBeTruthy()
     })
 
     test('updateCards adds non-template card', () => {
         const store = makeStore()
         const card = makeCard('c1', 'board1')
         store.dispatch(updateCards([card]))
-        expect(store.getState().cards.cards['c1']).toBeTruthy()
+        expect(store.getState().cards.cards.c1).toBeTruthy()
     })
 
     test('updateCards adds template card to templates', () => {
         const store = makeStore()
         const card = makeCard('tmpl1', 'board1', 'Template Card', true)
         store.dispatch(updateCards([card]))
-        expect(store.getState().cards.templates['tmpl1']).toBeTruthy()
-        expect(store.getState().cards.cards['tmpl1']).toBeUndefined()
+        expect(store.getState().cards.templates.tmpl1).toBeTruthy()
+        expect(store.getState().cards.cards.tmpl1).toBeUndefined()
     })
 
     test('updateCards removes card when deleteAt != 0', () => {
@@ -134,7 +134,7 @@ describe('cards reducer', () => {
         store.dispatch(updateCards([card]))
         const deleted = makeCard('c1', 'board1', 'Card', false, 999)
         store.dispatch(updateCards([deleted]))
-        expect(store.getState().cards.cards['c1']).toBeUndefined()
+        expect(store.getState().cards.cards.c1).toBeUndefined()
     })
 
     test('setLimitTimestamp sets the limitTimestamp', () => {
@@ -149,7 +149,7 @@ describe('cards reducer', () => {
         oldCard.updateAt = 100
         store.dispatch(addCard(oldCard))
         store.dispatch(setLimitTimestamp({timestamp: 500, templates: {}}))
-        const limitedCard = store.getState().cards.cards['c1']
+        const limitedCard = store.getState().cards.cards.c1
         expect(limitedCard?.limited).toBe(true)
     })
 
@@ -159,7 +159,7 @@ describe('cards reducer', () => {
         newCard.updateAt = 1000
         store.dispatch(addCard(newCard))
         store.dispatch(setLimitTimestamp({timestamp: 500, templates: {}}))
-        const card = store.getState().cards.cards['c1']
+        const card = store.getState().cards.cards.c1
         expect(card?.limited).toBeFalsy()
     })
 
@@ -172,8 +172,8 @@ describe('cards reducer', () => {
             type: 'initialReadOnlyLoad/fulfilled',
             payload: {board: {id: 'board1'}, blocks: [card, template, nonCard]},
         })
-        expect(store.getState().cards.cards['c1']).toBeTruthy()
-        expect(store.getState().cards.templates['tmpl1']).toBeTruthy()
+        expect(store.getState().cards.cards.c1).toBeTruthy()
+        expect(store.getState().cards.templates.tmpl1).toBeTruthy()
     })
 
     test('extraReducer: loadBoardData.fulfilled populates cards', () => {
@@ -183,7 +183,7 @@ describe('cards reducer', () => {
             type: 'loadBoardData/fulfilled',
             payload: {blocks: [card]},
         })
-        expect(store.getState().cards.cards['c1']).toBeTruthy()
+        expect(store.getState().cards.cards.c1).toBeTruthy()
     })
 
     test('extraReducer: loadBoardData.fulfilled clears previous cards', () => {
@@ -220,7 +220,7 @@ describe('cards reducer', () => {
             type: 'refreshCards/fulfilled',
             payload: [updatedCard],
         })
-        expect(store.getState().cards.cards['c1']?.title).toBe('Updated')
+        expect(store.getState().cards.cards.c1?.title).toBe('Updated')
     })
 })
 
@@ -417,8 +417,6 @@ describe('cards extra coverage', () => {
         expect(store.getState().cards.cards['template-card'].fields.properties).toEqual({prop1: 'value'})
     })
 })
-
-
 
 describe('cards sorting and search coverage', () => {
     function setupBoardAndView(store: any, board: any, view: any) {

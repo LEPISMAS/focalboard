@@ -58,7 +58,7 @@ describe('views reducer', () => {
         const store = makeStore()
         const view = makeView('v1', 'board1', 'My View')
         store.dispatch(updateViews([view]))
-        expect(store.getState().views.views['v1']).toBeTruthy()
+        expect(store.getState().views.views.v1).toBeTruthy()
     })
 
     test('updateViews removes views with deleteAt != 0', () => {
@@ -67,14 +67,14 @@ describe('views reducer', () => {
         store.dispatch(updateViews([view]))
         const deleted = makeView('v1', 'board1', 'My View', 999)
         store.dispatch(updateViews([deleted]))
-        expect(store.getState().views.views['v1']).toBeUndefined()
+        expect(store.getState().views.views.v1).toBeUndefined()
     })
 
     test('updateView sets a single view', () => {
         const store = makeStore()
         const view = makeView('v1', 'board1', 'View 1')
         store.dispatch(updateView(view))
-        expect(store.getState().views.views['v1']).toBeTruthy()
+        expect(store.getState().views.views.v1).toBeTruthy()
     })
 
     test('updateViews smart update preserves reference equality for unchanged fields', () => {
@@ -83,7 +83,7 @@ describe('views reducer', () => {
         store.dispatch(updateViews([view]))
         const updatedView = makeView('v1', 'board1', 'View 1 Updated')
         store.dispatch(updateViews([updatedView]))
-        expect(store.getState().views.views['v1'].title).toBe('View 1 Updated')
+        expect(store.getState().views.views.v1.title).toBe('View 1 Updated')
     })
 
     test('extraReducer: initialReadOnlyLoad.fulfilled populates views', () => {
@@ -93,7 +93,7 @@ describe('views reducer', () => {
             type: 'initialReadOnlyLoad/fulfilled',
             payload: {board: {id: 'board1'}, blocks: [view]},
         })
-        expect(store.getState().views.views['v1']).toBeTruthy()
+        expect(store.getState().views.views.v1).toBeTruthy()
     })
 
     test('extraReducer: initialReadOnlyLoad.fulfilled ignores non-view blocks', () => {
@@ -113,7 +113,7 @@ describe('views reducer', () => {
             type: 'loadBoardData/fulfilled',
             payload: {blocks: [view]},
         })
-        expect(store.getState().views.views['v1']).toBeTruthy()
+        expect(store.getState().views.views.v1).toBeTruthy()
     })
 
     test('extraReducer: loadBoardData.fulfilled clears previous views', () => {
@@ -157,8 +157,8 @@ describe('views selectors', () => {
         store.dispatch(updateViews([v1, v2, v3]))
         const state = store.getState() as any
         const byBoard = getViewsByBoard(state)
-        expect(byBoard['board1']).toHaveLength(2)
-        expect(byBoard['board2']).toHaveLength(1)
+        expect(byBoard.board1).toHaveLength(2)
+        expect(byBoard.board2).toHaveLength(1)
     })
 
     test('getView returns null for unknown viewId', () => {

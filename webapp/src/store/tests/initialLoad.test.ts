@@ -1,4 +1,6 @@
-﻿jest.mock('../../octoClient', () => ({
+﻿// Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
+// See LICENSE.txt for license information.
+jest.mock('../../octoClient', () => ({
     __esModule: true,
     default: {
         getMe: jest.fn(),
@@ -187,3 +189,4 @@ describe('initialLoad selectors', () => {
         ])
     })
 })
+

@@ -30,8 +30,8 @@ describe('comments reducer', () => {
         const store = makeStore()
         const comment = makeComment('c1', 'card1')
         store.dispatch(updateComments([comment]))
-        expect(store.getState().comments.comments['c1']).toBeTruthy()
-        expect(store.getState().comments.commentsByCard['card1']).toHaveLength(1)
+        expect(store.getState().comments.comments.c1).toBeTruthy()
+        expect(store.getState().comments.commentsByCard.card1).toHaveLength(1)
     })
 
     test('updateComments adds to existing parent', () => {
@@ -40,7 +40,7 @@ describe('comments reducer', () => {
         const c2 = makeComment('c2', 'card1', 0, 1001)
         store.dispatch(updateComments([c1]))
         store.dispatch(updateComments([c2]))
-        expect(store.getState().comments.commentsByCard['card1']).toHaveLength(2)
+        expect(store.getState().comments.commentsByCard.card1).toHaveLength(2)
     })
 
     test('updateComments updates existing comment in parent', () => {
@@ -49,8 +49,9 @@ describe('comments reducer', () => {
         store.dispatch(updateComments([c1]))
         const updatedC1 = {...c1, title: 'updated'}
         store.dispatch(updateComments([updatedC1]))
+
         // Should still have length 1 (updated in place)
-        expect(store.getState().comments.commentsByCard['card1']).toHaveLength(1)
+        expect(store.getState().comments.commentsByCard.card1).toHaveLength(1)
     })
 
     test('updateComments deletes comment when deleteAt != 0', () => {
@@ -59,15 +60,15 @@ describe('comments reducer', () => {
         store.dispatch(updateComments([c1]))
         const deletedC1 = makeComment('c1', 'card1', 999)
         store.dispatch(updateComments([deletedC1]))
-        expect(store.getState().comments.comments['c1']).toBeUndefined()
-        expect(store.getState().comments.commentsByCard['card1']).toHaveLength(0)
+        expect(store.getState().comments.comments.c1).toBeUndefined()
+        expect(store.getState().comments.commentsByCard.card1).toHaveLength(0)
     })
 
     test('updateComments delete when no byCard entry', () => {
         const store = makeStore()
         const deletedC = makeComment('c99', 'card99', 999)
         store.dispatch(updateComments([deletedC]))
-        expect(store.getState().comments.comments['c99']).toBeUndefined()
+        expect(store.getState().comments.comments.c99).toBeUndefined()
     })
 
     test('extraReducer: initialReadOnlyLoad.fulfilled populates and sorts comments', () => {
@@ -79,9 +80,10 @@ describe('comments reducer', () => {
             type: 'initialReadOnlyLoad/fulfilled',
             payload: {board: {id: 'board1'}, blocks: [c1, c2, nonComment]},
         })
-        expect(store.getState().comments.comments['c1']).toBeTruthy()
-        expect(store.getState().comments.comments['c2']).toBeTruthy()
-        const byCard = store.getState().comments.commentsByCard['card1']
+        expect(store.getState().comments.comments.c1).toBeTruthy()
+        expect(store.getState().comments.comments.c2).toBeTruthy()
+        const byCard = store.getState().comments.commentsByCard.card1
+
         // Sorted by createAt: c2 (1000) first, c1 (2000) second
         expect(byCard[0].id).toBe('c2')
         expect(byCard[1].id).toBe('c1')
@@ -95,7 +97,7 @@ describe('comments reducer', () => {
             type: 'loadBoardData/fulfilled',
             payload: {blocks: [c1, c2]},
         })
-        const byCard = store.getState().comments.commentsByCard['card1']
+        const byCard = store.getState().comments.commentsByCard.card1
         expect(byCard[0].id).toBe('c2')
         expect(byCard[1].id).toBe('c1')
     })
@@ -161,7 +163,7 @@ describe('getLastCommentByCard selector', () => {
         store.dispatch(updateComments([c3]))
         const state = store.getState() as any
         const result = getLastCommentByCard(state)
-        expect(result['card1']?.id).toBe('c2')
-        expect(result['card2']?.id).toBe('c3')
+        expect(result.card1?.id).toBe('c2')
+        expect(result.card2?.id).toBe('c3')
     })
 })

@@ -33,8 +33,8 @@ describe('contents reducer', () => {
         const store = makeStore()
         const content = makeContent('cnt1', 'card1')
         store.dispatch(updateContents([content]))
-        expect(store.getState().contents.contents['cnt1']).toBeTruthy()
-        expect(store.getState().contents.contentsByCard['card1']).toHaveLength(1)
+        expect(store.getState().contents.contents.cnt1).toBeTruthy()
+        expect(store.getState().contents.contentsByCard.card1).toHaveLength(1)
     })
 
     test('updateContents adds to existing parent', () => {
@@ -43,7 +43,7 @@ describe('contents reducer', () => {
         const c2 = makeContent('cnt2', 'card1', 0, 1001)
         store.dispatch(updateContents([c1]))
         store.dispatch(updateContents([c2]))
-        expect(store.getState().contents.contentsByCard['card1']).toHaveLength(2)
+        expect(store.getState().contents.contentsByCard.card1).toHaveLength(2)
     })
 
     test('updateContents updates existing content', () => {
@@ -52,7 +52,7 @@ describe('contents reducer', () => {
         store.dispatch(updateContents([c1]))
         const updated = {...c1, title: 'updated title'}
         store.dispatch(updateContents([updated]))
-        expect(store.getState().contents.contentsByCard['card1']).toHaveLength(1)
+        expect(store.getState().contents.contentsByCard.card1).toHaveLength(1)
     })
 
     test('updateContents deletes content when deleteAt != 0', () => {
@@ -61,15 +61,15 @@ describe('contents reducer', () => {
         store.dispatch(updateContents([c1]))
         const deleted = makeContent('cnt1', 'card1', 999)
         store.dispatch(updateContents([deleted]))
-        expect(store.getState().contents.contents['cnt1']).toBeUndefined()
-        expect(store.getState().contents.contentsByCard['card1']).toHaveLength(0)
+        expect(store.getState().contents.contents.cnt1).toBeUndefined()
+        expect(store.getState().contents.contentsByCard.card1).toHaveLength(0)
     })
 
     test('updateContents delete when no byCard entry', () => {
         const store = makeStore()
         const deleted = makeContent('cnt99', 'card99', 999)
         store.dispatch(updateContents([deleted]))
-        expect(store.getState().contents.contents['cnt99']).toBeUndefined()
+        expect(store.getState().contents.contents.cnt99).toBeUndefined()
     })
 
     test('extraReducer: initialReadOnlyLoad.fulfilled populates contents, ignores board/view/comment types', () => {
@@ -85,10 +85,10 @@ describe('contents reducer', () => {
                 blocks: [textBlock, boardBlock, viewBlock, commentBlock],
             },
         })
-        expect(store.getState().contents.contents['cnt1']).toBeTruthy()
-        expect(store.getState().contents.contents['board1']).toBeUndefined()
-        expect(store.getState().contents.contents['view1']).toBeUndefined()
-        expect(store.getState().contents.contents['cmt1']).toBeUndefined()
+        expect(store.getState().contents.contents.cnt1).toBeTruthy()
+        expect(store.getState().contents.contents.board1).toBeUndefined()
+        expect(store.getState().contents.contents.view1).toBeUndefined()
+        expect(store.getState().contents.contents.cmt1).toBeUndefined()
     })
 
     test('extraReducer: loadBoardData.fulfilled populates contents', () => {
@@ -99,8 +99,9 @@ describe('contents reducer', () => {
             type: 'loadBoardData/fulfilled',
             payload: {blocks: [c2, c1]},
         })
+
         // Should be sorted by createAt
-        const byCard = store.getState().contents.contentsByCard['card1']
+        const byCard = store.getState().contents.contentsByCard.card1
         expect(byCard[0].id).toBe('cnt1')
         expect(byCard[1].id).toBe('cnt2')
     })
@@ -126,7 +127,7 @@ describe('getContentsById selector', () => {
         const c1 = makeContent('cnt1', 'card1')
         store.dispatch(updateContents([c1]))
         const state = store.getState() as any
-        expect(getContentsById(state)['cnt1']).toBeTruthy()
+        expect(getContentsById(state).cnt1).toBeTruthy()
     })
 })
 
