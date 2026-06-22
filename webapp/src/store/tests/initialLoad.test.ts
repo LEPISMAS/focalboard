@@ -1,4 +1,4 @@
-jest.mock('../../octoClient', () => ({
+﻿jest.mock('../../octoClient', () => ({
     __esModule: true,
     default: {
         getMe: jest.fn(),
@@ -72,7 +72,7 @@ describe('initialLoad thunk', () => {
         const result = await initialLoad()(jest.fn(), jest.fn(), undefined)
 
         expect(result.type).toBe('initialLoad/rejected')
-        expect(result.error.message).toBe(ErrorId.NotLoggedIn)
+        expect((result as any).error.message).toBe(ErrorId.NotLoggedIn)
     })
 
     test('rejects when team is undefined', async () => {
@@ -88,7 +88,7 @@ describe('initialLoad thunk', () => {
         const result = await initialLoad()(jest.fn(), jest.fn(), undefined)
 
         expect(result.type).toBe('initialLoad/rejected')
-        expect(result.error.message).toBe(ErrorId.TeamUndefined)
+        expect((result as any).error.message).toBe(ErrorId.TeamUndefined)
     })
 })
 
@@ -113,7 +113,7 @@ describe('initialReadOnlyLoad thunk', () => {
         const result = await initialReadOnlyLoad('board1')(jest.fn(), jest.fn(), undefined)
 
         expect(result.type).toBe('initialReadOnlyLoad/rejected')
-        expect(result.error.message).toBe(ErrorId.InvalidReadOnlyBoard)
+        expect((result as any).error.message).toBe(ErrorId.InvalidReadOnlyBoard)
     })
 })
 
