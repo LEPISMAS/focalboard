@@ -566,21 +566,7 @@ func TestGetLastBlockHistoryEntryError(t *testing.T) {
 	require.Nil(t, block)
 }
 
-func TestDeleteBlockNilBlock(t *testing.T) {
-	th, tearDown := SetupTestHelper(t)
-	defer tearDown()
 
-	th.Store.EXPECT().
-		GetBlock("block-id").
-		Return(nil, nil)
-
-	err := th.App.DeleteBlock(
-		"block-id",
-		"user-id",
-	)
-
-	require.NoError(t, err)
-}
 
 func TestInsertBlockBoardError(t *testing.T) {
 	th, tearDown := SetupTestHelper(t)

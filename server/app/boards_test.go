@@ -769,3 +769,259 @@ func TestGetMembersForUser(t *testing.T) {
 		assert.True(t, members[0].SchemeAdmin)
 	})
 }
+
+
+func TestGetBoard(t *testing.T) {
+	th, tearDown := SetupTestHelper(t)
+	defer tearDown()
+
+	t.Run("success", func(t *testing.T) {
+		board := &model.Board{ID: "board1"}
+
+		th.Store.EXPECT().
+			GetBoard("board1").
+			Return(board, nil)
+
+		result, err := th.App.GetBoard("board1")
+
+		require.NoError(t, err)
+		require.Equal(t, board.ID, result.ID)
+	})
+
+	t.Run("error", func(t *testing.T) {
+		th.Store.EXPECT().
+			GetBoard("board1").
+			Return(nil, assert.AnError)
+
+		result, err := th.App.GetBoard("board1")
+
+		require.Error(t, err)
+		require.Nil(t, result)
+	})
+}
+
+func TestGetMemberForBoard(t *testing.T) {
+	th, tearDown := SetupTestHelper(t)
+	defer tearDown()
+
+	member := &model.BoardMember{
+		BoardID: "board1",
+		UserID:  "user1",
+	}
+
+	th.Store.EXPECT().
+		GetMemberForBoard("board1", "user1").
+		Return(member, nil)
+
+	result, err := th.App.GetMemberForBoard("board1", "user1")
+
+	require.NoError(t, err)
+	require.NotNil(t, result)
+	require.Equal(t, "user1", result.UserID)
+}
+
+func TestDeleteBoard(t *testing.T) {
+	th, tearDown := SetupTestHelper(t)
+	defer tearDown()
+
+	t.Run("success", func(t *testing.T) {
+		th.Store.EXPECT().
+			GetBoard("board1").
+			Return(&model.Board{
+				ID:     "board1",
+				TeamID: "team1",
+			}, nil)
+
+		th.Store.EXPECT().
+			DeleteBoard("board1", "user1").
+			Return(nil)
+
+		err := th.App.DeleteBoard("board1", "user1")
+
+		require.NoError(t, err)
+	})
+
+	t.Run("delete error", func(t *testing.T) {
+		th.Store.EXPECT().
+			GetBoard("board2").
+			Return(&model.Board{
+				ID: "board2",
+			}, nil)
+
+		th.Store.EXPECT().
+			DeleteBoard("board2", "user1").
+			Return(assert.AnError)
+
+		err := th.App.DeleteBoard("board2", "user1")
+
+		require.Error(t, err)
+	})
+}
+
+func TestUndeleteBoard(t *testing.T) {
+	th, tearDown := SetupTestHelper(t)
+	defer tearDown()
+
+	t.Run("history empty", func(t *testing.T) {
+		th.Store.EXPECT().
+			GetBoardHistory(
+				"board1",
+				model.QueryBoardHistoryOptions{
+					Limit:      1,
+					Descending: true,
+				},
+			).
+			Return([]*model.Board{}, nil)
+
+		err := th.App.UndeleteBoard("board1", "user1")
+
+		require.NoError(t, err)
+	})
+
+	t.Run("success", func(t *testing.T) {
+		th.Store.EXPECT().
+			GetBoardHistory(
+				"board2",
+				model.QueryBoardHistoryOptions{
+					Limit:      1,
+					Descending: true,
+				},
+			).
+			Return([]*model.Board{
+				{ID: "board2"},
+			}, nil)
+
+		th.Store.EXPECT().
+			UndeleteBoard("board2", "user1").
+			Return(nil)
+
+		th.Store.EXPECT().
+			GetBoard("board2").
+			Return(&model.Board{
+				ID:     "board2",
+				TeamID: "team1",
+			}, nil)
+
+		err := th.App.UndeleteBoard("board2", "user1")
+
+		require.NoError(t, err)
+	})
+}
+
+func TestIsLastAdmin(t *testing.T) {
+	th, tearDown := SetupTestHelper(t)
+	defer tearDown()
+
+	t.Run("is last admin", func(t *testing.T) {
+		th.Store.EXPECT().
+			GetMembersForBoard("board1").
+			Return([]*model.BoardMember{
+				{
+					UserID:      "user1",
+					SchemeAdmin: true,
+				},
+			}, nil)
+
+		result, err := th.App.isLastAdmin("user1", "board1")
+
+		require.NoError(t, err)
+		require.True(t, result)
+	})
+
+	t.Run("not last admin", func(t *testing.T) {
+		th.Store.EXPECT().
+			GetMembersForBoard("board2").
+			Return([]*model.BoardMember{
+				{
+					UserID:      "user1",
+					SchemeAdmin: true,
+				},
+				{
+					UserID:      "user2",
+					SchemeAdmin: true,
+				},
+			}, nil)
+
+		result, err := th.App.isLastAdmin("user1", "board2")
+
+		require.NoError(t, err)
+		require.False(t, result)
+	})
+}
+
+func TestGetBoardCountError(t *testing.T) {
+	th, tearDown := SetupTestHelper(t)
+	defer tearDown()
+
+	th.Store.EXPECT().
+		GetBoardCount().
+		Return(int64(0), assert.AnError)
+
+	_, err := th.App.GetBoardCount()
+
+	require.Error(t, err)
+}
+
+func TestDuplicateBoardError(t *testing.T) {
+	th, tearDown := SetupTestHelper(t)
+	defer tearDown()
+
+	th.Store.EXPECT().
+		DuplicateBoard("board1", "user1", "team1", false).
+		Return(nil, nil, assert.AnError)
+
+	_, _, err := th.App.DuplicateBoard(
+		"board1",
+		"user1",
+		"team1",
+		false,
+	)
+
+	require.Error(t, err)
+}
+
+func TestAddMemberToBoardErrors(t *testing.T) {
+	th, tearDown := SetupTestHelper(t)
+	defer tearDown()
+
+	t.Run("board error", func(t *testing.T) {
+		th.Store.EXPECT().
+			GetBoard("board1").
+			Return(nil, assert.AnError)
+
+		member := &model.BoardMember{
+			BoardID: "board1",
+			UserID:  "user1",
+		}
+
+		_, err := th.App.AddMemberToBoard(member)
+
+		require.Error(t, err)
+	})
+
+	t.Run("save member error", func(t *testing.T) {
+		th.Store.EXPECT().
+			GetBoard("board2").
+			Return(&model.Board{
+				ID:     "board2",
+				TeamID: "team1",
+			}, nil)
+
+		th.Store.EXPECT().
+			GetMemberForBoard("board2", "user1").
+			Return(nil, nil)
+
+		th.Store.EXPECT().
+			SaveMember(mock.Anything).
+			Return(nil, assert.AnError)
+
+		member := &model.BoardMember{
+			BoardID: "board2",
+			UserID:  "user1",
+		}
+
+		_, err := th.App.AddMemberToBoard(member)
+
+		require.Error(t, err)
+	})
+}
