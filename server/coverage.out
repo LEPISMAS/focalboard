@@ -1,4 +1,6 @@
 mode: set
+<<<<<<< HEAD
+=======
 github.com/mattermost/focalboard/server/ws/plugin_adapter.go:59.118,73.2 1 1
 github.com/mattermost/focalboard/server/ws/plugin_adapter.go:75.103,81.2 4 1
 github.com/mattermost/focalboard/server/ws/plugin_adapter.go:83.85,88.2 3 1
@@ -304,3 +306,4 @@ github.com/mattermost/focalboard/server/ws/server.go:770.37,778.17 3 1
 github.com/mattermost/focalboard/server/ws/server.go:778.17,781.4 2 0
 github.com/mattermost/focalboard/server/ws/server.go:785.102,787.2 0 1
 github.com/mattermost/focalboard/server/ws/server.go:789.80,791.2 0 1
+>>>>>>> bb9efff28a5b47309a8fe28b149a8c9533a9a2e6
