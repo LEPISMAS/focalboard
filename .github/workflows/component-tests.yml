@@ -1,0 +1,43 @@
+name: Component Tests (QA)
+
+on:
+  push:
+    branches:
+      - 'qa'
+
+env:
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+  EXCLUDE_ENTERPRISE: true
+
+jobs:
+  component-tests:
+    name: Run all component tests
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Set up Go
+        uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5
+        with:
+          go-version-file: server/go.mod
+
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version-file: webapp/.nvmrc
+
+      - name: Install webapp dependencies
+        run: cd webapp && npm ci
+
+      - name: Make scripts executable
+        run: |
+          chmod +x run_all_component_tests.sh
+          chmod +x webapp/src/store/tests/run_tests_redux.sh
+          chmod +x webapp/src/pages/tests/run_tests_pages.sh
+          chmod +x server/api/tests/run_tests_api.sh
+          chmod +x server/ws/tests/run_tests_ws.sh
+
+      - name: Run all component tests
+        run: ./run_all_component_tests.sh
