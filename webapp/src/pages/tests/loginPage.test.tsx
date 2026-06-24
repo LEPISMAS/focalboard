@@ -14,7 +14,7 @@ import {useAppSelector} from '../../store/hooks'
 jest.mock('../../octoClient')
 const mockedOctoClient = mocked(client, true)
 
-const mockDispatch = jest.fn((action) => {
+const mockDispatch: jest.Mock = jest.fn((action) => {
     if (typeof action === 'function') {
         return action(mockDispatch, () => ({}), undefined)
     }

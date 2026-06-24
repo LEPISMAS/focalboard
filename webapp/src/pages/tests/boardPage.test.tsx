@@ -34,7 +34,7 @@ jest.mock('../boardPage/websocketConnection', () => () => <div data-testid="webs
 jest.mock('../../hooks/websockets')
 jest.mock('../../octoClient')
 
-const mockDispatch = jest.fn((action) => {
+const mockDispatch: jest.Mock = jest.fn((action) => {
     if (typeof action === 'function') {
         return action(mockDispatch, () => mockState, undefined)
     }
@@ -127,8 +127,8 @@ describe('pages/boardPage/boardPage', () => {
         history = createMemoryHistory()
         UserSettings.mobileWarningClosed = false
         UserSettings.lastTeamId = ''
-        UserSettings.lastBoardId = {}
-        UserSettings.lastViewId = {}
+        Object.defineProperty(UserSettings, 'lastBoardId', {value: {}, configurable: true})
+        Object.defineProperty(UserSettings, 'lastViewId', {value: {}, configurable: true})
 
         mockState.boards.current = 'board-1'
         mockState.views.current = 'view-1'

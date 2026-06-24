@@ -29,8 +29,8 @@ describe('pages/boardPage/setWindowTitleAndIcon', () => {
     })
 
     test('sets Focalboard as title and favicon to undefined if no board is selected', () => {
-        mockedGetCurrentBoard.mockReturnValue(null)
-        mockedGetCurrentView.mockReturnValue(null)
+        mockedGetCurrentBoard.mockReturnValue(null as any)
+        mockedGetCurrentView.mockReturnValue(null as any)
 
         render(
             <ReduxProvider store={store}>
@@ -47,7 +47,7 @@ describe('pages/boardPage/setWindowTitleAndIcon', () => {
             title: 'My Board',
             icon: '🌟',
         } as any)
-        mockedGetCurrentView.mockReturnValue(null)
+        mockedGetCurrentView.mockReturnValue(null as any)
 
         render(
             <ReduxProvider store={store}>

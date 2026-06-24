@@ -48,8 +48,8 @@ describe('pages/boardPage/teamToBoardAndViewRedirect', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         history = createMemoryHistory()
-        UserSettings.lastBoardId = {}
-        UserSettings.lastViewId = {}
+        Object.defineProperty(UserSettings, 'lastBoardId', {value: {}, configurable: true})
+        Object.defineProperty(UserSettings, 'lastViewId', {value: {}, configurable: true})
     })
 
     test('redirects to last visited board if boardId is missing in URL', () => {
@@ -59,7 +59,7 @@ describe('pages/boardPage/teamToBoardAndViewRedirect', () => {
         mockedGetSidebarCategories.mockReturnValue([])
         mockedGetBoards.mockReturnValue({})
         
-        UserSettings.lastBoardId['team_id_1'] = 'last-board-id'
+        Object.defineProperty(UserSettings, 'lastBoardId', {value: {'team_id_1': 'last-board-id'}, configurable: true})
         history.replace = jest.fn()
 
         render(
@@ -80,14 +80,14 @@ describe('pages/boardPage/teamToBoardAndViewRedirect', () => {
         mockedGetCurrentBoardId.mockReturnValue('')
         mockedGetCurrentBoardViews.mockReturnValue([])
         mockedGetBoards.mockReturnValue({
-            'board-1': { id: 'board-1', title: 'Board 1' },
+            'board-1': { id: 'board-1', title: 'Board 1' } as any,
         })
         mockedGetSidebarCategories.mockReturnValue([
             {
                 boardMetadata: [
                     { boardID: 'board-1', hidden: false },
                 ],
-            },
+            } as any,
         ])
 
         history.replace = jest.fn()
@@ -109,13 +109,13 @@ describe('pages/boardPage/teamToBoardAndViewRedirect', () => {
         history.push('/team/team_id_1/board-1')
         mockedGetCurrentBoardId.mockReturnValue('board-1')
         mockedGetCurrentBoardViews.mockReturnValue([
-            { id: 'view-1', title: 'View 1' },
-            { id: 'view-2', title: 'View 2' },
+            { id: 'view-1', title: 'View 1' } as any,
+            { id: 'view-2', title: 'View 2' } as any,
         ])
         mockedGetSidebarCategories.mockReturnValue([])
         mockedGetBoards.mockReturnValue({})
 
-        UserSettings.lastViewId['board-1'] = 'view-2'
+        Object.defineProperty(UserSettings, 'lastViewId', {value: {'board-1': 'view-2'}, configurable: true})
         history.replace = jest.fn()
 
         render(
@@ -136,7 +136,7 @@ describe('pages/boardPage/teamToBoardAndViewRedirect', () => {
         history.push('/team/team_id_1/board-1')
         mockedGetCurrentBoardId.mockReturnValue('board-1')
         mockedGetCurrentBoardViews.mockReturnValue([
-            { id: 'view-1', title: 'View 1' },
+            { id: 'view-1', title: 'View 1' } as any,
         ])
         mockedGetSidebarCategories.mockReturnValue([])
         mockedGetBoards.mockReturnValue({})
