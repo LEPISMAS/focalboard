@@ -1,6 +1,6 @@
 * nombre: Documentacion argumentativa (pruebas de componente) y pruebas de integracion.
 
-* issue: JEFERSON Documentacion argumentativa (pruebas de componente)
+* issue: JEFERSON Documentacion argumentativa (pruebas de integracion)
 
 * leer: 
 Las proximas exposiciones del trabajo final van a ser debates, por lo que debemos argumentar todas las decisiones que hemos realizado desde el principio y las que realizaremos a partir de ahora.
