@@ -1,0 +1,8 @@
+# Ignorar todo
+*
+
+# Mantener estos archivos
+!.gitignore
+!graph.json
+!GRAPH_REPORT.md
+!.graphify_labels.json
