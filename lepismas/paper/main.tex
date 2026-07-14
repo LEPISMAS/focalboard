@@ -1,0 +1,226 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% ----------------------------------------------------------------------------
+% Editing Guidelines for AI Agents and Contributors
+% ----------------------------------------------------------------------------
+% Please preserve the formatting and structure of this template.
+%
+% Rules:
+% 1. Do not modify the document class, packages, or custom commands unless
+%    explicitly requested.
+%
+% 2. Preserve the order of sections and subsections. Do not rename, remove,
+%    or reorder them unless instructed.
+%
+% 3. After every completed section, subsection, figure, table, placeholder,
+%    abstract, keywords block, or other major block, always insert:
+%
+%       \vspace{\baselineskip}
+%
+%    to maintain consistent vertical spacing throughout the document.
+%
+% 4. Separate logical blocks (paragraphs, sections, figures, tables, lists,
+%    etc.) with one empty source line to keep the .tex file clean and readable.
+%
+% 5. Keep indentation and formatting consistent with the existing template.
+%    Avoid unnecessary whitespace or formatting changes.
+%
+% 6. Preserve labels (\label{}), citations (\cite{}), references,
+%    captions, and bibliography entries. Never rename labels unless every
+%    corresponding reference is also updated.
+%
+% 7. Do not remove comments, placeholders, or explanatory notes unless they
+%    are explicitly replaced by finalized content.
+%
+% 8. When adding figures or tables:
+%       - Always include \caption{} and \label{}.
+%       - Place \label{} immediately after \caption{}.
+%       - Add \vspace{\baselineskip} after the environment.
+%
+% 9. Do not manually change margins, font sizes, spacing, or page layout.
+%    Follow IEEEtran formatting at all times.
+%
+% 10. Keep the source code organized so that future edits produce the minimum
+%     possible diff (avoid reformatting unrelated lines).
+% ---------------------------------------------------------------------------
+
+% ----------------------------------------------------------------------------
+% Packages
+% ----------------------------------------------------------------------------
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[most]{tcolorbox}
+\usepackage[colorlinks=true, urlcolor=blue]{hyperref}
+
+% ----------------------------------------------------------------------------
+% Commands
+% ----------------------------------------------------------------------------
+\newcommand{\placeholder}[1]{\colorbox{yellow}{\parbox{\dimexpr\linewidth-2\fboxsep}{#1}}}
+\newcommand{\email}[1]{\underline{\textcolor{blue}{#1}}}
+
+% ----------------------------------------------------------------------------
+% Fixes
+% ----------------------------------------------------------------------------
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+    
+\makeatletter
+\renewenvironment{abstract}
+{
+  \par\small
+  \noindent\textbf{Abstract}---\normalfont
+}
+{\par}
+\makeatother
+\makeatletter
+\renewenvironment{IEEEkeywords}
+{
+  \par\small
+  \noindent\textbf{Keywords}---\normalfont
+}
+{\par}
+\makeatother
+
+
+\renewcommand{\IEEEkeywordsname}{\textbf{Keywords}}
+% ----------------------------------------------------------------------------
+% Document
+% ----------------------------------------------------------------------------
+\begin{document}
+
+% ----------------------------------------------------------------------------
+% Title and Authors
+% ----------------------------------------------------------------------------
+\title{Título del Proyecto\\}
+
+\author{
+\IEEEauthorblockN{
+Marco Antonio Marquez Herrera, 
+Ricardo Mauricio Chambilla Perca, 
+Alejandro Sebastian Alfonso Huacasi, \\ 
+Daniel Wilston Chura Monroy, 
+Gabriela Vanessa Martell Villanueva, 
+Jeferson Jofre Quispe Madariaga
+}
+
+\IEEEauthorblockA{
+\text{Escuela Profesional de Ingeniería de Sistemas} \\
+\text{Universidad Nacional de San Agustín}\\
+{\color{blue}\underline{mmarquezhe@unsa.edu.pe}}, {\color{blue}\underline{rchambillap@unsa.edu.pe}},
+{\color{blue}\underline{aalfonso@unsa.edu.pe}},\\
+{\color{blue}\underline{dchuramo@unsa.edu.pe}},
+{\color{blue}\underline{gmartellv@unsa.edu.pe}},
+{\color{blue}\underline{jquispemad@unsa.edu.pe}}}
+}
+
+
+% ----------------------------------------------------------------------------
+% Abstract
+% ----------------------------------------------------------------------------
+\maketitle
+
+\begin{abstract}
+Actualmente, el área de software testing [......(máximo 250 caractéres)]
+\end{abstract}
+\vspace{\baselineskip}
+
+% ----------------------------------------------------------------------------
+% Keywords
+% ----------------------------------------------------------------------------
+
+\begin{IEEEkeywords}
+palabra1, palabra2, palabra3....
+\end{IEEEkeywords}
+\vspace{\baselineskip}
+
+% ----------------------------------------------------------------------------
+% Introduction
+% ----------------------------------------------------------------------------
+
+\section{Introducción}
+El presente trabajo de investigación busca
+
+\placeholder{(máximo 5 párrafos)}
+\vspace{\baselineskip}
+
+
+% ----------------------------------------------------------------------------
+% Background and Related Work
+% ----------------------------------------------------------------------------
+\section{Antecedentes}
+
+% --- Subsection: Topic 1 ---
+\subsection{Tema 1}
+\placeholder{Estado del arte (máximo 6 párrafos incluya citas)}
+\vspace{\baselineskip}
+
+% --- Subsection: Topic 2 ---
+\subsection{Tema 2}
+\placeholder{Tema libre (máximo 4 párrafos incluya citas)}
+
+\placeholder{Ejemplo de figura}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\linewidth]{images/test_oracle_modelos_abstractos.png}
+\caption{Test Oracle con modelos abstractos. Fuente: Cheon et al. (2025)}
+\label{fig:test_oracle_modelos_abstractos}
+\end{figure}
+\vspace{\baselineskip}
+
+% ----------------------------------------------------------------------------
+% Case Study
+% ----------------------------------------------------------------------------
+\section{Caso Estudio}
+\placeholder{Explique el software que ha testeado, un poco de historia y componente identificado para el estudio.}
+\vspace{\baselineskip}
+
+% ----------------------------------------------------------------------------
+% Methodology
+% ----------------------------------------------------------------------------
+\section{Metodología}
+
+% --- Subsection: Methodology Steps ---
+\subsection{Pasos Realizados}
+\placeholder{Explique todo el proceso llevado a cabo planificación, desarrollo, tipos de pruebas utilizadas y/o herramientas (texto libre, incluya citas si es necesario)}
+\vspace{\baselineskip}
+
+% ----------------------------------------------------------------------------
+% Results
+% ----------------------------------------------------------------------------
+\section{Resultados}
+\placeholder{A continuación, presentamos los resultados del proyecto.}
+\vspace{\baselineskip}
+
+\placeholder{Explique los resultados en términos de componentes, requisitos probados, casos de prueba diseñados, resultados de pruebas, métricas, etc.}
+\vspace{\baselineskip}
+
+% ----------------------------------------------------------------------------
+% Conclusions
+% ----------------------------------------------------------------------------
+\section{Conclusiones}
+\placeholder{Conclusiones directas del trabajo realizado no lo que dicen otros autores}
+\vspace{\baselineskip}
+
+% ----------------------------------------------------------------------------
+% Future Work
+% ----------------------------------------------------------------------------
+\section{Trabajos Futuros}
+\placeholder{Como trabajos futuros podemos considerar los siguientes:}
+\vspace{\baselineskip}
+
+% ----------------------------------------------------------------------------
+% References
+% ----------------------------------------------------------------------------
+\begin{thebibliography}{00}
+\bibitem{umar2020} Abdullahi Umar, M. O.-T. (2020). Pneumonia Classifcation Using Deep Learning from Chest X‐ray Images During COVID -19. Springer Science+Business Media.
+\bibitem{rakesh2017} Battu Rakesh, J. H. (2017). Assessment of Prescribing Pattern of Drugs in the Managment of Obstructive Lung Diseases and Respiratory. International Journal of Pharmaceutics \& Pharmacology.
+\end{thebibliography}
+
+\end{document}
