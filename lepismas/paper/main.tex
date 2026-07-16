@@ -97,7 +97,7 @@
 % ----------------------------------------------------------------------------
 % Title and Authors
 % ----------------------------------------------------------------------------
-\title{Título del Proyecto\\}
+\title{Estrategia Integral de Pruebas de Software en Focalboard: Un Enfoque de Pruebas Unitarias, Funcionales, de Integración y Sistema\\}
 
 \author{
 \IEEEauthorblockN{
@@ -126,7 +126,7 @@ Jeferson Jofre Quispe Madariaga
 \maketitle
 
 \begin{abstract}
-Actualmente, el área de software testing [......(máximo 250 caractéres)]
+\placeholder{Redactar un resumen de máximo 250 palabras que describa el sistema evaluado, su arquitectura, los requisitos funcionales seleccionados, la estrategia de pruebas, la automatización y los principales resultados obtenidos.}
 \end{abstract}
 \vspace{\baselineskip}
 
@@ -135,7 +135,7 @@ Actualmente, el área de software testing [......(máximo 250 caractéres)]
 % ----------------------------------------------------------------------------
 
 \begin{IEEEkeywords}
-palabra1, palabra2, palabra3....
+\placeholder{Incluir entre cuatro y seis términos relacionados con pruebas de software, pruebas unitarias, pruebas funcionales, pruebas de integración, cobertura y CI.}
 \end{IEEEkeywords}
 \vspace{\baselineskip}
 
@@ -144,61 +144,308 @@ palabra1, palabra2, palabra3....
 % ----------------------------------------------------------------------------
 
 \section{Introducción}
-El presente trabajo de investigación busca
-
-\placeholder{(máximo 5 párrafos)}
+\placeholder{Describir el propósito del sistema, el contexto del proyecto seleccionado y los objetivos del proceso de pruebas.}
 \vspace{\baselineskip}
 
 
 % ----------------------------------------------------------------------------
-% Background and Related Work
+% System Description
 % ----------------------------------------------------------------------------
-\section{Antecedentes}
+\section{Descripción del sistema}
 
-% --- Subsection: Topic 1 ---
-\subsection{Tema 1}
-\placeholder{Estado del arte (máximo 6 párrafos incluya citas)}
+% --- Subsection: Context and Purpose ---
+\subsection{Contexto y propósito de Focalboard}
+\placeholder{Describir brevemente qué es Focalboard, su propósito como herramienta de gestión de proyectos de código abierto, y el contexto de su arquitectura cliente-servidor.}
 \vspace{\baselineskip}
 
-% --- Subsection: Topic 2 ---
-\subsection{Tema 2}
-\placeholder{Tema libre (máximo 4 párrafos incluya citas)}
+% --- Subsection: General Architecture ---
+\subsection{Arquitectura general de la aplicación}
+\placeholder{Describir brevemente la arquitectura de Focalboard, identificando el frontend TypeScript, el backend Go, la capa de persistencia, las APIs y la comunicación entre los principales componentes.}
 
-\placeholder{Ejemplo de figura}
+\placeholder{Espacio para figura de arquitectura}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.9\linewidth]{images/test_oracle_modelos_abstractos.png}
-\caption{Test Oracle con modelos abstractos. Fuente: Cheon et al. (2025)}
-\label{fig:test_oracle_modelos_abstractos}
+\caption{Arquitectura general de Focalboard.}
+\label{fig:arquitectura_general}
+\end{figure}
+\vspace{\baselineskip}
+
+% --- Subsection: Technology Stack ---
+\subsection{Stack tecnológico}
+\placeholder{Describir el stack tecnológico principal: Go 1.21 para el backend, TypeScript/React para el frontend, bases de datos soportadas (SQLite, MySQL, MariaDB, PostgreSQL), y herramientas de construcción (Webpack, Make).}
+\vspace{\baselineskip}
+
+% --- Subsection: Components Selected for Testing ---
+\subsection{Componentes seleccionados para las pruebas}
+\placeholder{Identificar los componentes principales seleccionados para el proceso de pruebas: módulo de autenticación, gestión de tableros, gestión de tarjetas y bloques, sistema de permisos, APIs críticas y capa de persistencia.}
+\vspace{\baselineskip}
+
+% ----------------------------------------------------------------------------
+% Functional Requirements Evaluated
+% ----------------------------------------------------------------------------
+\section{Requisitos funcionales evaluados}
+
+% --- Subsection: Identification of Functional Requirements ---
+\subsection{Identificación de requisitos funcionales}
+\placeholder{Describir el proceso de identificación de requisitos funcionales desde la documentación del repositorio, incluyendo autenticación de usuarios, gestión de tableros, gestión de tarjetas, control de permisos, búsqueda, importación/exportación y notificaciones.}
+\vspace{\baselineskip}
+
+% --- Subsection: Selected Requirements ---
+\subsection{Requisitos seleccionados}
+\placeholder{Presentar los requisitos funcionales seleccionados desde la documentación del repositorio y justificar su relevancia para las pruebas realizadas.}
+\vspace{\baselineskip}
+
+% --- Subsection: Traceability ---
+\subsection{Trazabilidad entre requisitos y pruebas}
+
+\begin{table}[htbp]
+\caption{Trazabilidad de requisitos funcionales y pruebas}
+\label{tab:trazabilidad_requisitos}
+\centering
+\begin{tabular}{|p{0.12\linewidth}|p{0.30\linewidth}|p{0.22\linewidth}|p{0.20\linewidth}|}
+\hline
+\textbf{ID} & \textbf{Requisito funcional} & \textbf{Tipo de prueba} & \textbf{Caso asociado} \\
+\hline
+\placeholder{RF-XX} &
+\placeholder{Descripción} &
+\placeholder{Funcional, integración o sistema} &
+\placeholder{CP-XX} \\
+\hline
+\end{tabular}
+\end{table}
+\vspace{\baselineskip}
+
+% ----------------------------------------------------------------------------
+% Testing Strategy and Planning
+% ----------------------------------------------------------------------------
+\section{Estrategia y planificación de pruebas}
+
+% --- Subsection: Scope ---
+\subsection{Alcance}
+\placeholder{Definir el alcance del proceso de pruebas: niveles de prueba incluidos (unitaria, funcional, integración, sistema), componentes cubiertos y criterios de aceptación establecidos.}
+\vspace{\baselineskip}
+
+% --- Subsection: Unit Test Plan ---
+\subsection{Plan de pruebas unitarias}
+\placeholder{Describir el plan de pruebas unitarias para el backend Go y el frontend TypeScript, incluyendo frameworks utilizados (Go testing, Jest), criterios de cobertura y módulos objetivo.}
+\vspace{\baselineskip}
+
+% --- Subsection: Functional Test Plan ---
+\subsection{Plan de pruebas funcionales}
+\placeholder{Explicar el plan de pruebas funcionales mediante técnicas de caja negra, incluyendo diseño de casos de prueba, ejecución manual con Cypress y criterios de validación.}
+\vspace{\baselineskip}
+
+% --- Subsection: Integration Test Plan ---
+\subsection{Plan de pruebas de integración}
+\placeholder{Describir el plan de pruebas de integración enfocado en los flujos críticos: autenticación, gestión de tableros, gestión de tarjetas, permisos, búsqueda y comunicación en tiempo real.}
+\vspace{\baselineskip}
+
+% --- Subsection: Environment and Tools ---
+\subsection{Entorno y herramientas}
+\placeholder{Listar el entorno de pruebas y herramientas utilizadas: bases de datos de prueba (SQLite, MySQL, MariaDB, PostgreSQL), frameworks de testing (Go testing, Jest, Cypress), herramientas de cobertura y GitHub Actions para CI/CD.}
+\vspace{\baselineskip}
+
+% ----------------------------------------------------------------------------
+% Unit Tests and Coverage
+% ----------------------------------------------------------------------------
+\section{Pruebas unitarias y cobertura}
+
+% --- Subsection: Backend Go ---
+\subsection{Backend Go}
+\placeholder{Explicar las pruebas unitarias implementadas en el backend Go, indicando módulos probados (api, app, model, store, services), framework utilizado (Go testing con testify), y configuración de cobertura.}
+\vspace{\baselineskip}
+
+% --- Subsection: Frontend TypeScript ---
+\subsection{Frontend TypeScript}
+\placeholder{Explicar las pruebas unitarias implementadas en el frontend TypeScript, indicando módulos probados (store, blocks, components, utils), framework utilizado (Jest con @testing-library), y configuración de cobertura.}
+\vspace{\baselineskip}
+
+% --- Subsection: Coverage Criteria ---
+\subsection{Criterios de cobertura}
+\placeholder{Describir los criterios de cobertura establecidos: mínimo de 85\% en líneas, funciones, sentencias y ramas, y cómo se midió mediante go tool cover y Jest coverage reports.}
+\vspace{\baselineskip}
+
+% --- Subsection: Coverage Results ---
+\subsection{Resultados de cobertura}
+\placeholder{Incluir los resultados reales de cobertura en líneas, funciones, sentencias y ramas, verificando el cumplimiento del mínimo de 85\%.}
+
+\begin{table}[htbp]
+\caption{Resultados de cobertura de pruebas unitarias}
+\label{tab:cobertura_unitaria}
+\centering
+\begin{tabular}{|p{0.25\linewidth}|p{0.15\linewidth}|p{0.15\linewidth}|p{0.15\linewidth}|p{0.15\linewidth}|}
+\hline
+\textbf{Componente} & \textbf{Líneas} & \textbf{Funciones} & \textbf{Sentencias} & \textbf{Ramas} \\
+\hline
+\placeholder{Backend Go} & \placeholder{XX\%} & \placeholder{XX\%} & \placeholder{XX\%} & \placeholder{XX\%} \\
+\hline
+\placeholder{Frontend TS} & \placeholder{XX\%} & \placeholder{XX\%} & \placeholder{XX\%} & \placeholder{XX\%} \\
+\hline
+\end{tabular}
+\end{table}
+\vspace{\baselineskip}
+
+% ----------------------------------------------------------------------------
+% Functional Tests
+% ----------------------------------------------------------------------------
+\section{Pruebas funcionales}
+
+% --- Subsection: Black Box Techniques ---
+\subsection{Técnicas de caja negra}
+\placeholder{Describir las técnicas de caja negra utilizadas: partición de equivalencia, análisis de valores límite, transición de estados y tablas de decisión aplicadas a los casos de prueba funcionales.}
+\vspace{\baselineskip}
+
+% --- Subsection: Test Case Design ---
+\subsection{Diseño de casos de prueba}
+\placeholder{Explicar el diseño de casos de prueba funcionales, incluyendo escenarios de éxito, error y validación para cada requisito funcional seleccionado.}
+\vspace{\baselineskip}
+
+% --- Subsection: Manual Execution ---
+\subsection{Ejecución manual}
+\placeholder{Describir los casos funcionales ejecutados manualmente mediante técnicas de caja negra y relacionarlos con los requisitos funcionales seleccionados.}
+
+\begin{table}[htbp]
+\caption{Casos de prueba funcionales ejecutados}
+\label{tab:casos_funcionales}
+\centering
+\begin{tabular}{|p{0.15\linewidth}|p{0.35\linewidth}|p{0.20\linewidth}|p{0.20\linewidth}|}
+\hline
+\textbf{ID} & \textbf{Descripción} & \textbf{Resultado esperado} & \textbf{Resultado obtenido} \\
+\hline
+\placeholder{CP-XX} & \placeholder{Descripción} & \placeholder{Éxito/Fallo} & \placeholder{Éxito/Fallo} \\
+\hline
+\end{tabular}
+\end{table}
+\vspace{\baselineskip}
+
+% --- Subsection: Results ---
+\subsection{Resultados}
+\placeholder{Presentar los resultados de las pruebas funcionales, incluyendo tasa de éxito, defectos encontrados y su severidad.}
+\vspace{\baselineskip}
+
+% ----------------------------------------------------------------------------
+% Integration Tests
+% ----------------------------------------------------------------------------
+\section{Pruebas de integración}
+
+% --- Subsection: Critical APIs ---
+\subsection{APIs críticas}
+\placeholder{Identificar las APIs críticas evaluadas: autenticación (/register, /login), gestión de tableros (/boards), gestión de tarjetas (/blocks), permisos, búsqueda y WebSockets.}
+\vspace{\baselineskip}
+
+% --- Subsection: Integration Flows ---
+\subsection{Flujos de integración}
+\placeholder{Describir los flujos de integración implementados: flujo de autenticación, gestión de tableros, gestión de tarjetas y bloques, permisos, categorías y barra lateral, compartición de tableros, búsqueda, frontend, importación/exportación, suscripciones y notificaciones.}
+\vspace{\baselineskip}
+
+% --- Subsection: Implemented Cases ---
+\subsection{Casos implementados}
+\placeholder{Listar los casos de prueba de integración implementados en server/integrationtests/, indicando el flujo cubierto y los componentes involucrados.}
+
+\begin{table}[htbp]
+\caption{Casos de prueba de integración implementados}
+\label{tab:casos_integracion}
+\centering
+\begin{tabular}{|p{0.20\linewidth}|p{0.30\linewidth}|p{0.25\linewidth}|p{0.15\linewidth}|}
+\hline
+\textbf{ID} & \textbf{Flujo de integración} & \textbf{Componentes} & \textbf{Resultado} \\
+\hline
+\placeholder{INT-XX} & \placeholder{Descripción} & \placeholder{Componentes} & \placeholder{Éxito/Fallo} \\
+\hline
+\end{tabular}
+\end{table}
+\vspace{\baselineskip}
+
+% --- Subsection: Results ---
+\subsection{Resultados}
+\placeholder{Presentar los resultados de las pruebas de integración, incluyendo tasa de éxito, defectos encontrados en la comunicación entre componentes y problemas de sincronización.}
+\vspace{\baselineskip}
+
+% ----------------------------------------------------------------------------
+% System Tests
+% ----------------------------------------------------------------------------
+\section{Pruebas de sistema}
+
+% --- Subsection: Quality Attributes Selection ---
+\subsection{Selección de atributos de calidad}
+\placeholder{Describir los atributos de calidad seleccionados para las pruebas de sistema: funcionalidad, usabilidad, eficiencia, mantenibilidad, portabilidad y seguridad.}
+\vspace{\baselineskip}
+
+% --- Subsection: First Attribute Evaluated ---
+\subsection{Primer atributo evaluado}
+\placeholder{Describir el primer atributo de calidad evaluado, la métrica utilizada, el criterio de aceptación, el procedimiento y los resultados reales.}
+\vspace{\baselineskip}
+
+% --- Subsection: Second Attribute Evaluated ---
+\subsection{Segundo atributo evaluado}
+\placeholder{Describir el segundo atributo de calidad evaluado, la métrica utilizada, el criterio de aceptación, el procedimiento y los resultados reales.}
+\vspace{\baselineskip}
+
+% --- Subsection: Metrics and Acceptance Criteria ---
+\subsection{Métricas y criterios de aceptación}
+\placeholder{Describir las métricas y criterios de aceptación establecidos para las pruebas de sistema, incluyendo tiempos de respuesta, throughput, disponibilidad y satisfacción del usuario.}
+\vspace{\baselineskip}
+
+% --- Subsection: Results ---
+\subsection{Resultados}
+\placeholder{Presentar los resultados de las pruebas de sistema, incluyendo cumplimiento de los criterios de aceptación y recomendaciones de mejora.}
+\vspace{\baselineskip}
+
+% ----------------------------------------------------------------------------
+% Automation via GitHub Actions
+% ----------------------------------------------------------------------------
+\section{Automatización mediante GitHub Actions}
+
+% --- Subsection: Implemented Workflows ---
+\subsection{Workflows implementados}
+\placeholder{Explicar los workflows de GitHub Actions implementados: ci.yml (check-in tests), component-tests.yml (pruebas de componentes), codeql-analysis.yml (análisis de seguridad), lint-server.yml (linting del servidor), y workflows de release.}
+\vspace{\baselineskip}
+
+% --- Subsection: Automated Tests ---
+\subsection{Pruebas automatizadas}
+\placeholder{Describir las pruebas automatizadas en el pipeline: pruebas unitarias del servidor (SQLite, MySQL, MariaDB, PostgreSQL), pruebas del webapp (ESLint, Jest, Cypress), y generación de artefactos.}
+\vspace{\baselineskip}
+
+% --- Subsection: Coverage and Artifacts ---
+\subsection{Cobertura y artefactos}
+\placeholder{Explicar cómo se genera y reporta la cobertura de código en el pipeline, y los artefactos generados (binarios del servidor, paquetes del webapp, reportes de cobertura).}
+\vspace{\baselineskip}
+
+% --- Subsection: Pipeline Results ---
+\subsection{Resultados del pipeline}
+\placeholder{Presentar los resultados del pipeline de CI/CD, incluyendo tasa de éxito, tiempo de ejecución y beneficios de la automatización.}
+
+\begin{figure}[htbp]
+\centering
+\caption{Pipeline de GitHub Actions para Focalboard.}
+\label{fig:github_actions_pipeline}
 \end{figure}
 \vspace{\baselineskip}
 
 % ----------------------------------------------------------------------------
-% Case Study
+% Results and Discussion
 % ----------------------------------------------------------------------------
-\section{Caso Estudio}
-\placeholder{Explique el software que ha testeado, un poco de historia y componente identificado para el estudio.}
+\section{Resultados y discusión}
+
+% --- Subsection: General Summary ---
+\subsection{Resumen general}
+\placeholder{Presentar un resumen general de los resultados obtenidos en todas las fases de pruebas: unitarias, funcionales, de integración y de sistema.}
 \vspace{\baselineskip}
 
-% ----------------------------------------------------------------------------
-% Methodology
-% ----------------------------------------------------------------------------
-\section{Metodología}
-
-% --- Subsection: Methodology Steps ---
-\subsection{Pasos Realizados}
-\placeholder{Explique todo el proceso llevado a cabo planificación, desarrollo, tipos de pruebas utilizadas y/o herramientas (texto libre, incluya citas si es necesario)}
+% --- Subsection: Coverage Achieved ---
+\subsection{Cobertura alcanzada}
+\placeholder{Analizar la cobertura de código alcanzada en backend y frontend, comparándola con los criterios de aceptación establecidos.}
 \vspace{\baselineskip}
 
-% ----------------------------------------------------------------------------
-% Results
-% ----------------------------------------------------------------------------
-\section{Resultados}
-\placeholder{A continuación, presentamos los resultados del proyecto.}
+% --- Subsection: Defects Found ---
+\subsection{Defectos encontrados}
+\placeholder{Clasificar y analizar los defectos encontrados durante el proceso de pruebas, indicando su severidad, ubicación y estado de resolución.}
 \vspace{\baselineskip}
 
-\placeholder{Explique los resultados en términos de componentes, requisitos probados, casos de prueba diseñados, resultados de pruebas, métricas, etc.}
+% --- Subsection: Limitations ---
+\subsection{Limitaciones}
+\placeholder{Discutir las limitaciones del proceso de pruebas realizado, incluyendo restricciones de tiempo, recursos y alcance.}
 \vspace{\baselineskip}
 
 % ----------------------------------------------------------------------------
@@ -211,7 +458,7 @@ El presente trabajo de investigación busca
 % ----------------------------------------------------------------------------
 % Future Work
 % ----------------------------------------------------------------------------
-\section{Trabajos Futuros}
+\section{Trabajos futuros}
 \placeholder{Como trabajos futuros podemos considerar los siguientes:}
 \vspace{\baselineskip}
 
@@ -219,8 +466,34 @@ El presente trabajo de investigación busca
 % References
 % ----------------------------------------------------------------------------
 \begin{thebibliography}{00}
-\bibitem{umar2020} Abdullahi Umar, M. O.-T. (2020). Pneumonia Classifcation Using Deep Learning from Chest X‐ray Images During COVID -19. Springer Science+Business Media.
-\bibitem{rakesh2017} Battu Rakesh, J. H. (2017). Assessment of Prescribing Pattern of Drugs in the Managment of Obstructive Lung Diseases and Respiratory. International Journal of Pharmaceutics \& Pharmacology.
+\bibitem{goTesting}
+Google LLC. ``The Go Programming Language: Testing.'' Go Documentation. https://go.dev/doc/tutorial/add-a-test. Accessed: 2025.
+\bibitem{jestDocs}
+Meta. ``Jest: Delightful JavaScript Testing.'' Jest Documentation. https://jestjs.io/docs/getting-started. Accessed: 2025.
+\bibitem{cypressDocs}
+Cypress IO. ``Cypress: Fast, easy and reliable testing for anything that runs in a browser.'' Cypress Documentation. https://docs.cypress.io. Accessed: 2025.
+\bibitem{githubActions}
+GitHub Inc. ``GitHub Actions: Automate your workflow from idea to production.'' GitHub Documentation. https://docs.github.com/en/actions. Accessed: 2025.
+\bibitem{focalboardRepo}
+Mattermost. ``Focalboard: Open source project management tool.'' GitHub repository. https://github.com/mattermost/focalboard. Accessed: 2025.
+\bibitem{myers2012}
+Glenford J. Myers, C. S. (2012). \textit{The Art of Software Testing}. John Wiley \& Sons.
+\bibitem{beizer1990}
+Boris Beizer (1990). \textit{Software Testing Techniques}. Van Nostrand Reinhold.
+\bibitem{pressman2014}
+Roger S. Pressman (2014). \textit{Software Engineering: A Practitioner's Approach}. McGraw-Hill.
+\bibitem{IEEE829}
+IEEE Computer Society (2008). \textit{IEEE 829-2008: Standard for Software and System Test Documentation}. IEEE.
+\bibitem{IEEE1059}
+IEEE Computer Society (2018). \textit{IEEE 1059: IEEE Standard for Software Verification and Validation}. IEEE.
+\bibitem{ISTQB}
+ISTQB. ``ISTQB Certified Tester Foundation Level Syllabus.'' International Software Testing Qualifications Board. https://www.istqb.org. Accessed: 2025.
+\bibitem{ejemploWeb}
+\placeholder{Autor u organización. ``Título de la página web.'' Sitio web. URL. Fecha de acceso.}
+\bibitem{ejemploGitHub}
+\placeholder{Autor u organización. ``Nombre del repositorio.'' GitHub repository. URL. Última consulta: fecha.}
+\bibitem{ejemploDocs}
+\placeholder{Organización. ``Título de la documentación oficial.'' URL. Fecha de acceso.}
 \end{thebibliography}
 
 \end{document}
