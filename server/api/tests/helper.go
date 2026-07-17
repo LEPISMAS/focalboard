@@ -16,6 +16,7 @@ import (
 	"github.com/mattermost/focalboard/server/services/config"
 	"github.com/mattermost/focalboard/server/services/metrics"
 	"github.com/mattermost/focalboard/server/services/store/mockstore"
+	"github.com/mattermost/focalboard/server/services/webhook"
 	"github.com/mattermost/focalboard/server/ws"
 
 	mmModel "github.com/mattermost/mattermost/server/public/model"
@@ -84,14 +85,13 @@ func SetupTestAPI(t *testing.T) (*TestAPIHelper, func()) {
 	store.EXPECT().GetCategory(gomock.Any()).Return(&defaultCategory, nil).AnyTimes()
 	store.EXPECT().AddUpdateCategoryBoard(gomock.Any(), gomock.Any(), gomock.Any()).Return(nil).AnyTimes()
 	store.EXPECT().GetMemberForBoard(gomock.Any(), gomock.Any()).Return(&model.BoardMember{}, nil).AnyTimes()
-	store.EXPECT().GetBoard(gomock.Any()).Return(nil, model.NewErrNotFound("board")).AnyTimes()
 	store.EXPECT().GetUsersByTeam(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return([]*model.User{}, nil).AnyTimes()
-	store.EXPECT().GetBoardHistory(gomock.Any(), gomock.Any()).Return([]*model.Board{}, nil).AnyTimes()
 
 	logger, _ := mlog.NewLogger()
 	authService := auth.New(cfg, store, nil)
 	wsserver := ws.NewServer(authService, "TESTTOKEN", false, logger, store)
 	metricsService := metrics.NewMetrics(metrics.InstanceInfo{})
+	webhookClient := webhook.NewClient(cfg, logger)
 
 	perms := &mockPermissionsService{}
 
@@ -99,6 +99,7 @@ func SetupTestAPI(t *testing.T) (*TestAPIHelper, func()) {
 		Auth:             authService,
 		Store:            store,
 		Metrics:          metricsService,
+		Webhook:          webhookClient,
 		Logger:           logger,
 		SkipTemplateInit: true,
 		Permissions:      perms,

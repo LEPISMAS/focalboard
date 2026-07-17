@@ -25,7 +25,7 @@ const (
 	TestSingleUserToken = "test-single-user-token"
 )
 
-type TestAPIHelper struct {
+type ExtendedTestAPIHelper struct {
 	API          *api.API
 	App          *app.App
 	Store        *mockstore.MockStore
@@ -35,32 +35,32 @@ type TestAPIHelper struct {
 	Audit        *audit.Audit
 }
 
-func SetupTestAPIHelper(t *testing.T, singleUserToken string) (*TestAPIHelper, func()) {
+func SetupTestAPIHelper(t *testing.T, singleUserToken string) (*ExtendedTestAPIHelper, func()) {
 	ctrl := gomock.NewController(t)
 	cfg := &config.Configuration{
 		SessionExpireTime:        2592000,
 		SessionRefreshTime:       1800,
 		EnablePublicSharedBoards: true,
 	}
-	
+
 	store := mockstore.NewMockStore(ctrl)
 	// Add default mocks for websocket side-effects and message posting
 	store.EXPECT().PostMessage(gomock.Any(), gomock.Any(), gomock.Any()).Return(nil).AnyTimes()
-	
+
 	filesBackend := &filestoreMocks.FileBackend{}
-	
+
 	// Create real auth but since it calls store, store is mocked
 	authService := auth.New(cfg, store, nil)
-	
+
 	logger := mlog.CreateConsoleTestLogger(t)
-	
+
 	sessionToken := "test-session-token"
 	wsserver := ws.NewServer(authService, sessionToken, false, logger, store)
 	webhookClient := webhook.NewClient(cfg, logger)
 	metricsService := metrics.NewMetrics(metrics.InstanceInfo{})
-	
+
 	permissions := &MockPermissionsService{}
-	
+
 	appServices := app.Services{
 		Auth:             authService,
 		Store:            store,
@@ -71,27 +71,27 @@ func SetupTestAPIHelper(t *testing.T, singleUserToken string) (*TestAPIHelper, f
 		SkipTemplateInit: true,
 		Permissions:      permissions,
 	}
-	
+
 	appInstance := app.New(cfg, wsserver, appServices)
-	
+
 	auditLogger, _ := audit.NewAudit()
-	
+
 	// Instantiate API with given singleUserToken
 	testAPI := api.NewAPI(appInstance, singleUserToken, "native", permissions, logger, auditLogger)
-	
+
 	router := mux.NewRouter()
 	testAPI.RegisterRoutes(router)
-	
+
 	// Register Admin routes too
 	testAPI.RegisterAdminRoutes(router)
-	
+
 	tearDown := func() {
 		appInstance.Shutdown()
 		_ = auditLogger.Shutdown()
 		ctrl.Finish()
 	}
-	
-	return &TestAPIHelper{
+
+	return &ExtendedTestAPIHelper{
 		API:          testAPI,
 		App:          appInstance,
 		Store:        store,
