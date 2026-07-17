@@ -770,7 +770,6 @@ func TestGetMembersForUser(t *testing.T) {
 	})
 }
 
-
 func TestGetBoard(t *testing.T) {
 	th, tearDown := SetupTestHelper(t)
 	defer tearDown()
@@ -835,6 +834,9 @@ func TestDeleteBoard(t *testing.T) {
 		th.Store.EXPECT().
 			DeleteBoard("board1", "user1").
 			Return(nil)
+		th.Store.EXPECT().
+			GetMembersForBoard("board1").
+			Return([]*model.BoardMember{}, nil)
 
 		err := th.App.DeleteBoard("board1", "user1")
 
@@ -901,6 +903,9 @@ func TestUndeleteBoard(t *testing.T) {
 				ID:     "board2",
 				TeamID: "team1",
 			}, nil)
+		th.Store.EXPECT().
+			GetMembersForBoard("board2").
+			Return([]*model.BoardMember{}, nil)
 
 		err := th.App.UndeleteBoard("board2", "user1")
 
@@ -1012,7 +1017,7 @@ func TestAddMemberToBoardErrors(t *testing.T) {
 			Return(nil, nil)
 
 		th.Store.EXPECT().
-			SaveMember(mock.Anything).
+			SaveMember(utils.Anything).
 			Return(nil, assert.AnError)
 
 		member := &model.BoardMember{
