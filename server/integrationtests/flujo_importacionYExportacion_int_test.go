@@ -180,7 +180,7 @@ func TestINT0705SubirArchivoAdjuntoAlmacenaYEsRecuperable(t *testing.T) {
 	require.NotNil(t, uploaded)
 	require.NotEmpty(t, uploaded.FileID)
 
-	fileInfo, resp := th.Client.TeamUploadFileInfo(model.GlobalTeamID, testBoard.ID, "test")
+	fileInfo, resp := th.Client.TeamUploadFileInfo(model.GlobalTeamID, testBoard.ID, uploaded.FileID)
 	th.CheckOK(resp)
 	require.NoError(t, resp.Error)
 	require.NotNil(t, fileInfo)

@@ -61,7 +61,7 @@ func TestINT0801CrearSuscripcionPersisteEnStore(t *testing.T) {
 	th.CheckOK(resp)
 	require.NotNil(t, subCreated)
 	require.Equal(t, card.ID, subCreated.BlockID)
-	require.Equal(t, model.SubTypeUser, subCreated.SubscriberType)
+	require.Equal(t, model.SubscriberType(model.SubTypeUser), subCreated.SubscriberType)
 	require.Equal(t, user.ID, subCreated.SubscriberID)
 
 	subsFound, resp := th.Client.GetSubscriptions(user.ID)
@@ -91,7 +91,14 @@ func TestINT0802ObtenerSuscripcionesEsCoherenteConLasCreadas(t *testing.T) {
 	_, resp = th.Client.CreateSubscription(sub1)
 	th.CheckOK(resp)
 
-	board2 := th.CreateBoard(model.GlobalTeamID, model.BoardTypeOpen)
+	board2, resp := th.Client2.CreateBoard(&model.Board{
+		TeamID:   model.GlobalTeamID,
+		Type:     model.BoardTypeOpen,
+		CreateAt: utils.GetMillis(),
+		UpdateAt: utils.GetMillis(),
+	})
+	th.CheckOK(resp)
+	require.NotNil(t, board2)
 	card2 := &model.Block{
 		ID:       utils.NewID(utils.IDTypeCard),
 		BoardID:  board2.ID,

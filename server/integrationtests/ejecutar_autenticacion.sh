@@ -3,4 +3,4 @@ set -e
 
 echo "Ejecutando flujo INT-01 Autenticacion"
 cd "$(dirname "$0")"
-go test -v . -run TestINT01
+go test -v . -run TestINT01 -tags sqlite_json

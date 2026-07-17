@@ -414,7 +414,7 @@ func (th *TestHelper) RegisterAndLogin(client *client.Client, username, email, p
 		Token:    token,
 	}
 
-	success, resp := th.Client.Register(req)
+	success, resp := client.Register(req)
 	th.CheckOK(resp)
 	require.True(th.T, success)
 

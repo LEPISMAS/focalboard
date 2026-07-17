@@ -1,5 +1,3 @@
-//go:build ignore
-
 package integrationtests
 
 import (
@@ -212,7 +210,7 @@ func TestINT0605ReordenarCategoriasPersistencia(t *testing.T) {
 	initialCats, apiResp := th.Client.GetUserCategoryBoards(testTeamID)
 	th.CheckOK(apiResp)
 	require.NotEmpty(t, initialCats)
-	
+
 	// Construir el nuevo orden incluyendo TODOS los IDs de categorías.
 	// El backend exige que la lista tenga el mismo número de entradas que las
 	// categorías existentes en la base de datos (incluyendo la categoría de
@@ -246,7 +244,7 @@ func TestINT0605ReordenarCategoriasPersistencia(t *testing.T) {
 
 	require.NotEqual(t, -1, indexCat1)
 	require.NotEqual(t, -1, indexCat2)
-	
+
 	// Como cat2 está antes que cat1 en el nuevo orden, indexCat2 debe ser menor que indexCat1
 	require.Less(t, indexCat2, indexCat1, "cat2 should be ordered before cat1")
 }

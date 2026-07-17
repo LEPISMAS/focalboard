@@ -321,8 +321,12 @@ func TestINT1006CerrarSesionRedireccionLoginInvalidaAcceso(t *testing.T) {
 	email := "int10_user_logout@example.com"
 	password := "Pa$$word-int10-06"
 
-	// Registrar y hacer login
-	th.RegisterAndLogin(th.Client, username, email, password, "")
+	// Registrar y hacer login usando el token de signup del equipo
+	team, resp := th.Client.GetTeam(model.GlobalTeamID)
+	th.CheckOK(resp)
+	require.NotEmpty(t, team.SignupToken)
+
+	th.RegisterAndLogin(th.Client, username, email, password, team.SignupToken)
 
 	// Obtener token antes de logout
 	loginData, resp := th.Client.Login(&model.LoginRequest{

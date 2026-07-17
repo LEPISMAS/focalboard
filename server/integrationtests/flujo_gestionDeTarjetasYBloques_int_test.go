@@ -56,7 +56,7 @@ func TestINT0301CrearTarjetaEnTableroPersisteComoBloqueTypeCard(t *testing.T) {
 	require.NotNil(t, block)
 	require.Equal(t, cardNew.ID, block.ID)
 	require.Equal(t, board.ID, block.BoardID)
-	require.Equal(t, model.TypeCard, block.Type)
+	require.Equal(t, model.BlockType(model.TypeCard), block.Type)
 	require.Equal(t, "Tarjeta INT-03-01", block.Title)
 	require.Equal(t, user1.ID, block.CreatedBy)
 
@@ -248,6 +248,13 @@ func TestINT0304InsertarBloqueContenidoYRelacionPadre(t *testing.T) {
 	require.NoError(t, resp.Error)
 	require.Len(t, insertedBlocks, 3)
 
+	// InsertBlocks replaces client-provided IDs with server-generated IDs while
+	// preserving the order and references between blocks. Use the returned IDs
+	// when checking persistence instead of the temporary request IDs.
+	textBlockID = insertedBlocks[0].ID
+	imageBlockID = insertedBlocks[1].ID
+	checkboxBlockID = insertedBlocks[2].ID
+
 	fmt.Println("  → Verificando relaciones de ParentID de los bloques creados...")
 	for _, b := range insertedBlocks {
 		require.Equal(t, cardNew.ID, b.ParentID)
@@ -263,17 +270,17 @@ func TestINT0304InsertarBloqueContenidoYRelacionPadre(t *testing.T) {
 	textB := findBlockInSlice(allBlocks, textBlockID)
 	require.NotNil(t, textB)
 	require.Equal(t, cardNew.ID, textB.ParentID)
-	require.Equal(t, model.TypeText, textB.Type)
+	require.Equal(t, model.BlockType(model.TypeText), textB.Type)
 
 	imageB := findBlockInSlice(allBlocks, imageBlockID)
 	require.NotNil(t, imageB)
 	require.Equal(t, cardNew.ID, imageB.ParentID)
-	require.Equal(t, model.TypeImage, imageB.Type)
+	require.Equal(t, model.BlockType(model.TypeImage), imageB.Type)
 
 	checkboxB := findBlockInSlice(allBlocks, checkboxBlockID)
 	require.NotNil(t, checkboxB)
 	require.Equal(t, cardNew.ID, checkboxB.ParentID)
-	require.Equal(t, model.TypeCheckbox, checkboxB.Type)
+	require.Equal(t, model.BlockType(model.TypeCheckbox), checkboxB.Type)
 
 	fmt.Println("  ✓ Todos los bloques de contenido tienen como parentId el ID de la tarjeta contenedora")
 	fmt.Println("  ════════════════════════════════════════════════════════════════════════")
@@ -312,9 +319,11 @@ func TestINT0305EliminarTarjetaYBloquesHijos(t *testing.T) {
 			UpdateAt: 1,
 		},
 	}
-	_, resp = th.Client.InsertBlocks(board.ID, blocks, false)
+	insertedBlocks, resp := th.Client.InsertBlocks(board.ID, blocks, false)
 	th.CheckOK(resp)
 	require.NoError(t, resp.Error)
+	require.Len(t, insertedBlocks, 1)
+	childBlockID = insertedBlocks[0].ID
 
 	// Para evitar colisiones en insert_at en el historial
 	time.Sleep(15 * time.Millisecond)
@@ -382,9 +391,11 @@ func TestINT0306RestaurarTarjetaYBloquesHijos(t *testing.T) {
 			UpdateAt: 1,
 		},
 	}
-	_, resp = th.Client.InsertBlocks(board.ID, blocks, false)
+	insertedBlocks, resp := th.Client.InsertBlocks(board.ID, blocks, false)
 	th.CheckOK(resp)
 	require.NoError(t, resp.Error)
+	require.Len(t, insertedBlocks, 1)
+	childBlockID = insertedBlocks[0].ID
 
 	time.Sleep(15 * time.Millisecond)
 
@@ -440,6 +451,7 @@ func TestINT0307CrearTableroYBloquesLote(t *testing.T) {
 
 	boardID := utils.NewID(utils.IDTypeBoard)
 	blockID1 := utils.NewID(utils.IDTypeBlock)
+	timestamp := model.GetMillis()
 
 	// Caso 1: Envío inválido para forzar error de validación del lote
 	fmt.Println("  → Enviando lote inválido (bloque pertenece a tablero inexistente)...")
@@ -454,10 +466,12 @@ func TestINT0307CrearTableroYBloquesLote(t *testing.T) {
 		},
 		Blocks: []*model.Block{
 			{
-				ID:      blockID1,
-				BoardID: "nonexistent-board-id", // Provocará fallo en validación
-				Type:    model.TypeCard,
-				Title:   "Tarjeta Huérfana",
+				ID:       blockID1,
+				BoardID:  "nonexistent-board-id", // Provocará fallo en validación
+				Type:     model.TypeCard,
+				Title:    "Tarjeta Huérfana",
+				CreateAt: timestamp,
+				UpdateAt: timestamp,
 			},
 		},
 	}
@@ -491,10 +505,12 @@ func TestINT0307CrearTableroYBloquesLote(t *testing.T) {
 		},
 		Blocks: []*model.Block{
 			{
-				ID:      validBlockID,
-				BoardID: validBoardID,
-				Type:    model.TypeCard,
-				Title:   "Tarjeta en Lote",
+				ID:       validBlockID,
+				BoardID:  validBoardID,
+				Type:     model.TypeCard,
+				Title:    "Tarjeta en Lote",
+				CreateAt: timestamp,
+				UpdateAt: timestamp,
 			},
 		},
 	}

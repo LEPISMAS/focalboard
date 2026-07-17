@@ -330,7 +330,7 @@ func TestINT0407TableroPublicoAccesibleMiembrosEquipo(t *testing.T) {
 	// Crear tablero público (Open) como user1 en testTeamID
 	board := th.CreateBoard(testTeamID, model.BoardTypeOpen)
 	fmt.Printf("  → Tablero Open creado por %s con ID: %s en el equipo: %s\n", user1.Username, board.ID, testTeamID)
-	fmt.Printf("  → user2 es miembro del equipo pero no tiene membresía explícita en este tablero\n")
+	fmt.Printf("  → %s es miembro del equipo pero no tiene membresía explícita en este tablero\n", user2.Username)
 
 	// user2 intenta acceder al tablero público Open vía API
 	fmt.Println("  → Intentando acceder al tablero público como user2...")
