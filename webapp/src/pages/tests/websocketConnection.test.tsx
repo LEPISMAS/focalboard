@@ -5,6 +5,7 @@ import {render, screen, act} from '@testing-library/react'
 import {Provider as ReduxProvider} from 'react-redux'
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
 import {wrapIntl} from '../../testUtils'
 import wsClient from '../../wsclient'
 import WebsocketConnection from '../boardPage/websocketConnection'
@@ -42,8 +43,8 @@ describe('pages/boardPage/websocketConnection', () => {
     test('renders null by default and registers listener', () => {
         const {container} = render(
             <ReduxProvider store={store}>
-                {wrapIntl(<WebsocketConnection />)}
-            </ReduxProvider>
+                {wrapIntl(<WebsocketConnection/>)}
+            </ReduxProvider>,
         )
 
         expect(container.firstChild).toBeNull()
@@ -58,8 +59,8 @@ describe('pages/boardPage/websocketConnection', () => {
 
         render(
             <ReduxProvider store={store}>
-                {wrapIntl(<WebsocketConnection />)}
-            </ReduxProvider>
+                {wrapIntl(<WebsocketConnection/>)}
+            </ReduxProvider>,
         )
 
         expect(stateChangeCallback).not.toBeNull()
@@ -88,8 +89,8 @@ describe('pages/boardPage/websocketConnection', () => {
 
         render(
             <ReduxProvider store={store}>
-                {wrapIntl(<WebsocketConnection />)}
-            </ReduxProvider>
+                {wrapIntl(<WebsocketConnection/>)}
+            </ReduxProvider>,
         )
 
         // Close connection
@@ -112,8 +113,8 @@ describe('pages/boardPage/websocketConnection', () => {
     test('unregisters listener on unmount', () => {
         const {unmount} = render(
             <ReduxProvider store={store}>
-                {wrapIntl(<WebsocketConnection />)}
-            </ReduxProvider>
+                {wrapIntl(<WebsocketConnection/>)}
+            </ReduxProvider>,
         )
 
         unmount()

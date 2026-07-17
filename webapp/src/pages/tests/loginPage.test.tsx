@@ -5,6 +5,7 @@ import {render, screen, fireEvent, waitFor} from '@testing-library/react'
 import {Router, Route} from 'react-router-dom'
 import {createMemoryHistory} from 'history'
 import {mocked} from 'jest-mock'
+
 import {wrapIntl} from '../../testUtils'
 import client from '../../octoClient'
 import LoginPage from '../loginPage'
@@ -46,14 +47,17 @@ describe('pages/loginPage', () => {
         render(
             wrapIntl(
                 <Router history={history}>
-                    <Route exact path="/">
-                        <div>Root Page</div>
+                    <Route
+                        exact={true}
+                        path='/'
+                    >
+                        <div>{'Root Page'}</div>
                     </Route>
-                    <Route path="/login">
-                        <LoginPage />
+                    <Route path='/login'>
+                        <LoginPage/>
                     </Route>
-                </Router>
-            )
+                </Router>,
+            ),
         )
 
         history.push('/login')
@@ -66,9 +70,9 @@ describe('pages/loginPage', () => {
         render(
             wrapIntl(
                 <Router history={history}>
-                    <LoginPage />
-                </Router>
-            )
+                    <LoginPage/>
+                </Router>,
+            ),
         )
 
         expect(screen.getByPlaceholderText('Enter username')).toBeDefined()
@@ -81,9 +85,9 @@ describe('pages/loginPage', () => {
         render(
             wrapIntl(
                 <Router history={history}>
-                    <LoginPage />
-                </Router>
-            )
+                    <LoginPage/>
+                </Router>,
+            ),
         )
 
         const usernameInput = screen.getByPlaceholderText('Enter username') as HTMLInputElement
@@ -103,9 +107,9 @@ describe('pages/loginPage', () => {
         render(
             wrapIntl(
                 <Router history={history}>
-                    <LoginPage />
-                </Router>
-            )
+                    <LoginPage/>
+                </Router>,
+            ),
         )
 
         fireEvent.change(screen.getByPlaceholderText('Enter username'), {target: {value: 'user'}})
@@ -127,9 +131,9 @@ describe('pages/loginPage', () => {
         render(
             wrapIntl(
                 <Router history={history}>
-                    <LoginPage />
-                </Router>
-            )
+                    <LoginPage/>
+                </Router>,
+            ),
         )
 
         fireEvent.change(screen.getByPlaceholderText('Enter username'), {target: {value: 'user'}})
@@ -148,9 +152,9 @@ describe('pages/loginPage', () => {
         render(
             wrapIntl(
                 <Router history={history}>
-                    <LoginPage />
-                </Router>
-            )
+                    <LoginPage/>
+                </Router>,
+            ),
         )
 
         fireEvent.change(screen.getByPlaceholderText('Enter username'), {target: {value: 'user'}})

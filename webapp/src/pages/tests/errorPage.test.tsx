@@ -4,6 +4,7 @@ import React from 'react'
 import {render, screen, fireEvent, waitFor} from '@testing-library/react'
 import {Router} from 'react-router-dom'
 import {createMemoryHistory} from 'history'
+
 import {wrapIntl} from '../../testUtils'
 import ErrorPage from '../errorPage'
 import {ErrorId} from '../../errors'
@@ -15,9 +16,9 @@ describe('pages/errorPage', () => {
         render(
             wrapIntl(
                 <Router history={history}>
-                    <ErrorPage />
-                </Router>
-            )
+                    <ErrorPage/>
+                </Router>,
+            ),
         )
         expect(screen.getByText('Sorry, something went wrong')).toBeDefined()
     })
@@ -27,16 +28,16 @@ describe('pages/errorPage', () => {
         history.push = jest.fn()
         history.location.search = `?id=${ErrorId.TeamUndefined}`
 
-        const originalLocation = window.location;
+        const originalLocation = window.location
         delete (window as any).location;
-        (window as any).location = { origin: 'http://test.com', href: '' }
+        (window as any).location = {origin: 'http://test.com', href: ''}
 
         render(
             wrapIntl(
                 <Router history={history}>
-                    <ErrorPage />
-                </Router>
-            )
+                    <ErrorPage/>
+                </Router>,
+            ),
         )
 
         expect(screen.getByText('Not a valid team.')).toBeDefined()
@@ -59,9 +60,9 @@ describe('pages/errorPage', () => {
         render(
             wrapIntl(
                 <Router history={history}>
-                    <ErrorPage />
-                </Router>
-            )
+                    <ErrorPage/>
+                </Router>,
+            ),
         )
 
         expect(screen.getByText('Board not found.')).toBeDefined()
@@ -76,16 +77,16 @@ describe('pages/errorPage', () => {
         const history = createMemoryHistory()
         history.location.search = `?id=${ErrorId.InvalidReadOnlyBoard}`
 
-        const originalLocation = window.location;
+        const originalLocation = window.location
         delete (window as any).location;
-        (window as any).location = { origin: 'http://test.com', href: '' }
+        (window as any).location = {origin: 'http://test.com', href: ''}
 
         render(
             wrapIntl(
                 <Router history={history}>
-                    <ErrorPage />
-                </Router>
-            )
+                    <ErrorPage/>
+                </Router>,
+            ),
         )
 
         expect(screen.getByText("You don't have access to this board. Log in to access Boards.")).toBeDefined()
@@ -108,9 +109,9 @@ describe('pages/errorPage', () => {
         render(
             wrapIntl(
                 <Router history={history}>
-                    <ErrorPage />
-                </Router>
-            )
+                    <ErrorPage/>
+                </Router>,
+            ),
         )
 
         expect(history.push).toHaveBeenCalledWith('/login')

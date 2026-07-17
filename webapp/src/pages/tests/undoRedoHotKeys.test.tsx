@@ -2,6 +2,7 @@
 // See LICENSE.txt for license information.
 import React from 'react'
 import {render} from '@testing-library/react'
+
 import {wrapIntl} from '../../testUtils'
 import mutator from '../../mutator'
 import {sendFlashMessage} from '../../components/flashMessages'
@@ -54,14 +55,14 @@ describe('pages/boardPage/undoRedoHotKeys', () => {
     })
 
     test('renders null', () => {
-        const {container} = render(wrapIntl(<UndoRedoHotKeys />))
+        const {container} = render(wrapIntl(<UndoRedoHotKeys/>))
         expect(container.firstChild).toBeNull()
     })
 
     test('undo triggers with Nothing to Undo when canUndo is false', () => {
         jest.spyOn(mutator, 'canUndo', 'get').mockReturnValue(false)
 
-        render(wrapIntl(<UndoRedoHotKeys />))
+        render(wrapIntl(<UndoRedoHotKeys/>))
         expect(registeredHotkeys['ctrl+z,cmd+z']).toBeDefined()
 
         registeredHotkeys['ctrl+z,cmd+z']()
@@ -76,10 +77,11 @@ describe('pages/boardPage/undoRedoHotKeys', () => {
         jest.spyOn(mutator, 'canUndo', 'get').mockReturnValue(true)
         jest.spyOn(mutator, 'undoDescription', 'get').mockReturnValue('')
 
-        render(wrapIntl(<UndoRedoHotKeys />))
+        render(wrapIntl(<UndoRedoHotKeys/>))
         registeredHotkeys['ctrl+z,cmd+z']()
 
         expect(mutator.undo).toHaveBeenCalled()
+
         // Wait for mutator.undo promise to resolve
         await new Promise(process.nextTick)
 
@@ -93,7 +95,7 @@ describe('pages/boardPage/undoRedoHotKeys', () => {
         jest.spyOn(mutator, 'canUndo', 'get').mockReturnValue(true)
         jest.spyOn(mutator, 'undoDescription', 'get').mockReturnValue('Card deletion')
 
-        render(wrapIntl(<UndoRedoHotKeys />))
+        render(wrapIntl(<UndoRedoHotKeys/>))
         registeredHotkeys['ctrl+z,cmd+z']()
 
         expect(mutator.undo).toHaveBeenCalled()
@@ -108,7 +110,7 @@ describe('pages/boardPage/undoRedoHotKeys', () => {
     test('redo triggers with Nothing to Redo when canRedo is false', () => {
         jest.spyOn(mutator, 'canRedo', 'get').mockReturnValue(false)
 
-        render(wrapIntl(<UndoRedoHotKeys />))
+        render(wrapIntl(<UndoRedoHotKeys/>))
         expect(registeredHotkeys['shift+ctrl+z,shift+cmd+z']).toBeDefined()
 
         registeredHotkeys['shift+ctrl+z,shift+cmd+z']()
@@ -123,7 +125,7 @@ describe('pages/boardPage/undoRedoHotKeys', () => {
         jest.spyOn(mutator, 'canRedo', 'get').mockReturnValue(true)
         jest.spyOn(mutator, 'redoDescription', 'get').mockReturnValue('')
 
-        render(wrapIntl(<UndoRedoHotKeys />))
+        render(wrapIntl(<UndoRedoHotKeys/>))
         registeredHotkeys['shift+ctrl+z,shift+cmd+z']()
 
         expect(mutator.redo).toHaveBeenCalled()
@@ -139,7 +141,7 @@ describe('pages/boardPage/undoRedoHotKeys', () => {
         jest.spyOn(mutator, 'canRedo', 'get').mockReturnValue(true)
         jest.spyOn(mutator, 'redoDescription', 'get').mockReturnValue('Card deletion')
 
-        render(wrapIntl(<UndoRedoHotKeys />))
+        render(wrapIntl(<UndoRedoHotKeys/>))
         registeredHotkeys['shift+ctrl+z,shift+cmd+z']()
 
         expect(mutator.redo).toHaveBeenCalled()

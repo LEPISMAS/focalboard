@@ -6,6 +6,7 @@ import {Provider as ReduxProvider} from 'react-redux'
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {mocked} from 'jest-mock'
+
 import {getCurrentBoard} from '../../store/boards'
 import {getCurrentView} from '../../store/views'
 import {Utils} from '../../utils'
@@ -34,8 +35,8 @@ describe('pages/boardPage/setWindowTitleAndIcon', () => {
 
         render(
             <ReduxProvider store={store}>
-                <SetWindowTitleAndIcon />
-            </ReduxProvider>
+                <SetWindowTitleAndIcon/>
+            </ReduxProvider>,
         )
 
         expect(document.title).toBe('Focalboard')
@@ -51,8 +52,8 @@ describe('pages/boardPage/setWindowTitleAndIcon', () => {
 
         render(
             <ReduxProvider store={store}>
-                <SetWindowTitleAndIcon />
-            </ReduxProvider>
+                <SetWindowTitleAndIcon/>
+            </ReduxProvider>,
         )
 
         expect(document.title).toBe('My Board')
@@ -70,8 +71,8 @@ describe('pages/boardPage/setWindowTitleAndIcon', () => {
 
         render(
             <ReduxProvider store={store}>
-                <SetWindowTitleAndIcon />
-            </ReduxProvider>
+                <SetWindowTitleAndIcon/>
+            </ReduxProvider>,
         )
 
         expect(document.title).toBe('My Board | Board View')

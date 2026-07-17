@@ -8,6 +8,7 @@ import {Provider as ReduxProvider} from 'react-redux'
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {mocked} from 'jest-mock'
+
 import {wrapIntl} from '../../testUtils'
 import client from '../../octoClient'
 import ChangePasswordPage from '../changePasswordPage'
@@ -35,10 +36,10 @@ describe('pages/changePasswordPage', () => {
             <ReduxProvider store={store}>
                 {wrapIntl(
                     <Router history={history}>
-                        <ChangePasswordPage />
-                    </Router>
+                        <ChangePasswordPage/>
+                    </Router>,
                 )}
-            </ReduxProvider>
+            </ReduxProvider>,
         )
 
         expect(screen.getByText('Change Password')).toBeDefined()
@@ -59,10 +60,10 @@ describe('pages/changePasswordPage', () => {
             <ReduxProvider store={store}>
                 {wrapIntl(
                     <Router history={history}>
-                        <ChangePasswordPage />
-                    </Router>
+                        <ChangePasswordPage/>
+                    </Router>,
                 )}
-            </ReduxProvider>
+            </ReduxProvider>,
         )
 
         expect(screen.getByText('Change Password')).toBeDefined()
@@ -86,10 +87,10 @@ describe('pages/changePasswordPage', () => {
             <ReduxProvider store={store}>
                 {wrapIntl(
                     <Router history={history}>
-                        <ChangePasswordPage />
-                    </Router>
+                        <ChangePasswordPage/>
+                    </Router>,
                 )}
-            </ReduxProvider>
+            </ReduxProvider>,
         )
 
         const oldPwdInput = screen.getByPlaceholderText('Enter current password') as HTMLInputElement
@@ -121,10 +122,10 @@ describe('pages/changePasswordPage', () => {
             <ReduxProvider store={store}>
                 {wrapIntl(
                     <Router history={history}>
-                        <ChangePasswordPage />
-                    </Router>
+                        <ChangePasswordPage/>
+                    </Router>,
                 )}
-            </ReduxProvider>
+            </ReduxProvider>,
         )
 
         const oldPwdInput = screen.getByPlaceholderText('Enter current password')
@@ -160,10 +161,10 @@ describe('pages/changePasswordPage', () => {
             <ReduxProvider store={store}>
                 {wrapIntl(
                     <Router history={history}>
-                        <ChangePasswordPage />
-                    </Router>
+                        <ChangePasswordPage/>
+                    </Router>,
                 )}
-            </ReduxProvider>
+            </ReduxProvider>,
         )
 
         const oldPwdInput = screen.getByPlaceholderText('Enter current password')

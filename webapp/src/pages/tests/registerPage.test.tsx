@@ -5,6 +5,7 @@ import {render, screen, fireEvent, waitFor} from '@testing-library/react'
 import {Router, Route} from 'react-router-dom'
 import {createMemoryHistory} from 'history'
 import {mocked} from 'jest-mock'
+
 import {wrapIntl} from '../../testUtils'
 import client from '../../octoClient'
 import RegisterPage from '../registerPage'
@@ -46,14 +47,17 @@ describe('pages/registerPage', () => {
         render(
             wrapIntl(
                 <Router history={history}>
-                    <Route exact path="/">
-                        <div>Root Page</div>
+                    <Route
+                        exact={true}
+                        path='/'
+                    >
+                        <div>{'Root Page'}</div>
                     </Route>
-                    <Route path="/register">
-                        <RegisterPage />
+                    <Route path='/register'>
+                        <RegisterPage/>
                     </Route>
-                </Router>
-            )
+                </Router>,
+            ),
         )
 
         history.push('/register')
@@ -66,9 +70,9 @@ describe('pages/registerPage', () => {
         render(
             wrapIntl(
                 <Router history={history}>
-                    <RegisterPage />
-                </Router>
-            )
+                    <RegisterPage/>
+                </Router>,
+            ),
         )
 
         expect(screen.getByPlaceholderText('Enter email')).toBeDefined()
@@ -82,9 +86,9 @@ describe('pages/registerPage', () => {
         render(
             wrapIntl(
                 <Router history={history}>
-                    <RegisterPage />
-                </Router>
-            )
+                    <RegisterPage/>
+                </Router>,
+            ),
         )
 
         const emailInput = screen.getByPlaceholderText('Enter email') as HTMLInputElement
@@ -111,9 +115,9 @@ describe('pages/registerPage', () => {
         render(
             wrapIntl(
                 <Router history={history}>
-                    <RegisterPage />
-                </Router>
-            )
+                    <RegisterPage/>
+                </Router>,
+            ),
         )
 
         fireEvent.change(screen.getByPlaceholderText('Enter email'), {target: {value: 'test@email.com'}})
@@ -130,9 +134,9 @@ describe('pages/registerPage', () => {
     })
 
     test('handles signupToken query parameter', async () => {
-        const originalLocation = window.location;
+        const originalLocation = window.location
         delete (window as any).location;
-        (window as any).location = { search: '?t=token123' };
+        (window as any).location = {search: '?t=token123'}
 
         mockedOctoClient.register.mockResolvedValue({
             code: 200,
@@ -143,9 +147,9 @@ describe('pages/registerPage', () => {
         render(
             wrapIntl(
                 <Router history={history}>
-                    <RegisterPage />
-                </Router>
-            )
+                    <RegisterPage/>
+                </Router>,
+            ),
         )
 
         fireEvent.change(screen.getByPlaceholderText('Enter email'), {target: {value: 'test@email.com'}})
@@ -169,9 +173,9 @@ describe('pages/registerPage', () => {
         render(
             wrapIntl(
                 <Router history={history}>
-                    <RegisterPage />
-                </Router>
-            )
+                    <RegisterPage/>
+                </Router>,
+            ),
         )
 
         fireEvent.click(screen.getByRole('button', {name: 'Register'}))
@@ -190,9 +194,9 @@ describe('pages/registerPage', () => {
         render(
             wrapIntl(
                 <Router history={history}>
-                    <RegisterPage />
-                </Router>
-            )
+                    <RegisterPage/>
+                </Router>,
+            ),
         )
 
         fireEvent.click(screen.getByRole('button', {name: 'Register'}))

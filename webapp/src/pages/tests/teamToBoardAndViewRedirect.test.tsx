@@ -8,6 +8,7 @@ import {Provider as ReduxProvider} from 'react-redux'
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {mocked} from 'jest-mock'
+
 import {getCurrentBoardId, getBoards} from '../../store/boards'
 import {getCurrentBoardViews, setCurrent as setCurrentView} from '../../store/views'
 import {getSidebarCategories} from '../../store/sidebar'
@@ -19,7 +20,7 @@ jest.mock('../../store/views', () => {
     const original = jest.requireActual('../../store/views')
     return {
         ...original,
-        setCurrent: jest.fn(() => ({ type: 'setCurrentView' })),
+        setCurrent: jest.fn(() => ({type: 'setCurrentView'})),
         getCurrentBoardViews: jest.fn(),
     }
 })
@@ -58,18 +59,18 @@ describe('pages/boardPage/teamToBoardAndViewRedirect', () => {
         mockedGetCurrentBoardViews.mockReturnValue([])
         mockedGetSidebarCategories.mockReturnValue([])
         mockedGetBoards.mockReturnValue({})
-        
-        Object.defineProperty(UserSettings, 'lastBoardId', {value: {'team_id_1': 'last-board-id'}, configurable: true})
+
+        Object.defineProperty(UserSettings, 'lastBoardId', {value: {team_id_1: 'last-board-id'}, configurable: true})
         history.replace = jest.fn()
 
         render(
             <ReduxProvider store={store}>
                 <Router history={history}>
-                    <Route path="/team/:teamId/:boardId?/:viewId?">
-                        <TeamToBoardAndViewRedirect />
+                    <Route path='/team/:teamId/:boardId?/:viewId?'>
+                        <TeamToBoardAndViewRedirect/>
                     </Route>
                 </Router>
-            </ReduxProvider>
+            </ReduxProvider>,
         )
 
         expect(history.replace).toHaveBeenCalledWith('/team/team_id_1/last-board-id')
@@ -80,12 +81,12 @@ describe('pages/boardPage/teamToBoardAndViewRedirect', () => {
         mockedGetCurrentBoardId.mockReturnValue('')
         mockedGetCurrentBoardViews.mockReturnValue([])
         mockedGetBoards.mockReturnValue({
-            'board-1': { id: 'board-1', title: 'Board 1' } as any,
+            'board-1': {id: 'board-1', title: 'Board 1'} as any,
         })
         mockedGetSidebarCategories.mockReturnValue([
             {
                 boardMetadata: [
-                    { boardID: 'board-1', hidden: false },
+                    {boardID: 'board-1', hidden: false},
                 ],
             } as any,
         ])
@@ -95,11 +96,11 @@ describe('pages/boardPage/teamToBoardAndViewRedirect', () => {
         render(
             <ReduxProvider store={store}>
                 <Router history={history}>
-                    <Route path="/team/:teamId/:boardId?/:viewId?">
-                        <TeamToBoardAndViewRedirect />
+                    <Route path='/team/:teamId/:boardId?/:viewId?'>
+                        <TeamToBoardAndViewRedirect/>
                     </Route>
                 </Router>
-            </ReduxProvider>
+            </ReduxProvider>,
         )
 
         expect(history.replace).toHaveBeenCalledWith('/team/team_id_1/board-1')
@@ -109,8 +110,8 @@ describe('pages/boardPage/teamToBoardAndViewRedirect', () => {
         history.push('/team/team_id_1/board-1')
         mockedGetCurrentBoardId.mockReturnValue('board-1')
         mockedGetCurrentBoardViews.mockReturnValue([
-            { id: 'view-1', title: 'View 1' } as any,
-            { id: 'view-2', title: 'View 2' } as any,
+            {id: 'view-1', title: 'View 1'} as any,
+            {id: 'view-2', title: 'View 2'} as any,
         ])
         mockedGetSidebarCategories.mockReturnValue([])
         mockedGetBoards.mockReturnValue({})
@@ -121,11 +122,11 @@ describe('pages/boardPage/teamToBoardAndViewRedirect', () => {
         render(
             <ReduxProvider store={store}>
                 <Router history={history}>
-                    <Route path="/team/:teamId/:boardId?/:viewId?">
-                        <TeamToBoardAndViewRedirect />
+                    <Route path='/team/:teamId/:boardId?/:viewId?'>
+                        <TeamToBoardAndViewRedirect/>
                     </Route>
                 </Router>
-            </ReduxProvider>
+            </ReduxProvider>,
         )
 
         expect(setCurrentView).toHaveBeenCalledWith('view-2')
@@ -136,7 +137,7 @@ describe('pages/boardPage/teamToBoardAndViewRedirect', () => {
         history.push('/team/team_id_1/board-1')
         mockedGetCurrentBoardId.mockReturnValue('board-1')
         mockedGetCurrentBoardViews.mockReturnValue([
-            { id: 'view-1', title: 'View 1' } as any,
+            {id: 'view-1', title: 'View 1'} as any,
         ])
         mockedGetSidebarCategories.mockReturnValue([])
         mockedGetBoards.mockReturnValue({})
@@ -146,11 +147,11 @@ describe('pages/boardPage/teamToBoardAndViewRedirect', () => {
         render(
             <ReduxProvider store={store}>
                 <Router history={history}>
-                    <Route path="/team/:teamId/:boardId?/:viewId?">
-                        <TeamToBoardAndViewRedirect />
+                    <Route path='/team/:teamId/:boardId?/:viewId?'>
+                        <TeamToBoardAndViewRedirect/>
                     </Route>
                 </Router>
-            </ReduxProvider>
+            </ReduxProvider>,
         )
 
         expect(setCurrentView).toHaveBeenCalledWith('view-1')
