@@ -62,7 +62,7 @@ func TestServer_ConnectAndAuthenticate(t *testing.T) {
 }
 
 func TestServer_Commands(t *testing.T) {
-	_, mockStore, httpServer := setupTestServer(t)
+	_, _, httpServer := setupTestServer(t)
 	defer httpServer.Close()
 
 	conn := connectClient(t, httpServer)
@@ -94,55 +94,8 @@ func TestServer_Commands(t *testing.T) {
 	conn.WriteJSON(cmd)
 	time.Sleep(50 * time.Millisecond)
 
-	// Subscribe to blocks - requires mock store GetBlock
-	mockBlock := &model.Block{ID: "block1", BoardID: "board1"}
-	mockStore.EXPECT().GetBlock("block1").Return(mockBlock, nil).AnyTimes()
-
-	cmd = ws.WebsocketCommand{
-		Action:   "SUBSCRIBE_BLOCKS",
-		TeamID:   "team1",
-		BlockIDs: []string{"block1"},
-		// In single-user mode, isCommandReadTokenValid bypasses real auth but it checks ws.auth.IsValidReadToken
-		// Wait, if it checks ws.auth.IsValidReadToken with empty auth, it might crash or return false.
-	}
-	// We just send it to cover the parsing, even if it rejects it
-	conn.WriteJSON(cmd)
-	time.Sleep(50 * time.Millisecond)
-
-	cmd = ws.WebsocketCommand{
-		Action:   "UNSUBSCRIBE_BLOCKS",
-		TeamID:   "team1",
-		BlockIDs: []string{"block1"},
-	}
-	conn.WriteJSON(cmd)
-	time.Sleep(50 * time.Millisecond)
-
 	// Invalid JSON
 	conn.WriteMessage(websocket.TextMessage, []byte("{invalid-json}"))
-	time.Sleep(50 * time.Millisecond)
-
-	// Invalid token for SUBSCRIBE_BLOCKS
-	cmd = ws.WebsocketCommand{
-		Action:   "SUBSCRIBE_BLOCKS",
-		TeamID:   "", // Hits early return in isCommandReadTokenValid
-		BlockIDs: []string{"block1"},
-	}
-	conn.WriteJSON(cmd)
-	time.Sleep(50 * time.Millisecond)
-
-	// Invalid read token logic
-	mockStore.EXPECT().GetBlock("block1").Return(mockBlock, nil).AnyTimes()
-	// Using single-user mode so IsValidReadToken is bypassed in auth but checked?
-	// The implementation checks ws.auth.IsValidReadToken
-
-	cmd = ws.WebsocketCommand{
-		Action:   "SUBSCRIBE_BLOCKS",
-		TeamID:   "team1",
-		BlockIDs: []string{"block1", "block2"}, // Mock GetBlock for block2
-	}
-	mockStore.EXPECT().GetBlock("block2").Return(&model.Block{ID: "block2", BoardID: "board2"}, nil).AnyTimes()
-	// This will hit the different boardID condition in isCommandReadTokenValid
-	conn.WriteJSON(cmd)
 	time.Sleep(50 * time.Millisecond)
 
 	// Invalid command

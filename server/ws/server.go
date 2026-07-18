@@ -316,12 +316,12 @@ func (ws *Server) removeListener(listener *websocketSession) {
 // subscribeListenerToTeam safely modifies the listener and the
 // server to subscribe the listener to a given team updates.
 func (ws *Server) subscribeListenerToTeam(listener *websocketSession, teamID string) {
+	ws.mu.Lock()
+	defer ws.mu.Unlock()
+
 	if listener.isSubscribedToTeam(teamID) {
 		return
 	}
-
-	ws.mu.Lock()
-	defer ws.mu.Unlock()
 
 	ws.listenersByTeam[teamID] = append(ws.listenersByTeam[teamID], listener)
 	listener.teams = append(listener.teams, teamID)
@@ -331,12 +331,12 @@ func (ws *Server) subscribeListenerToTeam(listener *websocketSession, teamID str
 // the server data structures to remove the link between the listener
 // and a given team ID.
 func (ws *Server) unsubscribeListenerFromTeam(listener *websocketSession, teamID string) {
+	ws.mu.Lock()
+	defer ws.mu.Unlock()
+
 	if !listener.isSubscribedToTeam(teamID) {
 		return
 	}
-
-	ws.mu.Lock()
-	defer ws.mu.Unlock()
 
 	ws.removeListenerFromTeam(listener, teamID)
 }
@@ -462,12 +462,18 @@ func (ws *Server) authenticateListener(wsSession *websocketSession, token string
 // getListenersForBlock returns the listeners subscribed to a
 // block changes.
 func (ws *Server) getListenersForBlock(blockID string) []*websocketSession {
-	return ws.listenersByBlock[blockID]
+	ws.mu.RLock()
+	defer ws.mu.RUnlock()
+
+	return append([]*websocketSession(nil), ws.listenersByBlock[blockID]...)
 }
 
 // getListenersForUser returns the listener for a user subscribed to a
 // team changes.
 func (ws *Server) getListenerForUser(teamID, userID string) *websocketSession {
+	ws.mu.RLock()
+	defer ws.mu.RUnlock()
+
 	for _, listener := range ws.listenersByTeam[teamID] {
 		if listener.userID == userID {
 			return listener
@@ -503,6 +509,9 @@ func (ws *Server) getListenersForTeamAndBoard(teamID, boardID string, ensureUser
 	}
 
 	listeners := []*websocketSession{}
+	ws.mu.RLock()
+	defer ws.mu.RUnlock()
+
 	for _, memberID := range memberIDs {
 		for _, listener := range ws.listenersByTeam[teamID] {
 			if listener.userID == memberID {
@@ -664,12 +673,18 @@ func (ws *Server) BroadcastConfigChange(clientConfig model.ClientConfig) {
 		ClientConfig: clientConfig,
 	}
 
-	listeners := ws.listeners
+	ws.mu.RLock()
+	listeners := make([]*websocketSession, 0, len(ws.listeners))
+	for listener := range ws.listeners {
+		listeners = append(listeners, listener)
+	}
+	ws.mu.RUnlock()
+
 	ws.logger.Debug("broadcasting config change to listener(s)",
 		mlog.Int("listener_count", len(listeners)),
 	)
 
-	for listener := range listeners {
+	for _, listener := range listeners {
 		ws.logger.Debug("Broadcast Config change",
 			mlog.Stringer("remoteAddr", listener.conn.RemoteAddr()),
 		)

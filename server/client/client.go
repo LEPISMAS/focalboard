@@ -7,6 +7,7 @@ import (
 	"io"
 	"mime/multipart"
 	"net/http"
+	"net/url"
 	"strings"
 
 	"github.com/mattermost/focalboard/server/api"
@@ -719,7 +720,10 @@ func (c *Client) GetBoardsForTeam(teamID string) ([]*model.Board, *Response) {
 }
 
 func (c *Client) SearchBoardsForUser(teamID, term string, field model.BoardSearchField) ([]*model.Board, *Response) {
-	query := fmt.Sprintf("q=%s&field=%s", term, field)
+	query := url.Values{
+		"q":     []string{term},
+		"field": []string{string(field)},
+	}.Encode()
 	r, err := c.DoAPIGet(c.GetTeamRoute(teamID)+"/boards/search?"+query, "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
@@ -730,7 +734,8 @@ func (c *Client) SearchBoardsForUser(teamID, term string, field model.BoardSearc
 }
 
 func (c *Client) SearchBoardsForTeam(teamID, term string) ([]*model.Board, *Response) {
-	r, err := c.DoAPIGet(c.GetTeamRoute(teamID)+"/boards/search?q="+term, "")
+	query := url.Values{"q": []string{term}}.Encode()
+	r, err := c.DoAPIGet(c.GetTeamRoute(teamID)+"/boards/search?"+query, "")
 	if err != nil {
 		return nil, BuildErrorResponse(r, err)
 	}

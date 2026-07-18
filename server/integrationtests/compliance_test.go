@@ -59,8 +59,6 @@ func TestGetBoardsForCompliance(t *testing.T) {
 		th, clients := setupTestHelperForCompliance(t, true)
 		defer th.TearDown()
 
-		_ = th.CreateBoards(testTeamID, model.BoardTypeOpen, 2)
-
 		bcr, resp := clients.TeamMember.GetBoardsForCompliance(testTeamID, 0, 0)
 
 		th.CheckUnauthorized(resp)
