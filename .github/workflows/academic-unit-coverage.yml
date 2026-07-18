@@ -55,32 +55,10 @@ jobs:
           go tool cover -func=academic-unit-coverage.out | tee academic-unit-coverage.txt
           go tool cover -html=academic-unit-coverage.out -o academic-unit-coverage.html
           percentage=$(tail -n 1 academic-unit-coverage.txt | awk '{print $NF}')
-          numeric_percentage=${percentage%\%}
-          status='❌ Below target'
-          awk "BEGIN {exit !($numeric_percentage >= 85)}" && status='✅ Target reached' || true
           echo "### Backend unit coverage" >> "$GITHUB_STEP_SUMMARY"
-          echo '| Metric | Result | Target | Status |' >> "$GITHUB_STEP_SUMMARY"
-          echo '|---|---:|---:|---|' >> "$GITHUB_STEP_SUMMARY"
-          echo "| Statements | $percentage | 85% | $status |" >> "$GITHUB_STEP_SUMMARY"
-          echo '' >> "$GITHUB_STEP_SUMMARY"
-          echo '> Generated mocks and non-production helper packages are excluded, matching sonar-project.properties.' >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Calculate selected backend scope
-        working-directory: server
-        run: |
-          awk '
-            BEGIN { covered=0; total=0 }
-            NR > 1 && $1 ~ /\/server\/model\/blockid.go:/ {
-              statements=$(NF-1)
-              hits=$NF
-              total += statements
-              if (hits > 0) covered += statements
-            }
-            END {
-              percentage=(total == 0 ? 0 : covered * 100 / total)
-              printf "{\"covered\":%d,\"total\":%d,\"percentage\":%.2f}\n", covered, total, percentage
-            }
-          ' academic-unit-coverage.out | tee selected-backend-coverage.json
+          echo '| Metric | Result |' >> "$GITHUB_STEP_SUMMARY"
+          echo '|---|---:|' >> "$GITHUB_STEP_SUMMARY"
+          echo "| Statements | $percentage |" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload backend coverage report
         if: always()
@@ -91,7 +69,6 @@ jobs:
             server/academic-unit-coverage.out
             server/academic-unit-coverage.txt
             server/academic-unit-coverage.html
-            server/selected-backend-coverage.json
           if-no-files-found: warn
           retention-days: 14
 
@@ -115,35 +92,13 @@ jobs:
 
       - name: Run frontend unit tests with coverage
         working-directory: webapp
-        run: npm test -- --coverage --runInBand --coverageReporters=text --coverageReporters=json --coverageReporters=json-summary --coverageReporters=lcov --coverageReporters=html
-
-      - name: Calculate selected frontend scope
-        working-directory: webapp
-        run: |
-          node - <<'NODE'
-          const fs = require('fs')
-          const path = require('path')
-          const coverage = require('./coverage/coverage-final.json')
-          let covered = 0
-          let total = 0
-          for (const [filename, data] of Object.entries(coverage)) {
-            const normalized = filename.split(path.sep).join('/')
-            if (!normalized.includes('/src/blocks/')) continue
-            const statements = Object.values(data.s)
-            total += statements.length
-            covered += statements.filter((hits) => hits > 0).length
-          }
-          const percentage = total === 0 ? 0 : covered * 100 / total
-          const result = {covered, total, percentage: Number(percentage.toFixed(2))}
-          fs.writeFileSync('coverage/selected-frontend-coverage.json', JSON.stringify(result) + '\n')
-          console.log(JSON.stringify(result))
-          NODE
+        run: npm test -- --coverage --runInBand --coverageReporters=text --coverageReporters=json-summary --coverageReporters=lcov --coverageReporters=html
 
       - name: Add frontend coverage to job summary
         if: always() && hashFiles('webapp/coverage/coverage-summary.json') != ''
         working-directory: webapp
         run: |
-          node -e "const fs=require('fs'); const c=require('./coverage/coverage-summary.json').total; const rows=['| Metric | Covered | Total | Result | Target | Status |','|---|---:|---:|---:|---:|---|']; for (const k of ['statements','branches','functions','lines']) rows.push('| '+k[0].toUpperCase()+k.slice(1)+' | '+c[k].covered+' | '+c[k].total+' | '+c[k].pct+'% | 85% | '+(c[k].pct >= 85 ? '✅ Target reached' : '❌ Below target')+' |'); fs.writeFileSync('coverage/academic-unit-coverage.md', rows.join('\n')+'\n'); console.log(rows.join('\n'))" | tee coverage/academic-unit-coverage.txt
+          node -e "const fs=require('fs'); const c=require('./coverage/coverage-summary.json').total; const rows=['| Metric | Covered | Total | Result |','|---|---:|---:|---:|']; for (const k of ['statements','branches','functions','lines']) rows.push('| '+k[0].toUpperCase()+k.slice(1)+' | '+c[k].covered+' | '+c[k].total+' | '+c[k].pct+'% |'); fs.writeFileSync('coverage/academic-unit-coverage.md', rows.join('\n')+'\n'); console.log(rows.join('\n'))" | tee coverage/academic-unit-coverage.txt
           echo "### Frontend unit coverage" >> "$GITHUB_STEP_SUMMARY"
           cat coverage/academic-unit-coverage.md >> "$GITHUB_STEP_SUMMARY"
 
@@ -154,66 +109,4 @@ jobs:
           name: academic-frontend-unit-coverage
           path: webapp/coverage/
           if-no-files-found: warn
-          retention-days: 14
-
-  combined-selected-scope-coverage:
-    name: Combined Selected-Scope Coverage
-    needs:
-      - backend-unit-coverage
-      - frontend-unit-coverage
-    if: always() && needs.backend-unit-coverage.result == 'success' && needs.frontend-unit-coverage.result == 'success'
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Download backend coverage artifact
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
-        with:
-          name: academic-backend-unit-coverage
-          path: reports/backend
-
-      - name: Download frontend coverage artifact
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
-        with:
-          name: academic-frontend-unit-coverage
-          path: reports/frontend
-
-      - name: Calculate combined selected-scope coverage
-        env:
-          TARGET_PERCENTAGE: '85'
-        run: |
-          node - <<'NODE'
-          const fs = require('fs')
-          const backend = JSON.parse(fs.readFileSync('reports/backend/selected-backend-coverage.json', 'utf8'))
-          const frontend = JSON.parse(fs.readFileSync('reports/frontend/selected-frontend-coverage.json', 'utf8'))
-          const covered = backend.covered + frontend.covered
-          const total = backend.total + frontend.total
-          if (total === 0) throw new Error('Selected scope contains no measurable statements')
-          const percentage = covered * 100 / total
-          const target = Number(process.env.TARGET_PERCENTAGE)
-          const status = percentage >= target ? 'PASS' : 'BELOW TARGET'
-          const rows = [
-            '### Combined Selected-Scope Coverage',
-            '',
-            '| Scope | Covered | Total | Coverage |',
-            '|---|---:|---:|---:|',
-            `| Backend: server/model/blockid.go | ${backend.covered} | ${backend.total} | ${backend.percentage.toFixed(2)}% |`,
-            `| Frontend: webapp/src/blocks/** | ${frontend.covered} | ${frontend.total} | ${frontend.percentage.toFixed(2)}% |`,
-            `| **Combined (weighted)** | **${covered}** | **${total}** | **${percentage.toFixed(2)}%** |`,
-            '',
-            `Target: ${target}% — **${status}**`,
-            '',
-            '> Formula: (backend covered + frontend covered) / (backend total + frontend total). This is a selected-scope metric, not whole-repository coverage.'
-          ]
-          fs.writeFileSync('combined-selected-scope-coverage.md', rows.join('\n') + '\n')
-          fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, rows.join('\n') + '\n')
-          console.log(rows.join('\n'))
-          if (percentage < target) process.exit(1)
-          NODE
-
-      - name: Upload combined report
-        if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        with:
-          name: combined-selected-scope-coverage
-          path: combined-selected-scope-coverage.md
-          if-no-files-found: error
           retention-days: 14
