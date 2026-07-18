@@ -39,7 +39,7 @@ func TestCSRFAndAuthMiddleware(t *testing.T) {
 		req.Header.Set(api.HeaderRequestedWith, api.HeaderRequestedWithXML)
 		req.Header.Set("Authorization", "Bearer "+TestSingleUserToken)
 		resp := doRequest(th.Router, req)
-		
+
 		require.Equal(t, http.StatusOK, resp.Code)
 		require.Contains(t, resp.Body.String(), "single-user")
 	})

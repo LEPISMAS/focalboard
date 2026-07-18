@@ -17,7 +17,7 @@ func TestSystemEndpoints(t *testing.T) {
 	t.Run("GET /hello returns 'Hello' and 200 OK", func(t *testing.T) {
 		req, _ := http.NewRequest(http.MethodGet, "/hello", nil)
 		resp := doRequest(th.Router, req)
-		
+
 		require.Equal(t, http.StatusOK, resp.Code)
 		require.Equal(t, "Hello", resp.Body.String())
 	})

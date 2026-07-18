@@ -143,7 +143,7 @@ func (h *TestAPIHelper) NewRequest(method, url string, body []byte) *http.Reques
 	return req
 }
 
-// Dummy type to implement net.Conn if needed for local unix connections (not used unless testing admin set password)
+// Dummy type to implement net.Conn if needed for local unix connections (not used unless testing admin set password).
 type DummyUnixConn struct {
 	net.Conn
 }

@@ -43,7 +43,7 @@ func TestMembersEndpoints(t *testing.T) {
 		board := &model.Board{ID: "board1", TeamID: "team1", IsTemplate: true}
 		th.Store.EXPECT().GetBoard("board1").Return(board, nil).Times(2)
 		th.Store.EXPECT().GetMemberForBoard("board1", "user2").Return(nil, model.NewErrNotFound("membership not found"))
-		
+
 		member := &model.BoardMember{UserID: "user2", BoardID: "board1"}
 		th.Store.EXPECT().SaveMember(gomock.Any()).Return(member, nil)
 

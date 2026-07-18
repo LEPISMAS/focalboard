@@ -82,7 +82,7 @@ func TestCategoriesEndpoints(t *testing.T) {
 				BoardMetadata: []model.CategoryBoardMetadata{},
 			},
 			{
-				Category: *existingCat,
+				Category:      *existingCat,
 				BoardMetadata: []model.CategoryBoardMetadata{},
 			},
 		}
@@ -126,7 +126,7 @@ func TestCategoriesEndpoints(t *testing.T) {
 		defer tearDown()
 
 		th.Store.EXPECT().AddUpdateCategoryBoard("single-user", "category1", []string{"board1"}).Return(nil)
-		
+
 		categoryBoards := []model.CategoryBoards{
 			{
 				Category: model.Category{

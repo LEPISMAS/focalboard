@@ -18,7 +18,7 @@ func TestBlocksEndpoints(t *testing.T) {
 		defer tearDown()
 
 		th.Store.EXPECT().GetBoard("board1").Return(&model.Board{ID: "board1", TeamID: "team1", Type: model.BoardTypeOpen}, nil)
-		
+
 		blocks := []*model.Block{
 			{ID: "block1", BoardID: "board1", Type: model.TypeCard, Title: "Block 1"},
 		}
@@ -74,7 +74,7 @@ func TestBlocksEndpoints(t *testing.T) {
 
 		th.Store.EXPECT().GetMembersForBoard(gomock.Any()).Return([]*model.BoardMember{}, nil).AnyTimes()
 		th.Store.EXPECT().GetBoard("board1").Return(&model.Board{ID: "board1", TeamID: "team1"}, nil).Times(2)
-		
+
 		history := []*model.Block{
 			{ID: "block1", BoardID: "board1"},
 		}
@@ -133,7 +133,7 @@ func TestBlocksEndpoints(t *testing.T) {
 		th.Store.EXPECT().GetMembersForBoard(gomock.Any()).Return([]*model.BoardMember{}, nil).AnyTimes()
 		th.Store.EXPECT().GetBoard("board1").Return(&model.Board{ID: "board1", TeamID: "team1"}, nil).Times(3)
 		th.Store.EXPECT().GetBlock("block1").Return(&model.Block{ID: "block1", BoardID: "board1"}, nil)
-		
+
 		duplicatedBlocks := []*model.Block{
 			{ID: "dup1", BoardID: "board1", Type: model.TypeCard},
 		}

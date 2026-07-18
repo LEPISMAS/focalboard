@@ -168,8 +168,6 @@ func TestAuthEndpoints(t *testing.T) {
 		require.Equal(t, http.StatusUnauthorized, resp.Code)
 	})
 
-
-
 	t.Run("POST /register invalid token", func(t *testing.T) {
 		th.Store.EXPECT().GetTeam("0").Return(&model.Team{ID: "0", SignupToken: "realtoken"}, nil)
 

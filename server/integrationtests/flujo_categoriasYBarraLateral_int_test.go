@@ -63,9 +63,9 @@ func TestINT0602AsociarTableroACategoria(t *testing.T) {
 	require.NoError(t, err)
 
 	var foundCategory *model.CategoryBoards
-	for _, cb := range categoryBoards {
-		if cb.ID == createdCat.ID {
-			foundCategory = &cb
+	for i := range categoryBoards {
+		if categoryBoards[i].ID == createdCat.ID {
+			foundCategory = &categoryBoards[i]
 			break
 		}
 	}
@@ -105,9 +105,9 @@ func TestINT0603ObtenerCategoriasConTableros(t *testing.T) {
 	require.NotEmpty(t, categoriesWithBoards)
 
 	var foundCategory *model.CategoryBoards
-	for _, cb := range categoriesWithBoards {
-		if cb.ID == createdCat.ID {
-			foundCategory = &cb
+	for i := range categoriesWithBoards {
+		if categoriesWithBoards[i].ID == createdCat.ID {
+			foundCategory = &categoriesWithBoards[i]
 			break
 		}
 	}
@@ -165,9 +165,9 @@ func TestINT0604EliminarCategoriaReasignarDefault(t *testing.T) {
 
 	// El tablero debe haber sido reasignado a la categoría por defecto (system: Boards)
 	var defaultCategory *model.CategoryBoards
-	for _, cb := range categoriesWithBoards {
-		if cb.Type == model.CategoryTypeSystem && cb.Name == "Boards" {
-			defaultCategory = &cb
+	for i := range categoriesWithBoards {
+		if categoriesWithBoards[i].Type == model.CategoryTypeSystem && categoriesWithBoards[i].Name == "Boards" {
+			defaultCategory = &categoriesWithBoards[i]
 			break
 		}
 	}
