@@ -1,0 +1,93 @@
+name: Academic QA - System E2E
+
+on:
+  push:
+    branches:
+      - main
+      - 'feature/**'
+    paths:
+      - 'server/**'
+      - 'webapp/**'
+      - 'Makefile'
+      - '.github/workflows/academic-system-e2e.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'server/**'
+      - 'webapp/**'
+      - 'Makefile'
+      - '.github/workflows/academic-system-e2e.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: academic-system-e2e-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  system-e2e:
+    name: ${{ matrix.id }} - ${{ matrix.attribute }}
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - id: SYS-SEC-01
+            attribute: Authentication security
+            spec: cypress/integration/loginActions.ts
+            artifact: sys-sec-01
+          - id: SYS-USA-01
+            attribute: Board workflow usability
+            spec: cypress/integration/createBoard.ts
+            artifact: sys-usa-01
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+
+      - name: Set up Go
+        uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5
+        with:
+          go-version-file: server/go.mod
+          cache-dependency-path: server/go.sum
+
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version-file: webapp/.nvmrc
+          cache: npm
+          cache-dependency-path: webapp/package-lock.json
+
+      - name: Install Webapp dependencies
+        working-directory: webapp
+        run: npm ci
+
+      - name: Build the Webapp and Linux test server
+        run: |
+          make webapp
+          make server
+
+      - name: Run ${{ matrix.id }} with Cypress
+        working-directory: webapp
+        run: npx start-server-and-test runserver-test http://localhost:8088 "cypress run --spec ${{ matrix.spec }}"
+
+      - name: Publish system test summary
+        if: always()
+        run: |
+          echo "### ${{ matrix.id }} - ${{ matrix.attribute }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Cypress spec: \`${{ matrix.spec }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "System path: Electron browser -> React/TypeScript -> HTTP/WebSocket -> Go server -> SQLite." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload Cypress evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: academic-system-e2e-${{ matrix.artifact }}
+          path: |
+            webapp/cypress/screenshots/
+            webapp/cypress/videos/
+          if-no-files-found: ignore
+          retention-days: 14

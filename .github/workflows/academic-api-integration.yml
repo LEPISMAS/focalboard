@@ -1,0 +1,64 @@
+name: Academic QA - Critical API Integration
+
+on:
+  push:
+    branches:
+      - main
+      - 'feature/**'
+    paths:
+      - 'server/**'
+      - '.github/workflows/academic-api-integration.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'server/**'
+      - '.github/workflows/academic-api-integration.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: academic-api-integration-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  critical-api-integration:
+    name: 56 critical API integration cases
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+
+      - name: Set up Go
+        uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5
+        with:
+          go-version-file: server/go.mod
+          cache-dependency-path: server/go.sum
+
+      - name: Run the academic TestINT integration suite
+        working-directory: server
+        env:
+          FOCALBOARD_UNIT_TESTING: '1'
+        run: |
+          mkdir -p test-results
+          go test -tags "json1 sqlite3" -v -count=1 -timeout=30m ./integrationtests -run '^TestINT' | tee test-results/academic-api-integration.log
+
+      - name: Publish integration test summary
+        if: always()
+        working-directory: server
+        run: |
+          echo "### Critical API integration" >> "$GITHUB_STEP_SUMMARY"
+          echo "Selected test functions: **$(grep -c '^=== RUN.*TestINT' test-results/academic-api-integration.log || true)**" >> "$GITHUB_STEP_SUMMARY"
+          echo "Passed test functions: **$(grep -c '^--- PASS: TestINT' test-results/academic-api-integration.log || true)**" >> "$GITHUB_STEP_SUMMARY"
+          echo "Scope: authentication, boards, cards/blocks, permissions, sharing, categories, import/export, subscriptions, search, and frontend-to-backend flows." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload integration execution log
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: academic-critical-api-integration-log
+          path: server/test-results/academic-api-integration.log
+          if-no-files-found: warn
+          retention-days: 14

@@ -1,0 +1,112 @@
+name: Academic QA - Unit Coverage
+
+on:
+  push:
+    branches:
+      - main
+      - 'feature/**'
+    paths:
+      - 'server/**'
+      - 'webapp/src/**'
+      - 'webapp/package.json'
+      - 'webapp/package-lock.json'
+      - '.github/workflows/academic-unit-coverage.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'server/**'
+      - 'webapp/src/**'
+      - 'webapp/package.json'
+      - 'webapp/package-lock.json'
+      - '.github/workflows/academic-unit-coverage.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: academic-unit-coverage-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend-unit-coverage:
+    name: Backend unit coverage (Go)
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+
+      - name: Set up Go
+        uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5
+        with:
+          go-version-file: server/go.mod
+          cache-dependency-path: server/go.sum
+
+      - name: Run backend unit tests with coverage
+        working-directory: server
+        env:
+          FOCALBOARD_UNIT_TESTING: '1'
+        run: |
+          mapfile -t packages < <(go list ./... | grep -v '/integrationtests$')
+          go test -tags "json1 sqlite3" -coverpkg=./... -coverprofile=academic-unit-coverage.out -count=1 -timeout=30m "${packages[@]}"
+          go tool cover -func=academic-unit-coverage.out | tee academic-unit-coverage.txt
+          go tool cover -html=academic-unit-coverage.out -o academic-unit-coverage.html
+          total=$(tail -n 1 academic-unit-coverage.txt)
+          echo "### Backend unit coverage" >> "$GITHUB_STEP_SUMMARY"
+          echo '```text' >> "$GITHUB_STEP_SUMMARY"
+          echo "$total" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload backend coverage report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: academic-backend-unit-coverage
+          path: |
+            server/academic-unit-coverage.out
+            server/academic-unit-coverage.txt
+            server/academic-unit-coverage.html
+          if-no-files-found: warn
+          retention-days: 14
+
+  frontend-unit-coverage:
+    name: Frontend unit coverage (Jest)
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version-file: webapp/.nvmrc
+          cache: npm
+          cache-dependency-path: webapp/package-lock.json
+
+      - name: Install Webapp dependencies
+        working-directory: webapp
+        run: npm ci
+
+      - name: Run frontend unit tests with coverage
+        working-directory: webapp
+        run: npm test -- --coverage --runInBand --coverageReporters=text --coverageReporters=json-summary --coverageReporters=lcov --coverageReporters=html
+
+      - name: Add frontend coverage to job summary
+        if: always() && hashFiles('webapp/coverage/coverage-summary.json') != ''
+        working-directory: webapp
+        run: |
+          node -e "const c=require('./coverage/coverage-summary.json').total; for (const k of ['statements','branches','functions','lines']) console.log(k+': '+c[k].pct+'%')" | tee coverage/academic-unit-coverage.txt
+          echo "### Frontend unit coverage" >> "$GITHUB_STEP_SUMMARY"
+          echo '```text' >> "$GITHUB_STEP_SUMMARY"
+          cat coverage/academic-unit-coverage.txt >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload frontend coverage report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: academic-frontend-unit-coverage
+          path: webapp/coverage/
+          if-no-files-found: warn
+          retention-days: 14
