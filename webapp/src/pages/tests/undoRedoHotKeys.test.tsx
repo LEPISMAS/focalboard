@@ -83,7 +83,7 @@ describe('pages/boardPage/undoRedoHotKeys', () => {
         expect(mutator.undo).toHaveBeenCalled()
 
         // Wait for mutator.undo promise to resolve
-        await new Promise(process.nextTick)
+        await Promise.resolve()
 
         expect(sendFlashMessage).toHaveBeenCalledWith({
             content: 'Undo',
@@ -99,7 +99,7 @@ describe('pages/boardPage/undoRedoHotKeys', () => {
         registeredHotkeys['ctrl+z,cmd+z']()
 
         expect(mutator.undo).toHaveBeenCalled()
-        await new Promise(process.nextTick)
+        await Promise.resolve()
 
         expect(sendFlashMessage).toHaveBeenCalledWith({
             content: 'Undo Card deletion',
@@ -129,7 +129,7 @@ describe('pages/boardPage/undoRedoHotKeys', () => {
         registeredHotkeys['shift+ctrl+z,shift+cmd+z']()
 
         expect(mutator.redo).toHaveBeenCalled()
-        await new Promise(process.nextTick)
+        await Promise.resolve()
 
         expect(sendFlashMessage).toHaveBeenCalledWith({
             content: 'Redo',
@@ -145,7 +145,7 @@ describe('pages/boardPage/undoRedoHotKeys', () => {
         registeredHotkeys['shift+ctrl+z,shift+cmd+z']()
 
         expect(mutator.redo).toHaveBeenCalled()
-        await new Promise(process.nextTick)
+        await Promise.resolve()
 
         expect(sendFlashMessage).toHaveBeenCalledWith({
             content: 'Redo Card deletion',

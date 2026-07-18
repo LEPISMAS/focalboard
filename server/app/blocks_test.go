@@ -566,8 +566,6 @@ func TestGetLastBlockHistoryEntryError(t *testing.T) {
 	require.Nil(t, block)
 }
 
-
-
 func TestInsertBlockBoardError(t *testing.T) {
 	th, tearDown := SetupTestHelper(t)
 	defer tearDown()

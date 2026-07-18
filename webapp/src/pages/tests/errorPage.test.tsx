@@ -9,6 +9,19 @@ import {wrapIntl} from '../../testUtils'
 import ErrorPage from '../errorPage'
 import {ErrorId} from '../../errors'
 
+const mockWindowLocation = (location: Partial<Location>) => {
+    const originalLocation = window.location
+    Object.defineProperty(window, 'location', {
+        configurable: true,
+        value: location,
+    })
+
+    return () => Object.defineProperty(window, 'location', {
+        configurable: true,
+        value: originalLocation,
+    })
+}
+
 describe('pages/errorPage', () => {
     test('renders sorry something went wrong by default', () => {
         const history = createMemoryHistory()
@@ -28,28 +41,28 @@ describe('pages/errorPage', () => {
         history.push = jest.fn()
         history.location.search = `?id=${ErrorId.TeamUndefined}`
 
-        const originalLocation = window.location
-        delete (window as any).location;
-        (window as any).location = {origin: 'http://test.com', href: ''}
+        const restoreLocation = mockWindowLocation({origin: 'http://test.com', href: ''})
 
-        render(
-            wrapIntl(
-                <Router history={history}>
-                    <ErrorPage/>
-                </Router>,
-            ),
-        )
+        try {
+            render(
+                wrapIntl(
+                    <Router history={history}>
+                        <ErrorPage/>
+                    </Router>,
+                ),
+            )
 
-        expect(screen.getByText('Not a valid team.')).toBeDefined()
-        const button = screen.getByText('Back to Home')
-        expect(button).toBeDefined()
-        fireEvent.click(button)
+            expect(screen.getByText('Not a valid team.')).toBeDefined()
+            const button = screen.getByText('Back to Home')
+            expect(button).toBeDefined()
+            fireEvent.click(button)
 
-        await waitFor(() => {
-            expect(window.location.href).toBe('http://test.com')
-        })
-
-        window.location = originalLocation
+            await waitFor(() => {
+                expect(window.location.href).toBe('http://test.com')
+            })
+        } finally {
+            restoreLocation()
+        }
     })
 
     test('renders board-not-found error page and handles button redirect', () => {
@@ -77,28 +90,28 @@ describe('pages/errorPage', () => {
         const history = createMemoryHistory()
         history.location.search = `?id=${ErrorId.InvalidReadOnlyBoard}`
 
-        const originalLocation = window.location
-        delete (window as any).location;
-        (window as any).location = {origin: 'http://test.com', href: ''}
+        const restoreLocation = mockWindowLocation({origin: 'http://test.com', href: ''})
 
-        render(
-            wrapIntl(
-                <Router history={history}>
-                    <ErrorPage/>
-                </Router>,
-            ),
-        )
+        try {
+            render(
+                wrapIntl(
+                    <Router history={history}>
+                        <ErrorPage/>
+                    </Router>,
+                ),
+            )
 
-        expect(screen.getByText("You don't have access to this board. Log in to access Boards.")).toBeDefined()
-        const button = screen.getByText('Log in')
-        expect(button).toBeDefined()
-        fireEvent.click(button)
+            expect(screen.getByText("You don't have access to this board. Log in to access Boards.")).toBeDefined()
+            const button = screen.getByText('Log in')
+            expect(button).toBeDefined()
+            fireEvent.click(button)
 
-        await waitFor(() => {
-            expect(window.location.href).toBe('http://test.com')
-        })
-
-        window.location = originalLocation
+            await waitFor(() => {
+                expect(window.location.href).toBe('http://test.com')
+            })
+        } finally {
+            restoreLocation()
+        }
     })
 
     test('handles not-logged-in error and does immediate redirect', () => {

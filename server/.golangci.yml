@@ -1,14 +1,11 @@
 run:
   timeout: 5m
   modules-download-mode: readonly
-  skip-dirs:
-    - services/store/sqlstore/migrations
 
 linters-settings:
   gofmt:
     simplify: true
   govet:
-    check-shadowing: true
     enable-all: true
     disable:
       - fieldalignment
@@ -62,3 +59,24 @@ linters:
     - unused
     - whitespace
     - gocyclo
+
+issues:
+  exclude-dirs:
+    - services/store/sqlstore/migrations
+  exclude-rules:
+    # These rules are valuable in production code, but create noise in tests:
+    # test fixtures intentionally use repeated literals, synthetic errors and
+    # descriptive Spanish text.
+    - path: _test\.go
+      linters:
+        - dogsled
+        - dupl
+        - errcheck
+        - err113
+        - goconst
+        - godot
+        - gosec
+        - gosimple
+        - lll
+        - misspell
+        - unparam

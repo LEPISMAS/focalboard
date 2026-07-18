@@ -6,9 +6,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/golang/mock/gomock"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/websocket"
-	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 
 	"github.com/mattermost/focalboard/server/auth"
@@ -23,7 +23,7 @@ func setupTestServer(t *testing.T) (*ws.Server, *wsMocks.MockStore, *httptest.Se
 	mockStore := wsMocks.NewMockStore(ctrl)
 
 	logger := mlog.CreateConsoleTestLogger(t)
-	
+
 	// Create Server with singleUserToken bypass for auth
 	server := ws.NewServer(&auth.Auth{}, "single-user-token", false, logger, mockStore)
 
@@ -93,7 +93,7 @@ func TestServer_Commands(t *testing.T) {
 	}
 	conn.WriteJSON(cmd)
 	time.Sleep(50 * time.Millisecond)
-	
+
 	// Subscribe to blocks - requires mock store GetBlock
 	mockBlock := &model.Block{ID: "block1", BoardID: "board1"}
 	mockStore.EXPECT().GetBlock("block1").Return(mockBlock, nil).AnyTimes()
@@ -116,7 +116,7 @@ func TestServer_Commands(t *testing.T) {
 	}
 	conn.WriteJSON(cmd)
 	time.Sleep(50 * time.Millisecond)
-	
+
 	// Invalid JSON
 	conn.WriteMessage(websocket.TextMessage, []byte("{invalid-json}"))
 	time.Sleep(50 * time.Millisecond)
@@ -134,7 +134,7 @@ func TestServer_Commands(t *testing.T) {
 	mockStore.EXPECT().GetBlock("block1").Return(mockBlock, nil).AnyTimes()
 	// Using single-user mode so IsValidReadToken is bypassed in auth but checked?
 	// The implementation checks ws.auth.IsValidReadToken
-	
+
 	cmd = ws.WebsocketCommand{
 		Action:   "SUBSCRIBE_BLOCKS",
 		TeamID:   "team1",
@@ -177,21 +177,21 @@ func TestServer_Broadcasts(t *testing.T) {
 
 	server.BroadcastBlockChange("team1", &model.Block{ID: "block1", BoardID: "board1"})
 	server.BroadcastBlockDelete("team1", "block1", "board1")
-	
+
 	server.BroadcastCategoryChange(model.Category{TeamID: "team1", UserID: model.SingleUser, ID: "cat1"})
 	server.BroadcastCategoryReorder("team1", model.SingleUser, []string{"cat1"})
 	server.BroadcastCategoryBoardsReorder("team1", model.SingleUser, "cat1", []string{"board1"})
-	
+
 	server.BroadcastCategoryBoardChange("team1", model.SingleUser, []*model.BoardCategoryWebsocketData{})
-	
+
 	server.BroadcastConfigChange(model.ClientConfig{})
-	
+
 	server.BroadcastBoardChange("team1", &model.Board{ID: "board1", TeamID: "team1"})
 	server.BroadcastBoardDelete("team1", "board1")
-	
+
 	server.BroadcastMemberChange("team1", "board1", &model.BoardMember{UserID: "user1"})
 	server.BroadcastMemberDelete("team1", "board1", "user1")
-	
+
 	server.BroadcastSubscriptionChange("workspace1", &model.Subscription{})
 	server.BroadcastCardLimitTimestampChange(12345)
 

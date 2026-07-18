@@ -28,7 +28,11 @@ import {IUser} from '../../user'
 
 import WelcomePage from '../welcome/welcomePage'
 
-const w = (window as any)
+type WindowWithBaseURL = Window & typeof globalThis & {
+    baseURL?: string
+}
+
+const w = window as WindowWithBaseURL
 const oldBaseURL = w.baseURL
 
 jest.mock('../../mutator')

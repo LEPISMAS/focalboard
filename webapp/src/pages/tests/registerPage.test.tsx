@@ -15,6 +15,19 @@ import {useAppSelector} from '../../store/hooks'
 jest.mock('../../octoClient')
 const mockedOctoClient = mocked(client, true)
 
+const mockWindowLocation = (location: Partial<Location>) => {
+    const originalLocation = window.location
+    Object.defineProperty(window, 'location', {
+        configurable: true,
+        value: location,
+    })
+
+    return () => Object.defineProperty(window, 'location', {
+        configurable: true,
+        value: originalLocation,
+    })
+}
+
 const mockDispatch: jest.Mock = jest.fn((action) => {
     if (typeof action === 'function') {
         return action(mockDispatch, () => ({}), undefined)
@@ -134,34 +147,34 @@ describe('pages/registerPage', () => {
     })
 
     test('handles signupToken query parameter', async () => {
-        const originalLocation = window.location
-        delete (window as any).location;
-        (window as any).location = {search: '?t=token123'}
+        const restoreLocation = mockWindowLocation({search: '?t=token123'})
 
-        mockedOctoClient.register.mockResolvedValue({
-            code: 200,
-            json: {},
-        })
-        mockedOctoClient.login.mockResolvedValue(true)
+        try {
+            mockedOctoClient.register.mockResolvedValue({
+                code: 200,
+                json: {},
+            })
+            mockedOctoClient.login.mockResolvedValue(true)
 
-        render(
-            wrapIntl(
-                <Router history={history}>
-                    <RegisterPage/>
-                </Router>,
-            ),
-        )
+            render(
+                wrapIntl(
+                    <Router history={history}>
+                        <RegisterPage/>
+                    </Router>,
+                ),
+            )
 
-        fireEvent.change(screen.getByPlaceholderText('Enter email'), {target: {value: 'test@email.com'}})
-        fireEvent.change(screen.getByPlaceholderText('Enter username'), {target: {value: 'user'}})
-        fireEvent.change(screen.getByPlaceholderText('Enter password'), {target: {value: 'pass'}})
-        fireEvent.click(screen.getByRole('button', {name: 'Register'}))
+            fireEvent.change(screen.getByPlaceholderText('Enter email'), {target: {value: 'test@email.com'}})
+            fireEvent.change(screen.getByPlaceholderText('Enter username'), {target: {value: 'user'}})
+            fireEvent.change(screen.getByPlaceholderText('Enter password'), {target: {value: 'pass'}})
+            fireEvent.click(screen.getByRole('button', {name: 'Register'}))
 
-        await waitFor(() => {
-            expect(mockedOctoClient.register).toHaveBeenCalledWith('test@email.com', 'user', 'pass', 'token123')
-        })
-
-        window.location = originalLocation
+            await waitFor(() => {
+                expect(mockedOctoClient.register).toHaveBeenCalledWith('test@email.com', 'user', 'pass', 'token123')
+            })
+        } finally {
+            restoreLocation()
+        }
     })
 
     test('handles 401 registration error link invalid', async () => {

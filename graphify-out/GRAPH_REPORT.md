@@ -1,16 +1,16 @@
-# Graph Report - focalboard  (2026-07-16)
+# Graph Report - focalboard  (2026-07-17)
 
 ## Corpus Check
-- 1224 files · ~1,756,319 words
+- 1224 files · ~1,756,297 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 8888 nodes · 18808 edges · 880 communities (440 shown, 440 thin omitted)
+- 8892 nodes · 18808 edges · 867 communities (434 shown, 433 thin omitted)
 - Extraction: 92% EXTRACTED · 8% INFERRED · 0% AMBIGUOUS · INFERRED: 1464 edges (avg confidence: 0.77)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `315c9251`
+- Built from commit: `52550890`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -26,6 +26,7 @@
 - Card and Kanban UI
 - Permission Test Helpers
 - Mock Store Recorder
+- Board Member Commands
 - Board View Filtering
 - Mock Store Interface
 - Sidebar and Dialog UI
@@ -348,30 +349,27 @@
 - Board Permission Checks
 - Block Error Handling
 - Color Utility
-- Webpack Copy Plugin
+- .getBlocksWithPath
 - Environment Variable Utility
-- Cypress Logging Utility
-- Cypress Event Simulation
+- editableArea.tsx
 - Docker Deployment Configuration
 - CSS Class Utility
-- filterValue.test.tsx
-- DraftJS Mention Plugin
+- .GetAllBlocksForBoard
+- api_commands.ts
 - Emoji Picker Library
 - ESLint Webpack Resolver
 - ESLint Babel Plugin
 - ESLint Cypress Plugin
-- ESLint Header Plugin
+- cardDetailProperties.test.tsx
 - ESLint Import Plugin
 - ESLint jQuery Plugin
-- ESLint Mattermost Plugin
-- ESLint Test Plugin
-- ESLint React Plugin
-- Jest Fetch Mocking
+- MultiSelectProperty
+- SelectProperty
 - Webpack File Loader
 - FormatJS CLI Tools
 - FormatJS TypeScript Transformer
 - FullCalendar Core Library
-- FullCalendar DayGrid View
+- TestBoardsAndBlocksEndpoints
 - FullCalendar Interaction Plugin
 - Webpack HTML Plugin
 - Webpack Image Loader
@@ -379,15 +377,12 @@
 - JPEG Image Optimization
 - PNG Image Optimization
 - Minimist Type Definitions
-- ESLint Core
 - TypeScript ESLint Plugin
 - XML2JS Type Definitions
 - Jest Mocking Utility
 - Focalboard Release Notices
 - Compass Icon Library
-- React Context Polyfill
 - Post Creation API
-- Bot Management API
 - Channel Member API
 - Configuration Management API
 - File Info API
@@ -444,21 +439,16 @@
 - DraftJS Type Definitions
 - Marked Type Definitions
 - Nanoevents Type Definitions
-- React Intl Types
 - React Redux Types
-- React Select Types
 - Card URL Properties
 - Jest Type Definitions
 - React Type Definitions
 - React DOM Types
-- TypeScript ESLint Plugin
 - Prettier Formatting Configuration
 - Team Data Interfaces
 - Workspace Data Interfaces
 - Cloud Usage Limits
-- User Onboarding Response
 - Page Testing Script
-- Board Site Statistics
 - Redux State Testing Script
 - Checklist UI Icons
 - Board Table Views
@@ -683,8 +673,6 @@
 - OpenAPI Specification
 - Server API Spec
 - WebSocket Plugin
-- Authentication Logic
-- Board Entity
 - Network Connection
 - WebSocket Server Core
 - WebSocket Unit Tests
@@ -820,21 +808,21 @@
 - 3-file cycle: `webapp/src/components/cardDetail/cardDetail.tsx -> webapp/src/components/cardDetail/cardDetailProperties.tsx -> webapp/src/components/onboardingTour/addProperties/add_properties.tsx -> webapp/src/components/cardDetail/cardDetail.tsx`
 - 3-file cycle: `webapp/src/widgets/menu/index.tsx -> webapp/src/widgets/menu/menu.tsx -> webapp/src/widgets/menu/subMenuOption.tsx -> webapp/src/widgets/menu/index.tsx`
 - 3-file cycle: `webapp/src/store/boards.ts -> webapp/src/store/index.ts -> webapp/src/store/views.ts -> webapp/src/store/boards.ts`
-- 3-file cycle: `webapp/src/octoClient.ts -> webapp/src/store/teams.ts -> webapp/src/store/initialLoad.ts -> webapp/src/octoClient.ts`
-- 3-file cycle: `webapp/src/store/index.ts -> webapp/src/store/teams.ts -> webapp/src/store/initialLoad.ts -> webapp/src/store/index.ts`
-- 3-file cycle: `webapp/src/store/index.ts -> webapp/src/store/views.ts -> webapp/src/store/initialLoad.ts -> webapp/src/store/index.ts`
 - 3-file cycle: `webapp/src/store/index.ts -> webapp/src/store/limits.ts -> webapp/src/store/initialLoad.ts -> webapp/src/store/index.ts`
+- 3-file cycle: `webapp/src/store/index.ts -> webapp/src/store/teams.ts -> webapp/src/store/initialLoad.ts -> webapp/src/store/index.ts`
 - 3-file cycle: `webapp/src/store/index.ts -> webapp/src/store/users.ts -> webapp/src/store/initialLoad.ts -> webapp/src/store/index.ts`
-- 3-file cycle: `webapp/src/octoUtils.tsx -> webapp/src/utils.ts -> webapp/src/wsclient.ts -> webapp/src/octoUtils.tsx`
-- 3-file cycle: `webapp/src/blocks/block.ts -> webapp/src/utils.ts -> webapp/src/blocks/boardView.ts -> webapp/src/blocks/block.ts`
+- 3-file cycle: `webapp/src/store/index.ts -> webapp/src/store/views.ts -> webapp/src/store/initialLoad.ts -> webapp/src/store/index.ts`
+- 3-file cycle: `webapp/src/octoClient.ts -> webapp/src/store/teams.ts -> webapp/src/store/initialLoad.ts -> webapp/src/octoClient.ts`
 - 3-file cycle: `webapp/src/blocks/block.ts -> webapp/src/utils.ts -> webapp/src/blocks/card.ts -> webapp/src/blocks/block.ts`
-- 3-file cycle: `webapp/src/blocks/block.ts -> webapp/src/utils.ts -> webapp/src/blocks/commentBlock.ts -> webapp/src/blocks/block.ts`
+- 3-file cycle: `webapp/src/blocks/block.ts -> webapp/src/utils.ts -> webapp/src/blocks/boardView.ts -> webapp/src/blocks/block.ts`
 - 3-file cycle: `webapp/src/blocks/block.ts -> webapp/src/utils.ts -> webapp/src/wsclient.ts -> webapp/src/blocks/block.ts`
 - 3-file cycle: `webapp/src/blocks/board.ts -> webapp/src/utils.ts -> webapp/src/wsclient.ts -> webapp/src/blocks/board.ts`
+- 3-file cycle: `webapp/src/octoUtils.tsx -> webapp/src/utils.ts -> webapp/src/wsclient.ts -> webapp/src/octoUtils.tsx`
 - 3-file cycle: `webapp/src/store/sidebar.ts -> webapp/src/utils.ts -> webapp/src/wsclient.ts -> webapp/src/store/sidebar.ts`
-- 4-file cycle: `webapp/src/components/cardDetail/cardDetail.tsx -> webapp/src/components/cardDetail/cardDetailContents.tsx -> webapp/src/components/onboardingTour/addDescription/add_description.tsx -> webapp/src/components/onboardingTour/tourTipRenderer/tourTipRenderer.tsx -> webapp/src/components/cardDetail/cardDetail.tsx`
+- 3-file cycle: `webapp/src/blocks/block.ts -> webapp/src/utils.ts -> webapp/src/blocks/commentBlock.ts -> webapp/src/blocks/block.ts`
 - 4-file cycle: `webapp/src/components/cardDetail/cardDetail.tsx -> webapp/src/components/cardDetail/cardDetailProperties.tsx -> webapp/src/components/onboardingTour/addProperties/add_properties.tsx -> webapp/src/components/onboardingTour/tourTipRenderer/tourTipRenderer.tsx -> webapp/src/components/cardDetail/cardDetail.tsx`
 - 4-file cycle: `webapp/src/components/cardDetail/cardDetail.tsx -> webapp/src/components/cardDetail/commentsList.tsx -> webapp/src/components/onboardingTour/addComments/addComments.tsx -> webapp/src/components/onboardingTour/tourTipRenderer/tourTipRenderer.tsx -> webapp/src/components/cardDetail/cardDetail.tsx`
+- 4-file cycle: `webapp/src/components/cardDetail/cardDetail.tsx -> webapp/src/components/cardDetail/cardDetailContents.tsx -> webapp/src/components/onboardingTour/addDescription/add_description.tsx -> webapp/src/components/onboardingTour/tourTipRenderer/tourTipRenderer.tsx -> webapp/src/components/cardDetail/cardDetail.tsx`
 - 4-file cycle: `webapp/src/cardFilter.ts -> webapp/src/properties/date/date.tsx -> webapp/src/mutator.ts -> webapp/src/store/cards.ts -> webapp/src/cardFilter.ts`
 - 4-file cycle: `webapp/src/store/boards.ts -> webapp/src/store/initialLoad.ts -> webapp/src/store/index.ts -> webapp/src/store/views.ts -> webapp/src/store/boards.ts`
 
@@ -877,19 +865,19 @@
 - **Press and Media Mentions** — website_site_static_img_mentioned_newstack, website_site_static_img_mentioned_producthunt, website_site_static_img_mentioned_techrepublic, website_site_static_img_mentioned_venturebeat, website_site_static_img_mentioned_ycombinator [EXTRACTED 1.00]
 - **Hugo Theme Partials** — website_site_themes_layouts_partials_contact, website_site_themes_layouts_partials_counters, website_site_themes_layouts_partials_footer, website_site_themes_layouts_partials_head, website_site_themes_layouts_partials_hero, website_site_themes_layouts_partials_intro, website_site_themes_layouts_partials_js, website_site_themes_layouts_partials_nav, website_site_themes_layouts_partials_services, website_site_themes_layouts_partials_testimonials, website_site_themes_layouts_partials_work [EXTRACTED 1.00]
 
-## Communities (880 total, 440 thin omitted)
+## Communities (867 total, 433 thin omitted)
 
 ### Community 0 - "Asana Import Utility"
-Cohesion: 0.03
-Nodes (97): AttachmentBlock, AttachmentBlockFields, createAttachmentBlock(), Block, blockTypes, contentBlockTypes, createBlock(), createPatchesFromBlocks() (+89 more)
+Cohesion: 0.04
+Nodes (76): createAttachmentBlock(), Block, BlockPatch, blockTypes, contentBlockTypes, createBlock(), createPatchesFromBlocks(), createCheckboxBlock() (+68 more)
 
 ### Community 1 - "Calendar and Attachment Components"
-Cohesion: 0.03
-Nodes (135): BlockIcons, BlockPatch, Board, BoardGroup, boardTypes, createCardPropertiesPatches(), getPropertiesDifference(), IPropertyOption (+127 more)
+Cohesion: 0.04
+Nodes (68): convert(), getProjects(), getSections(), main(), optionColors, TODO: Stream output, TODO: Handle multiple projects, showHelp() (+60 more)
 
 ### Community 4 - "Webapp Block Testing"
 Cohesion: 0.02
-Nodes (120): MemberRole, ISharing, card, mockedMutator, mockedTelemetry, groupProperty, groupProperty, mockedOctoClient (+112 more)
+Nodes (87): TextBlock, card, mockedMutator, groupProperty, mockedOctoClient, mockedMutator, renderComponent(), board (+79 more)
 
 ### Community 5 - "Mock Channel Services"
 Cohesion: 0.02
@@ -901,27 +889,31 @@ Nodes (25): AppError, ChannelMember, ChannelMembers, ChannelStats, CustomStatus,
 
 ### Community 7 - "Board Client API"
 Cohesion: 0.11
-Nodes (19): Client, Response, Header, BuildErrorResponse(), BuildResponse(), closeBody(), Block, BlockPatch (+11 more)
+Nodes (18): Client, Response, Header, BuildErrorResponse(), BuildResponse(), closeBody(), BlockPatch, Board (+10 more)
 
 ### Community 8 - "Card and Kanban UI"
-Cohesion: 0.14
-Nodes (10): CheckboxProperty, Email(), MultiPerson(), Phone(), Text(), FilterCondition, FilterValueType, PropertyProps (+2 more)
+Cohesion: 0.04
+Nodes (48): boardTypes, createCardPropertiesPatches(), getPropertiesDifference(), isPropertyEqual(), PropertyTypeEnum, Card, CardFields, Options (+40 more)
 
 ### Community 9 - "Permission Test Helpers"
-Cohesion: 0.10
-Nodes (101): Clients, FakePermissionPluginAPI, LicenseType, TestCase, TestData, TestStore, getTestConfig(), Server (+93 more)
+Cohesion: 0.07
+Nodes (103): Clients, FakePermissionPluginAPI, LicenseType, TestCase, TestData, TestHelper, TestStore, BoardType (+95 more)
+
+### Community 11 - "Board Member Commands"
+Cohesion: 0.05
+Nodes (47): BoardsSwitcher(), CardDetail(), CardDetailProperties(), CommentsList(), CardLimitNotification(), Props, KanbanColumnHeader(), TourTipRenderer() (+39 more)
 
 ### Community 12 - "Board View Filtering"
-Cohesion: 0.25
-Nodes (9): areEqual(), createFilterClause(), FilterClause, FilterGroupOperation, TODO: Handle filter groups, TODO: Handle non-select types, mockedUtils, June15 (+1 more)
+Cohesion: 0.04
+Nodes (76): BoardView, BoardViewFields, ISortOption, KanbanCalculationFields, sortBoardViewsAlphabetically(), areEqual(), createFilterClause(), FilterClause (+68 more)
 
 ### Community 13 - "Mock Store Interface"
 Cohesion: 0.03
 Nodes (17): MockStore, BlockPatch, Board, BoardMember, BoardPatch, BoardsAndBlocks, Category, CategoryBoards (+9 more)
 
 ### Community 14 - "Sidebar and Dialog UI"
-Cohesion: 0.02
-Nodes (122): BoardsSwitcher(), BoardSwitcherDialog(), Props, BoardTemplateSelector(), Props, CardActionsMenu(), Comment(), Props (+114 more)
+Cohesion: 0.04
+Nodes (15): IViewType, Props, Props, Props, Props, TODO: display error on screen, Props, Props (+7 more)
 
 ### Community 15 - "Block ID Generation"
 Cohesion: 0.17
@@ -929,7 +921,7 @@ Nodes (7): BaseRunner, Block, BlockPatch, Board, Rows, SQLStore, retrieveFileIDF
 
 ### Community 16 - "Common Utility Functions"
 Cohesion: 0.03
-Nodes (7): Props, Utils, NotificationBox(), Props, renderClose(), ChangeHandlerType, WSMessage
+Nodes (8): TODO:  don't download whole archive before presenting SaveAs dialog., TODO: Review if this is needed in the future, this is to fix the problem with li, TODO: Remove or reuse link and revolkObjectURL to avoid memory leak, TODO: Remove or reuse input, Utils, NotificationBox(), Props, renderClose()
 
 ### Community 17 - "Trello Integration Types"
 Cohesion: 0.03
@@ -944,44 +936,44 @@ Cohesion: 0.18
 Nodes (13): Controller, MockAPI, MockStore, PluginAdapter, T, SetupTestHelper(), T, TestGetUserIDsForTeam() (+5 more)
 
 ### Community 20 - "Board Patch Utilities"
-Cohesion: 0.12
-Nodes (19): PropertyTypeEnum, BaseCalculationOptionProps, baseStyles, CalculationOptions(), CommonCalculationOptionProps, DropdownIndicator(), Option, optionDisplayNameString() (+11 more)
+Cohesion: 0.08
+Nodes (27): Calculation(), Props, Calculations, BaseCalculationOptionProps, baseStyles, CalculationOptions(), CommonCalculationOptionProps, DropdownIndicator() (+19 more)
 
 ### Community 21 - "Card Badge Components"
 Cohesion: 0.04
-Nodes (56): CommentBlock, createCommentBlock(), BoardsCloudLimits, Badges, calculateBadges(), CardBadges(), Checkboxes, ContentsType (+48 more)
+Nodes (61): BlockIcons, AttachmentBlock, AttachmentBlockFields, FileInfo, CheckboxBlock, CommentBlock, Props, BoardIconSelector (+53 more)
 
 ### Community 22 - "User Onboarding Tours"
 Cohesion: 0.06
-Nodes (39): MentionUser, Props, AddCommentTourStep(), AddDescriptionTourStep(), AddViewTourStep(), CopyLinkTourStep(), BaseTourSteps, BoardTourSteps (+31 more)
+Nodes (27): BoardTemplateSelector(), Props, Props, mockedOctoClient, TODO: Fix this later, SidebarCategory(), activeView, board (+19 more)
 
 ### Community 23 - "Sidebar Navigation Components"
-Cohesion: 0.09
-Nodes (3): BoardPatch, BoardsAndBlocksPatch, OctoClient
+Cohesion: 0.07
+Nodes (7): BoardMember, BoardPatch, BoardsAndBlocksPatch, TopBoard, TopBoardResponse, OctoClient, Channel
 
 ### Community 24 - "Error Handling and Banners"
-Cohesion: 0.27
-Nodes (5): ErrorDef, errorDefFromId(), ErrorId, ErrorPage(), ErrorIllustration()
+Cohesion: 0.16
+Nodes (5): App, Board, BoardMember, BoardPatch, BoardsAndBlocks
 
 ### Community 25 - "Icon and Attachment Selectors"
-Cohesion: 0.16
-Nodes (13): UrlProperty, mockedCopy, mockedMutator, mockedSendFlashMessage, URLProperty(), Editable(), EditableProps, ElementProps (+5 more)
+Cohesion: 0.12
+Nodes (20): useImagePaste(), emitter, FlashMessage, FlashMessages, Props, sendFlashMessage(), UndoRedoHotKeys(), registeredHotkeys (+12 more)
 
 ### Community 26 - "File and Team Management"
-Cohesion: 0.14
-Nodes (12): Category, StampModificationMetadata(), T, TestBlock2Card(), CategoryFromJSON(), Reader, T, TestUtils() (+4 more)
+Cohesion: 0.24
+Nodes (8): T, TestBlock2Card(), T, TestUtils(), GetMillis(), GetMillisForTime(), GetTimeForMillis(), Time
 
 ### Community 27 - "Workspace State Management"
-Cohesion: 0.03
-Nodes (95): Integration Flow - Card Creation Sequence Diagram, getWindowDimensions(), Props, Sidebar(), CenterContent(), Props, Workspace(), useWebsockets() (+87 more)
+Cohesion: 0.04
+Nodes (70): EmptyCardButton(), NewCardButtonTemplateItem(), CenterContent(), Props, Workspace(), ErrorDef, errorDefFromId(), ErrorId (+62 more)
 
 ### Community 28 - "Archive Import Export"
-Cohesion: 0.03
-Nodes (73): convert(), getProjects(), getSections(), main(), optionColors, TODO: Stream output, TODO: Handle multiple projects, showHelp() (+65 more)
+Cohesion: 0.09
+Nodes (35): AddCommentTourStep(), AddDescriptionTourStep(), AddPropertiesTourStep(), AddViewTourStep(), CopyLinkTourStep(), BaseTourSteps, BoardTourSteps, CardTourSteps (+27 more)
 
 ### Community 29 - "Global Header and i18n"
-Cohesion: 0.06
-Nodes (37): Frontend Directory Structure Diagram, Frontend Directory Structure, App(), Props, HeaderItemProps, HeaderItems(), Props, NewVersionBanner() (+29 more)
+Cohesion: 0.07
+Nodes (29): Archiver, GlobalHeaderSettingsMenu(), Props, Props, SidebarSettingsMenu(), mockedTelemetry, Props, WithWebSockets() (+21 more)
 
 ### Community 30 - "User Preference Management"
 Cohesion: 0.11
@@ -1008,28 +1000,28 @@ Cohesion: 0.06
 Nodes (21): TestHelper, T, TestRunDeDuplicateCategoryBoardsMigration(), T, SetupTestHelper(), T, Test34DropDeleteAtColumnMySQLPostgres(), T (+13 more)
 
 ### Community 36 - "Card API Tests"
-Cohesion: 0.11
-Nodes (37): copyProps(), T, makeProps(), modifyProps(), reverse(), TestCreateCard(), TestGetCard(), TestGetCards() (+29 more)
+Cohesion: 0.08
+Nodes (44): copyProps(), T, makeProps(), modifyProps(), reverse(), TestCreateCard(), TestGetCard(), TestGetCards() (+36 more)
 
 ### Community 37 - "Text Styling Strategies"
 Cohesion: 0.20
 Nodes (21): createCodeBlockStrategy(), createHeadingBlockStrategy(), createBoldStyleStrategy(), createHeadingDelimiterStyleStrategy(), createInlineCodeStyleStrategy(), createItalicStyleStrategy(), TODO: Add support for boldWrappedAsteriskRegex and boldWrappedUnderscoreRegex, createOLDelimiterStyleStrategy() (+13 more)
 
 ### Community 38 - "Menu Option Components"
-Cohesion: 0.08
-Nodes (16): ColorOption(), ColorOptionProps, LabelOptionProps, Menu, Props, MenuOptionProps, SeparatorOption(), HoveringContext (+8 more)
+Cohesion: 0.09
+Nodes (15): ColorOption(), ColorOptionProps, LabelOptionProps, Menu, Props, MenuOptionProps, SeparatorOption(), HoveringContext (+7 more)
 
 ### Community 39 - "CSV Import Dependencies"
 Cohesion: 0.06
 Nodes (32): csvtojson, author, dependencies, csvtojson, minimist, description, devDependencies, eslint (+24 more)
 
 ### Community 41 - "Flash Message Notifications"
-Cohesion: 0.14
-Nodes (10): Archiver, TODO:  don't download whole archive before presenting SaveAs dialog., TODO: Review if this is needed in the future, this is to fix the problem with li, TODO: Remove or reuse link and revolkObjectURL to avoid memory leak, TODO: Remove or reuse input, activeView, board, card (+2 more)
+Cohesion: 0.04
+Nodes (45): BoardGroup, ConfirmationDialogBoxProps, Props, ContentBlock(), KanbanCard(), Props, mockedMutator, mockedUtils (+37 more)
 
 ### Community 42 - "Category and Switcher Dialogs"
-Cohesion: 0.05
-Nodes (4): BoardsAndBlocks, KanbanCalculationFields, Mutator, updateAllBoardsAndBlocks()
+Cohesion: 0.04
+Nodes (10): BoardsAndBlocks, IPropertyOption, IPropertyTemplate, FilterGroup, CardFilter, mockedchangePropertyOptionValue, mockedChangeViewCardOrder, mockedinsertPropertyOption (+2 more)
 
 ### Community 43 - "External Library Dependencies"
 Cohesion: 0.02
@@ -1052,8 +1044,8 @@ Cohesion: 0.06
 Nodes (30): author, dependencies, minimist, description, devDependencies, eslint, ts-node, @types/minimist (+22 more)
 
 ### Community 48 - "Subscription and Notifications"
-Cohesion: 0.08
-Nodes (22): ErrInvalidSubscription, Subscriber, SubscriberType, Subscription, Block, Board, T, TestHelper (+14 more)
+Cohesion: 0.10
+Nodes (13): ErrInvalidSubscription, Subscriber, SubscriberType, Subscription, Reader, SubscriptionFromJSON(), PluginDelivery, SlackAttachment (+5 more)
 
 ### Community 49 - "Linting Rules Configuration"
 Cohesion: 0.06
@@ -1072,8 +1064,8 @@ Cohesion: 0.10
 Nodes (21): ErrForbidden, ErrInvalidCategory, ErrNotAllFound, ErrNotFound, ErrNotImplemented, ErrPermission, ErrUnauthorized, T (+13 more)
 
 ### Community 53 - "Card Calculation Logic"
-Cohesion: 0.13
-Nodes (26): average(), cardsWithValue(), countChecked(), countEmpty(), countNotEmpty(), countUnchecked(), countUniqueValue(), countValue() (+18 more)
+Cohesion: 0.15
+Nodes (25): average(), cardsWithValue(), countChecked(), countEmpty(), countNotEmpty(), countUnchecked(), countUniqueValue(), countValue() (+17 more)
 
 ### Community 54 - "Sidebar Websocket Integration"
 Cohesion: 0.06
@@ -1084,8 +1076,8 @@ Cohesion: 0.12
 Nodes (17): API, App, Backend, FileBackend, LoggerIFace, Mutex, Params, Router (+9 more)
 
 ### Community 56 - "SQL Store Cloud Tests"
-Cohesion: 0.13
-Nodes (22): T, TestConcatenationSelector(), TestElementInColumn(), TestSQLStore(), Store, T, StoreTestCloudStore(), testGetCardLimitTimestamp() (+14 more)
+Cohesion: 0.12
+Nodes (21): T, TestConcatenationSelector(), TestElementInColumn(), TestSQLStore(), Store, T, LoadData(), StoreTestDataRetention() (+13 more)
 
 ### Community 57 - "Browser Extension Manifest"
 Cohesion: 0.08
@@ -1096,24 +1088,24 @@ Cohesion: 0.12
 Nodes (11): Auth, Board, Card, Comment, CommentResponse, defaultHeaders, Label, NextcloudDeckClient (+3 more)
 
 ### Community 59 - "Mock Plugin API"
-Cohesion: 0.07
-Nodes (7): Bot, BotGetOptions, BotPatch, Command, Config, Controller, NewMockAPI()
+Cohesion: 0.06
+Nodes (9): Bot, BotGetOptions, BotPatch, Command, CommandArgs, CommandResponse, Config, Controller (+1 more)
 
 ### Community 60 - "Mock Plugin API"
 Cohesion: 0.07
 Nodes (7): Bot, BotGetOptions, BotPatch, Command, Config, Controller, NewMockAPI()
 
 ### Community 61 - "Native App Settings"
-Cohesion: 0.22
-Nodes (10): importNativeAppSettings(), INativeApp, notifySettingsChanged(), postWebKitMessage(), exportUserSettings(), exportUserSettingsBlob(), importUserSettings(), importUserSettingsBlob() (+2 more)
+Cohesion: 0.20
+Nodes (9): getUserID(), API, Request, ResponseWriter, Router, API, Request, ResponseWriter (+1 more)
 
 ### Community 62 - "Webpack Build Configuration"
 Cohesion: 0.08
 Nodes (20): CopyPlugin, outpath, path, tsTransformer, commonConfig, config, makeCommonConfig, merge (+12 more)
 
 ### Community 63 - "Block Action Handlers"
-Cohesion: 0.18
-Nodes (5): Action, App, Block, BlockPatch, Board
+Cohesion: 0.15
+Nodes (6): Action, BlockPatchBatch, App, Block, BlockPatch, Board
 
 ### Community 64 - "Desktop App Delegate"
 Cohesion: 0.15
@@ -1124,8 +1116,8 @@ Cohesion: 0.21
 Nodes (10): Int, jsonStringResponse(), API, Request, ResponseWriter, Router, API, Request (+2 more)
 
 ### Community 66 - "Board Sharing Logic"
-Cohesion: 0.09
-Nodes (18): activeView, board, card1, card2, card3, categoryAttribute1, fakeBoard, me (+10 more)
+Cohesion: 0.04
+Nodes (74): MemberRole, ISharing, mockedTelemetry, groupProperty, CardActionsMenu(), Comment(), CenterPanel(), Props (+66 more)
 
 ### Community 67 - "TypeScript Configuration"
 Cohesion: 0.08
@@ -1184,8 +1176,8 @@ Cohesion: 0.08
 Nodes (22): ReadCloseSeeker, getDestinationFilePath(), getFileInfoID(), App, Block, FileInfo, Reader, FileInfo (+14 more)
 
 ### Community 81 - "Board Store Implementation"
-Cohesion: 0.23
-Nodes (23): PluginDelivery, User, trimUsernameSpecialChar(), Store, T, StoreTestBoardStore(), testDeleteBoard(), testDeleteMember() (+15 more)
+Cohesion: 0.33
+Nodes (20): Store, T, StoreTestBoardStore(), testDeleteBoard(), testDeleteMember(), testGetBoard(), testGetBoardCount(), testGetBoardHistory() (+12 more)
 
 ### Community 82 - "Auth and Compliance Routes"
 Cohesion: 0.23
@@ -1212,8 +1204,8 @@ Cohesion: 0.10
 Nodes (20): env, jest, extends, always, error, overrides, parser, plugins (+12 more)
 
 ### Community 88 - "System Integration Tests"
-Cohesion: 0.67
-Nodes (3): T, TestHello(), TestPing()
+Cohesion: 0.05
+Nodes (38): BoardsCloudLimits, ViewHeaderSearch(), {reducer}, cardsSlice, CardsState, getCurrentBoardCards, getCurrentBoardHiddenCardsCount, getCurrentBoardTemplates (+30 more)
 
 ### Community 89 - "SQL Store Configuration"
 Cohesion: 0.12
@@ -1228,8 +1220,8 @@ Cohesion: 0.10
 Nodes (19): Current, DayOrders, DaysItem, Due, Features, FileAttachment, Filter, Item (+11 more)
 
 ### Community 92 - "Slack Notification Formatting"
-Cohesion: 0.15
-Nodes (23): Diff, DiffConvOpts, StringMap, appendAttachmentChanges(), appendCommentChanges(), appendContentChanges(), appendPropertyChanges(), appendTitleChanges() (+15 more)
+Cohesion: 0.23
+Nodes (19): DiffConvOpts, appendAttachmentChanges(), appendCommentChanges(), appendContentChanges(), appendPropertyChanges(), appendTitleChanges(), cardDiff2SlackAttachment(), Diffs2SlackAttachments() (+11 more)
 
 ### Community 93 - "Cypress Test Scripts"
 Cohesion: 0.10
@@ -1253,7 +1245,7 @@ Nodes (18): T, TestAddMember(), TestCreateBoard(), TestCreateBoardTemplate(), Te
 
 ### Community 98 - "Archive Import Logic"
 Cohesion: 0.08
-Nodes (28): Archive, ArchiveHeader, ArchiveLine, ErrUnsupportedArchiveLineType, ErrUnsupportedArchiveVersion, ExportArchiveOptions, ImportArchiveOptions, RawMessage (+20 more)
+Nodes (27): Archive, ArchiveHeader, ArchiveLine, ErrUnsupportedArchiveLineType, ErrUnsupportedArchiveVersion, ExportArchiveOptions, RawMessage, extractFilename() (+19 more)
 
 ### Community 99 - "iOS WebView Controller"
 Cohesion: 0.16
@@ -1272,8 +1264,8 @@ Cohesion: 0.20
 Nodes (28): testGetBlockHistoryNewestChildren(), Store, T, StoreTestComplianceHistoryStore(), testGetBlocksComplianceHistory(), testGetBoardsComplianceHistory(), testGetBoardsForCompliance(), Store (+20 more)
 
 ### Community 103 - "Telemetry Service Client"
-Cohesion: 0.14
-Nodes (12): Client, LoggerIFace, Time, New(), Server, T, mockServer(), TestTelemetry() (+4 more)
+Cohesion: 0.20
+Nodes (8): Client, LoggerIFace, Time, New(), RudderConfig, Service, Tracker, TrackerFunc
 
 ### Community 104 - "Websocket Message Models"
 Cohesion: 0.11
@@ -1301,7 +1293,7 @@ Nodes (9): Environment, HTTPService, Mock, ServerIface, Role, Scheme, AppError, 
 
 ### Community 110 - "Development Dependencies"
 Cohesion: 0.12
-Nodes (17): devDependencies, jest, ts-jest, ts-node, @types/jest, @types/node, @types/turndown, typescript (+9 more)
+Nodes (17): devDependencies, eslint, jest, ts-node, @types/jest, @types/node, @types/turndown, typescript (+9 more)
 
 ### Community 111 - "Database Schema Migrations"
 Cohesion: 0.20
@@ -1340,7 +1332,7 @@ Cohesion: 0.21
 Nodes (8): Board, BoardMember, Call, Controller, MockStore, MockStoreMockRecorder, MockStoreMockRecorder, NewMockStore()
 
 ### Community 120 - "Mention Notification Service"
-Cohesion: 0.21
+Cohesion: 0.19
 Nodes (10): Action, Backend, BlockChangeEvent, Service, Block, Board, BoardMember, LoggerIFace (+2 more)
 
 ### Community 121 - "Mentions Backend Service"
@@ -1348,7 +1340,7 @@ Cohesion: 0.20
 Nodes (9): Backend, BackendParams, MentionDelivery, MentionListener, AppAPI, LoggerIFace, RWMutex, New() (+1 more)
 
 ### Community 122 - "Subscription Backend Service"
-Cohesion: 0.19
+Cohesion: 0.21
 Nodes (7): Backend, BackendParams, SubscriptionDelivery, AppAPI, Duration, LoggerIFace, New()
 
 ### Community 123 - "UI Divider Component"
@@ -1356,8 +1348,8 @@ Cohesion: 0.16
 Nodes (5): Divider, blocks, blocksByPrefix, blocksBySlashCommand, TextContent
 
 ### Community 124 - "Board Member API Handlers"
-Cohesion: 0.12
-Nodes (8): TestHelper, BoardType, Board, Card, Category, CategoryBoards, Client, User
+Cohesion: 0.06
+Nodes (36): Integration Flow - Card Creation Sequence Diagram, getWindowDimensions(), Props, Sidebar(), useWebsockets(), BoardCategoryWebsocketData, Category, CategoryBoardMetadata (+28 more)
 
 ### Community 125 - "Sharing Settings Logic"
 Cohesion: 0.21
@@ -1376,20 +1368,20 @@ Cohesion: 0.14
 Nodes (5): Focalboard, FocalboardTests, FocalboardUITests, XCTest, XCTestCase
 
 ### Community 129 - "Bulk Delete Logic"
-Cohesion: 0.05
-Nodes (28): BlockDoesntBelongToAnyBoardErr, BoardsAndBlocks, DeleteBoardsAndBlocks, PatchBoardsAndBlocks, App, BoardsAndBlocks, App, Board (+20 more)
+Cohesion: 0.09
+Nodes (19): BlockDoesntBelongToAnyBoardErr, BoardsAndBlocks, DeleteBoardsAndBlocks, PatchBoardsAndBlocks, App, BoardsAndBlocks, BoardsAndBlocksFromJSON(), GenerateBoardsAndBlocksIDs() (+11 more)
 
 ### Community 130 - "Block Property Diffing"
-Cohesion: 0.15
-Nodes (19): BlockProp, BlockProperties, PropDef, PropDefOption, PropSchema, PropValueResolver, diffGenerator, PropDiff (+11 more)
+Cohesion: 0.32
+Nodes (10): PropSchema, Diff, diffGenerator, PropDiff, SchemaDiff, AppAPI, Block, Board (+2 more)
 
 ### Community 132 - "Block API Tests"
 Cohesion: 0.22
 Nodes (12): T, TestDeleteBlock(), TestGetBlocks(), TestPatchBlock(), TestPostBlock(), TestUndeleteBlock(), SetupTestHelperWithToken(), T (+4 more)
 
 ### Community 133 - "Block Retrieval Logic"
-Cohesion: 0.06
-Nodes (11): Block, BlockModifier, BlockPatch, BlockPatchBatch, BoardModifier, QueryBlockHistoryChildOptions, QueryBlockHistoryOptions, QueryBlocksOptions (+3 more)
+Cohesion: 0.08
+Nodes (9): BlockModifier, BoardModifier, ImportArchiveOptions, QueryBlockHistoryChildOptions, QueryBlockHistoryOptions, QueryBlocksOptions, QueryBoardHistoryOptions, QuerySubtreeOptions (+1 more)
 
 ### Community 134 - "Block Editor UI"
 Cohesion: 0.27
@@ -1409,7 +1401,7 @@ Nodes (11): TestHelper, BoardMember, Controller, MockAPI, MockStore, Service, T,
 
 ### Community 139 - "Board and Block Patching"
 Cohesion: 0.09
-Nodes (11): Options, CreatedTime(), CreatedAtProperty, createDatePropertyFromString(), datePropertyToString(), DateRange(), loadedLocales, DateProperty (+3 more)
+Nodes (23): getOptionGroups(), getPersonGroups(), getVisibleAndHiddenGroups(), groupCardsByOptions(), BoardTemplateSelectorPreview(), Props, CalendarFullView(), createDatePropertyFromCalendarDate() (+15 more)
 
 ### Community 140 - "Text Extraction Utilities"
 Cohesion: 0.26
@@ -1420,8 +1412,8 @@ Cohesion: 0.14
 Nodes (13): stylelint-config-sass-guidelines, z-index, extends, rules, declaration-block-no-duplicate-properties, indentation, max-nesting-depth, order/properties-alphabetical-order (+5 more)
 
 ### Community 142 - "Board Management Logic"
-Cohesion: 0.09
-Nodes (13): EmailProperty, PropertiesRegistry, MultiPersonProperty, PhoneProperty, TextProperty, encodeText(), PropertyType, UnkownProperty (+5 more)
+Cohesion: 0.12
+Nodes (18): Frontend Directory Structure Diagram, Frontend Directory Structure, App(), Props, HeaderItemProps, HeaderItems(), Props, NewVersionBanner() (+10 more)
 
 ### Community 143 - "API Permission Helpers"
 Cohesion: 0.17
@@ -1429,7 +1421,7 @@ Nodes (7): Addr, Conn, MockStore, Router, mockPermissionsService, DummyUnixConn,
 
 ### Community 144 - "Frontend Test Dependencies"
 Cohesion: 0.03
-Nodes (73): css-loader, cypress-failed-log, cypress-real-events, eslint-plugin-babel, eslint-plugin-cypress, eslint-plugin-header, eslint-plugin-import, eslint-plugin-mattermost (+65 more)
+Nodes (73): copy-webpack-plugin, css-loader, cypress-failed-log, cypress-real-events, eslint-plugin-babel, eslint-plugin-cypress, eslint-plugin-header, eslint-plugin-import (+65 more)
 
 ### Community 145 - "Frontend Networking Client"
 Cohesion: 0.26
@@ -1444,8 +1436,8 @@ Cohesion: 0.09
 Nodes (21): Focalboard Changelog, v0.10 Release - November, 2021, v0.11 Release - December, 2021, v0.12 Release - January, 2022, v0.14 Release - February, 2022, v0.15 Release - March, 2022, v0.6.1 Release - March 15, 2021, v0.6.5 Release - April 19, 2021 (+13 more)
 
 ### Community 148 - "Services API Adapter"
-Cohesion: 0.15
-Nodes (8): ServicesAPI, ErrServerParam, Params, Backend, LoggerIFace, Store, Adapter, Store
+Cohesion: 0.14
+Nodes (9): ServicesAPI, ErrServerParam, Params, Backend, LoggerIFace, Store, Adapter, PluginAdapterInterface (+1 more)
 
 ### Community 149 - "Linting and Cypress Config"
 Cohesion: 0.15
@@ -1496,8 +1488,8 @@ Cohesion: 0.17
 Nodes (11): ../@custom_types/*, ./**/*.tsx, compilerOptions, baseUrl, paths, extends, include, ../node_modules/* (+3 more)
 
 ### Community 161 - "Board API Integration Tests"
-Cohesion: 0.38
-Nodes (11): T, TestCreateBoard(), TestCreateBoardsAndBlocks(), TestDeleteBoard(), TestDuplicateBoard(), TestGetBoard(), TestGetBoards(), TestPatchBoard() (+3 more)
+Cohesion: 0.13
+Nodes (20): BoardSwitcherDialog(), Props, CreateCategory(), Props, Props, TeamPermissionsRow(), updateBoardType(), Props (+12 more)
 
 ### Community 162 - "Category Database Store"
 Cohesion: 0.36
@@ -1548,8 +1540,8 @@ Cohesion: 0.29
 Nodes (8): T, TestCheckForMismatchedCollation(), TestGetBlocksWithSameID(), TestReplaceBlockID(), TestRunUniqueIDsMigration(), Store, T, SetupTests()
 
 ### Community 174 - "Board and Member Logic"
-Cohesion: 0.22
-Nodes (4): Board, CategoryBoards, FileInfo, Team
+Cohesion: 0.16
+Nodes (10): Auth, Block, LoggerIFace, Router, RWMutex, Store, Subscription, NewServer() (+2 more)
 
 ### Community 175 - "Team Database Store"
 Cohesion: 0.40
@@ -1596,12 +1588,12 @@ Cohesion: 0.33
 Nodes (5): APIInterface, Service, LoggerIFace, Store, New()
 
 ### Community 186 - "Property Resolver Mocks"
-Cohesion: 0.19
-Nodes (11): MockPropValueResolver, MockPropValueResolverMockRecorder, Call, Controller, User, NewMockPropValueResolver(), T, TestParseDate() (+3 more)
+Cohesion: 0.31
+Nodes (6): MockPropValueResolver, MockPropValueResolverMockRecorder, Call, Controller, User, NewMockPropValueResolver()
 
 ### Community 187 - "Notification Message Formatting"
-Cohesion: 0.23
-Nodes (11): IDType, BlockType, ErrInvalidBlockType, BlockType2IDType(), BlockTypeFromString(), IsErrInvalidBlockType(), T, TestBlockType2IDType() (+3 more)
+Cohesion: 0.14
+Nodes (13): IDType, Block, BlockPatch, BlockType, ErrInvalidBlockType, BlockType2IDType(), BlockTypeFromString(), IsErrInvalidBlockType() (+5 more)
 
 ### Community 188 - "User Store Tests"
 Cohesion: 0.13
@@ -1636,12 +1628,12 @@ Cohesion: 0.31
 Nodes (4): Service, LoggerIFace, Store, New()
 
 ### Community 199 - "User Management Logic"
-Cohesion: 0.21
-Nodes (12): Team, Reader, SharingFromJSON(), Reader, TeamFromJSON(), TeamsFromJSON(), T, TestCategory() (+4 more)
+Cohesion: 0.14
+Nodes (15): Category, Team, CategoryFromJSON(), Reader, Reader, SharingFromJSON(), Reader, TeamFromJSON() (+7 more)
 
 ### Community 200 - "Logging Backend"
-Cohesion: 0.36
-Nodes (4): Backend, Level, LoggerIFace, New()
+Cohesion: 0.15
+Nodes (5): Board, BoardCategoryWebsocketData, BoardMember, Category, ClientConfig
 
 ### Community 201 - "Mention Extraction"
 Cohesion: 0.28
@@ -1709,7 +1701,7 @@ Nodes (7): createTestSubscriptions(), Client, Subscription, T, TestCreateSubscri
 
 ### Community 217 - "Board Property Tests"
 Cohesion: 0.14
-Nodes (21): Board, BoardMember, BoardMetadata, BoardPatch, BoardRole, InvalidBoardErr, BoardFromJSON(), BoardMemberFromJSON() (+13 more)
+Nodes (22): Board, BoardMember, BoardMetadata, BoardPatch, BoardRole, InvalidBoardErr, BoardFromJSON(), BoardMemberFromJSON() (+14 more)
 
 ### Community 219 - "Card Usage Metrics"
 Cohesion: 0.43
@@ -1724,16 +1716,16 @@ Cohesion: 0.29
 Nodes (6): Config, DB, LoggerIFace, ErrStoreParam, Params, servicesAPI
 
 ### Community 222 - "Board Persistence Tests"
-Cohesion: 0.68
-Nodes (7): Store, T, StoreTestBoardsAndBlocksStore(), testCreateBoardsAndBlocks(), testDeleteBoardsAndBlocks(), testDuplicateBoard(), testPatchBoardsAndBlocks()
+Cohesion: 0.60
+Nodes (9): Store, T, StoreTestUserStore(), testCreateAndGetRegisteredUserCount(), testCreateAndGetUser(), testCreateAndUpdateUser(), testGetUsersByTeam(), testGetUsersList() (+1 more)
 
 ### Community 223 - "Team Store Operations"
 Cohesion: 0.68
 Nodes (7): Store, T, StoreTestTeamStore(), testGetAllTeams(), testGetTeam(), testUpsertTeamSettings(), testUpsertTeamSignupToken()
 
 ### Community 225 - "Sharing Settings API"
-Cohesion: 0.20
-Nodes (9): getUserID(), API, Request, ResponseWriter, Router, API, Request, ResponseWriter (+1 more)
+Cohesion: 0.10
+Nodes (17): activeView, board, card1, card2, card3, categoryAttribute1, fakeBoard, me (+9 more)
 
 ### Community 226 - "System Health API"
 Cohesion: 0.38
@@ -1752,8 +1744,8 @@ Cohesion: 0.29
 Nodes (7): dependencies, minimist, turndown, xml2js, minimist, turndown, xml2js
 
 ### Community 230 - "Metrics Server Service"
-Cohesion: 0.33
-Nodes (4): Service, LoggerIFace, Server, NewMetricsServer()
+Cohesion: 0.46
+Nodes (12): T, TestHelper, int01LoginUser(), int01LogoutViaAPI(), int01RegisterUser(), TestINT0101RegistrarUsuarioNuevoPersisteEnStore(), TestINT0102LoginGeneraSesionValida(), TestINT0103EndpointProtegidoConTokenValido() (+4 more)
 
 ### Community 232 - "User Property Resolvers"
 Cohesion: 0.33
@@ -1808,8 +1800,8 @@ Cohesion: 0.33
 Nodes (4): API, Request, ResponseWriter, Router
 
 ### Community 245 - "Card Application Logic"
-Cohesion: 0.15
-Nodes (12): Card, CardPatch, ErrInvalidCard, ErrInvalidFieldType, App, Card, Block2Card(), Card2Block() (+4 more)
+Cohesion: 0.11
+Nodes (19): Card, CardPatch, ErrInvalidCard, ErrInvalidFieldType, App, Card, Block2Card(), Card2Block() (+11 more)
 
 ### Community 248 - "NPM Build Scripts"
 Cohesion: 0.33
@@ -1820,7 +1812,7 @@ Cohesion: 0.33
 Nodes (5): BoardCategoryWebsocketData, CategoryBoardMetadata, CategoryBoards, Category, CategoryBoardMetadata
 
 ### Community 250 - "Board Validation Tests"
-Cohesion: 0.26
+Cohesion: 0.29
 Nodes (6): FileUploadResponse, FileInfoResponseFromJSON(), FileUploadResponseFromJSON(), FileInfo, Reader, Reader
 
 ### Community 251 - "Code Coverage Config"
@@ -1832,8 +1824,8 @@ Cohesion: 0.17
 Nodes (11): A. Alcance, A. Backend Go, B. Frontend TypeScript, B. Plan de pruebas unitarias, C. Criterios de cobertura, C. Plan de pruebas funcionales, D. Plan de pruebas de integración, D. Resultados de cobertura (+3 more)
 
 ### Community 254 - "Data Retention Tests"
-Cohesion: 0.73
-Nodes (5): Store, T, LoadData(), StoreTestDataRetention(), testRunDataRetention()
+Cohesion: 0.38
+Nodes (11): T, TestCreateBoard(), TestCreateBoardsAndBlocks(), TestDeleteBoard(), TestDuplicateBoard(), TestGetBoard(), TestGetBoards(), TestPatchBoard() (+3 more)
 
 ### Community 256 - "Plugin Cluster Communication"
 Cohesion: 0.33
@@ -1848,16 +1840,16 @@ Cohesion: 0.17
 Nodes (11): A. Selección de atributos de calidad, A. Workflows implementados, B. Primer atributo evaluado, B. Pruebas automatizadas, C. Cobertura y artefactos, C. Segundo atributo evaluado, D. Métricas y criterios de aceptación, D. Resultados del pipeline (+3 more)
 
 ### Community 259 - "Category Application Logic"
-Cohesion: 0.29
-Nodes (11): getTestLogger(), LoggerIFace, T, TestBlockGetLimited(), TestBlockIsValid(), TestBlockLogClone(), TestBlockPatch(), TestBlocksFromJSON() (+3 more)
+Cohesion: 0.15
+Nodes (19): StampModificationMetadata(), T, TestGenerateBlockIDs(), TestStampModificationMetadata(), fixFieldIDs(), GenerateBlockIDs(), Block, LoggerIFace (+11 more)
 
 ### Community 260 - "Plugin User Delivery"
-Cohesion: 0.27
-Nodes (4): CreatedBy(), CreatedByProperty, Person(), PersonProperty
+Cohesion: 0.60
+Nodes (3): BaseRunner, FileInfo, SQLStore
 
 ### Community 261 - "Integration Test Suites"
-Cohesion: 0.46
-Nodes (12): T, TestHelper, int01LoginUser(), int01LogoutViaAPI(), int01RegisterUser(), TestINT0101RegistrarUsuarioNuevoPersisteEnStore(), TestINT0102LoginGeneraSesionValida(), TestINT0103EndpointProtegidoConTokenValido() (+4 more)
+Cohesion: 1.00
+Nodes (3): servicesAPI, PluginDelivery, New()
 
 ### Community 262 - "Category Board Tests"
 Cohesion: 0.60
@@ -1876,7 +1868,7 @@ Cohesion: 0.60
 Nodes (4): T, TestCreateBoardsAndBlocks(), TestDeleteBoardsAndBlocks(), TestPatchBoardsAndBlocks()
 
 ### Community 266 - "DraftJS Editor Plugin"
-Cohesion: 0.22
+Cohesion: 0.25
 Nodes (4): User, User, Reader, UserFromJSON()
 
 ### Community 267 - "Category Management Service"
@@ -1888,8 +1880,8 @@ Cohesion: 0.18
 Nodes (10): A. APIs críticas, A. Técnicas de caja negra, B. Diseño de casos de prueba, B. Flujos de integración, C. Casos implementados, C. Ejecución manual, D. Resultados, D. Resultados (+2 more)
 
 ### Community 270 - "Server Subscription Tests"
-Cohesion: 0.60
-Nodes (4): T, TestBlocksSubscription(), TestGetUserIDForTokenInSingleUserMode(), TestTeamSubscription()
+Cohesion: 0.36
+Nodes (4): Backend, Level, LoggerIFace, New()
 
 ### Community 271 - "Cypress Type Definitions"
 Cohesion: 0.40
@@ -1916,8 +1908,8 @@ Cohesion: 0.29
 Nodes (6): Focalboard Icon 150x150, Focalboard Icon 44x44, Focalboard Store Logo, Debugging in Visual Studio, Focalboard Windows Personal Desktop, Testing the single-user server
 
 ### Community 279 - "Frontend Architecture Docs"
-Cohesion: 0.35
-Nodes (10): findBlockInSlice(), Block, T, TestINT0301CrearTarjetaEnTableroPersisteComoBloqueTypeCard(), TestINT0302ObtenerTarjetasConPropiedades(), TestINT0303ActualizarPropiedadesViaPATCH(), TestINT0304InsertarBloqueContenidoYRelacionPadre(), TestINT0305EliminarTarjetaYBloquesHijos() (+2 more)
+Cohesion: 0.17
+Nodes (15): BlockProp, BlockProperties, PropDef, PropDefOption, PropValueResolver, getMapString(), Block, Board (+7 more)
 
 ### Community 280 - "ESLint Plugin Configs"
 Cohesion: 0.50
@@ -1939,6 +1931,10 @@ Nodes (3): T, TestFileInfo(), TestUploadFile()
 Cohesion: 0.47
 Nodes (10): authenticateClient(), connectClient(), Conn, MockStore, Server, T, setupTestServer(), TestServer_Broadcasts() (+2 more)
 
+### Community 285 - "File Attachment Component"
+Cohesion: 0.38
+Nodes (9): Block, Board, T, TestHelper, int08CreateBoardWithCard(), TestINT0801CrearSuscripcionPersisteEnStore(), TestINT0802ObtenerSuscripcionesEsCoherenteConLasCreadas(), TestINT0803EliminarSuscripcionLaQuitaDelStore() (+1 more)
+
 ### Community 288 - "App Window Definitions"
 Cohesion: 0.50
 Nodes (3): IAppWindow, SuiteWindow, TelemetryProps
@@ -1948,36 +1944,40 @@ Cohesion: 0.50
 Nodes (4): Download Page, Boards Documentation Forward Link, Plugin Setup Forward Link, Setup 536 Forward Link
 
 ### Community 295 - "File Info Service"
-Cohesion: 0.35
-Nodes (7): FilterCondition, createFilterGroup(), isAFilterGroupInstance(), FilterComponent(), Props, FilterEntry(), Props
+Cohesion: 0.25
+Nodes (3): StringMap, getBoardDescription(), Block
 
 ### Community 298 - "Category Endpoint Tests"
-Cohesion: 0.31
-Nodes (7): emitter, FlashMessage, FlashMessages, Props, sendFlashMessage(), UndoRedoHotKeys(), registeredHotkeys
+Cohesion: 0.68
+Nodes (7): Store, T, StoreTestBoardsAndBlocksStore(), testCreateBoardsAndBlocks(), testDeleteBoardsAndBlocks(), testDuplicateBoard(), testPatchBoardsAndBlocks()
 
 ### Community 299 - "Search Endpoint Tests"
-Cohesion: 0.18
-Nodes (6): Props, Props, DateFilter(), DateProperty, loadedLocales, Props
+Cohesion: 0.33
+Nodes (4): API, Request, ResponseWriter, Router
 
 ### Community 300 - "System Endpoint Tests"
-Cohesion: 0.18
-Nodes (3): Props, Props, TODO: display error on screen
+Cohesion: 0.33
+Nodes (4): Service, LoggerIFace, Server, NewMetricsServer()
 
 ### Community 302 - "Template Endpoint Tests"
 Cohesion: 0.38
 Nodes (9): BoardsAndBlocks, T, TestHelper, int07CreateBoardWithBlocks(), TestINT0701ExportarTableroGeneraArchivoConFormatoCorrecto(), TestINT0702ImportarArchivoRecreaEntidadesEnStore(), TestINT0703ExportarEImportarTableroRoundtripPreservaIntegridad(), TestINT0704ImportarArchivoInvalidoEsRechazadoSinCorromperDatos() (+1 more)
 
+### Community 311 - "Slash Command Execution"
+Cohesion: 0.40
+Nodes (3): PluginDelivery, User, trimUsernameSpecialChar()
+
 ### Community 316 - "File Info Management"
-Cohesion: 0.20
-Nodes (9): activeView, board, card1, card2, card3, mockedMutator, optionQ1, optionQ2 (+1 more)
+Cohesion: 0.50
+Nodes (4): Server, T, mockServer(), TestTelemetry()
 
 ### Community 317 - "User Preference Management"
-Cohesion: 0.24
-Nodes (3): mockedMutator, WrapperProps, MultiSelectProperty
+Cohesion: 0.60
+Nodes (4): T, TestBlocksSubscription(), TestGetUserIDForTokenInSingleUserMode(), TestTeamSubscription()
 
 ### Community 319 - "GenerateBlockIDs"
-Cohesion: 0.33
-Nodes (7): T, TestGenerateBlockIDs(), TestStampModificationMetadata(), fixFieldIDs(), GenerateBlockIDs(), Block, LoggerIFace
+Cohesion: 0.71
+Nodes (6): Store, T, StoreTestCloudStore(), testGetCardLimitTimestamp(), testGetUsedCardsCount(), testUpdateCardLimitTimestamp()
 
 ### Community 322 - "Heading 1 Component"
 Cohesion: 0.39
@@ -2000,16 +2000,12 @@ Cohesion: 0.25
 Nodes (7): A. Resumen general, B. Cobertura alcanzada, C. Defectos encontrados, D. Limitaciones, X. Resultados y discusión, XI. Conclusiones, XII. Trabajos futuros
 
 ### Community 333 - "Color Utility"
-Cohesion: 0.43
-Nodes (7): T, TestBlock2Card(), TestCard2Block(), TestCardErrors(), TestCardPatch(), TestCardPatch2BlockPatch(), TestCardPopulateAndValid()
+Cohesion: 0.53
+Nodes (5): T, TestGenerateBoardsAndBlocksIDs(), TestIsValidBoardsAndBlocks(), TestIsValidDeleteBoardsAndBlocks(), TestIsValidPatchBoardsAndBlocks()
 
-### Community 336 - "Cypress Logging Utility"
-Cohesion: 0.25
-Nodes (7): activeView, board, filter, mockedMutator, state, store, unknownFilter
-
-### Community 337 - "Cypress Event Simulation"
-Cohesion: 0.39
-Nodes (3): Number(), mockedMutator, NumberProperty
+### Community 334 - ".getBlocksWithPath"
+Cohesion: 0.67
+Nodes (3): T, TestHello(), TestPing()
 
 ### Community 338 - "Docker Deployment Configuration"
 Cohesion: 0.33
@@ -2019,13 +2015,9 @@ Nodes (5): Docker Compose (DB + Nginx), Alternative architectures, Deploy Focalb
 Cohesion: 0.48
 Nodes (6): T, TestINT0601CrearCategoriaPersistenciaStore(), TestINT0602AsociarTableroACategoria(), TestINT0603ObtenerCategoriasConTableros(), TestINT0604EliminarCategoriaReasignarDefault(), TestINT0605ReordenarCategoriasPersistencia()
 
-### Community 340 - "filterValue.test.tsx"
-Cohesion: 0.29
-Nodes (6): activeView, board, filter, mockedMutator, state, store
-
-### Community 342 - "Emoji Picker Library"
-Cohesion: 0.33
-Nodes (4): API, Request, ResponseWriter, Router
+### Community 340 - ".GetAllBlocksForBoard"
+Cohesion: 0.36
+Nodes (3): Block, BlocksFromJSON(), Reader
 
 ### Community 344 - "ESLint Babel Plugin"
 Cohesion: 0.33
@@ -2035,21 +2027,9 @@ Nodes (5): Additional context (optional), Edition and Platform, Expected behavio
 Cohesion: 0.47
 Nodes (4): getFreePort(), Server, main(), runServer()
 
-### Community 346 - "ESLint Header Plugin"
-Cohesion: 0.33
-Nodes (4): filterValue(), Props, MultiPersonFilterValue(), Props
-
 ### Community 347 - "ESLint Import Plugin"
 Cohesion: 0.40
 Nodes (3): requestOption, RequestReaderError, NewClient()
-
-### Community 349 - "ESLint Mattermost Plugin"
-Cohesion: 0.60
-Nodes (3): BaseRunner, FileInfo, SQLStore
-
-### Community 352 - "Jest Fetch Mocking"
-Cohesion: 0.50
-Nodes (4): HorizontalGrip(), OffsetCallback, Props, useResizable()
 
 ### Community 355 - "FormatJS TypeScript Transformer"
 Cohesion: 0.50
@@ -2058,10 +2038,6 @@ Nodes (3): Link to documentation page, (Optional) Additional context and/or scre
 ### Community 356 - "FullCalendar Core Library"
 Cohesion: 0.50
 Nodes (3): Additional context/similar features, How important this is to me and why, Summary
-
-### Community 357 - "FullCalendar DayGrid View"
-Cohesion: 1.00
-Nodes (3): servicesAPI, PluginDelivery, New()
 
 ### Community 491 - "Code Review Guidelines"
 Cohesion: 0.06
@@ -2176,16 +2152,8 @@ Cohesion: 0.25
 Nodes (7): API URLs endpoint, Differences for Mattermost Boards, How to authenticate, Server API documentation, Swagger / OpenAPI 2.0 auto-generated files, Use the Mattermost auth token, We want to hear from you!
 
 ### Community 826 - "WebSocket Plugin"
-Cohesion: 0.09
-Nodes (18): AuthInterface, StructToMap(), Block, Board, BoardCategoryWebsocketData, BoardMember, Category, ClientConfig (+10 more)
-
-### Community 839 - "Authentication Logic"
-Cohesion: 0.16
-Nodes (10): Auth, Block, LoggerIFace, Router, RWMutex, Store, Subscription, NewServer() (+2 more)
-
-### Community 841 - "Board Entity"
-Cohesion: 0.15
-Nodes (5): Board, BoardCategoryWebsocketData, BoardMember, Category, ClientConfig
+Cohesion: 0.10
+Nodes (17): AuthInterface, StructToMap(), Block, Board, BoardCategoryWebsocketData, BoardMember, Category, ClientConfig (+9 more)
 
 ### Community 846 - "Network Connection"
 Cohesion: 0.20
@@ -2224,24 +2192,24 @@ Cohesion: 0.18
 Nodes (10): Adding new Boards, Adding new Views, Archives, Board templates, Card templates, Dragging cards, Editing cards, Renaming Boards (+2 more)
 
 ## Knowledge Gaps
-- **2063 isolated node(s):** `manifest_version`, `name`, `version`, `description`, `48` (+2058 more)
+- **2065 isolated node(s):** `manifest_version`, `name`, `version`, `description`, `48` (+2060 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **440 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **433 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `NewID()` connect `Card API Tests` to `Bulk Delete Logic`, `Block API Tests`, `Permission Test Helpers`, `Frontend Integration Tests`, `Board Entity`, `Frontend Architecture Docs`, `Sharing Logic Tests`, `File and Team Management`, `Template Endpoint Tests`, `Team Database Store`, `Subscription and Notifications`, `Team API Handlers`, `User Session Management`, `Template Initialization Tests`, `Server Core API`, `GenerateBlockIDs`, `Team Management Logic`, `Notification Hint Store`, `Category Metadata Store`, `Board Store Implementation`, `Card Operations Tests`, `Subscription API Tests`, `Board Persistence Tests`, `Team Store Operations`, `Board API Tests`, `SQL Database Store`, `Compliance History Tests`, `User Property Resolvers`, `Card Application Logic`, `Board Member API Handlers`?**
+- **Why does `NewID()` connect `Card API Tests` to `Bulk Delete Logic`, `Category Application Logic`, `Block API Tests`, `Permission Test Helpers`, `Frontend Integration Tests`, `Board Entity`, `Error Handling and Banners`, `Sharing Logic Tests`, `File and Team Management`, `File Attachment Component`, `Category Endpoint Tests`, `Template Endpoint Tests`, `Team Database Store`, `Team API Handlers`, `User Session Management`, `Template Initialization Tests`, `Server Core API`, `Team Management Logic`, `User Management Logic`, `Notification Hint Store`, `Category Metadata Store`, `Board Store Implementation`, `Card Operations Tests`, `Subscription API Tests`, `Board Persistence Tests`, `Team Store Operations`, `Board API Tests`, `SQL Database Store`, `Compliance History Tests`, `User Property Resolvers`, `Card Application Logic`?**
   _High betweenness centrality (0.069) - this node is a cross-community bridge._
-- **Why does `Response` connect `Board Client API` to `Plugin HTTP Requests`, `Board Property Tests`, `Plugin Request Handling`, `DraftJS Editor Plugin`, `Board and Member Logic`, `Subscription Store Tests`, `Board Validation Tests`, `ESLint Import Plugin`, `Board Member API Handlers`?**
+- **Why does `Response` connect `Board Client API` to `Plugin HTTP Requests`, `Board Property Tests`, `Plugin Request Handling`, `Permission Test Helpers`, `DraftJS Editor Plugin`, `.GetAllBlocksForBoard`, `Subscription Store Tests`, `Board Validation Tests`, `ESLint Import Plugin`?**
   _High betweenness centrality (0.043) - this node is a cross-community bridge._
 - **Why does `Session` connect `Session Store Operations` to `Mock Channel Services`, `Mock Channel Services`, `DraftJS Editor Plugin`, `Authentication Test Helpers`, `Content Block API`, `Mattermost Auth Layer`, `User Session Management`?**
   _High betweenness centrality (0.034) - this node is a cross-community bridge._
 - **What connects `manifest_version`, `name`, `version` to the rest of the system?**
-  _2063 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _2065 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Asana Import Utility` be split into smaller, more focused modules?**
-  _Cohesion score 0.03250942605781316 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.03992953611274222 - nodes in this community are weakly interconnected._
 - **Should `Calendar and Attachment Components` be split into smaller, more focused modules?**
-  _Cohesion score 0.02779358755454373 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.041933605125218404 - nodes in this community are weakly interconnected._
 - **Should `Mock API Recorder` be split into smaller, more focused modules?**
   _Cohesion score 0.022220827317808046 - nodes in this community are weakly interconnected._

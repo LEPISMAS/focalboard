@@ -5,12 +5,12 @@ import (
 
 	"github.com/golang/mock/gomock"
 
+	authMocks "github.com/mattermost/focalboard/server/auth/mocks"
 	"github.com/mattermost/focalboard/server/model"
 	"github.com/mattermost/focalboard/server/ws"
-	authMocks "github.com/mattermost/focalboard/server/auth/mocks"
 	wsMocks "github.com/mattermost/focalboard/server/ws/mocks"
-	"github.com/mattermost/mattermost/server/public/shared/mlog"
 	mmModel "github.com/mattermost/mattermost/server/public/model"
+	"github.com/mattermost/mattermost/server/public/shared/mlog"
 )
 
 func setupPluginAdapterTest(t *testing.T) (*ws.PluginAdapter, *wsMocks.MockAPI, *authMocks.MockAuthInterface, *wsMocks.MockStore) {
@@ -41,7 +41,7 @@ func TestPluginAdapter_ConnectionAndMessages(t *testing.T) {
 
 	// Connect
 	pa.OnWebSocketConnect(webConnID, userID)
-	
+
 	// Reconnect
 	pa.OnWebSocketConnect(webConnID, userID)
 
@@ -64,7 +64,7 @@ func TestPluginAdapter_ConnectionAndMessages(t *testing.T) {
 		},
 	}
 	pa.WebSocketMessageHasBeenPosted(webConnID, userID, reqUnsub)
-	
+
 	// Subscribe blocks (unimplemented but we send it)
 	reqSubBlocks := &mmModel.WebSocketRequest{
 		Action: "custom_focalboard_SUBSCRIBE_BLOCKS",
@@ -73,20 +73,20 @@ func TestPluginAdapter_ConnectionAndMessages(t *testing.T) {
 		},
 	}
 	pa.WebSocketMessageHasBeenPosted(webConnID, userID, reqSubBlocks)
-	
+
 	// Invalid command missing teamId
 	reqMissingTeam := &mmModel.WebSocketRequest{
 		Action: "custom_focalboard_SUBSCRIBE_TEAM",
-		Data: map[string]interface{}{},
+		Data:   map[string]interface{}{},
 	}
 	pa.WebSocketMessageHasBeenPosted(webConnID, userID, reqMissingTeam)
-	
+
 	// Disconnect
 	pa.OnWebSocketDisconnect(webConnID, userID)
-	
+
 	// Disconnect unregistered
 	pa.OnWebSocketDisconnect("unregistered", "user-1")
-	
+
 	// Post to unregistered
 	pa.WebSocketMessageHasBeenPosted("unregistered", "user-1", reqSub)
 }
@@ -119,44 +119,44 @@ func TestPluginAdapter_Broadcasts(t *testing.T) {
 	mockAPI.EXPECT().PublishPluginClusterEvent(gomock.Any(), gomock.Any()).AnyTimes()
 
 	pa.BroadcastConfigChange(model.ClientConfig{})
-	
+
 	pa.BroadcastBlockChange(teamID, &model.Block{ID: "block-1", BoardID: boardID})
 	pa.BroadcastBlockDelete(teamID, "block-1", boardID)
-	
+
 	pa.BroadcastCategoryChange(model.Category{TeamID: teamID, UserID: userID, ID: "cat-1"})
 	pa.BroadcastCategoryReorder(teamID, userID, []string{"cat-1"})
 	pa.BroadcastCategoryBoardsReorder(teamID, userID, "cat-1", []string{boardID})
 	pa.BroadcastCategoryBoardChange(teamID, userID, []*model.BoardCategoryWebsocketData{})
-	
+
 	pa.BroadcastBoardChange(teamID, &model.Board{ID: boardID, TeamID: teamID})
 	pa.BroadcastBoardDelete(teamID, boardID)
-	
+
 	pa.BroadcastMemberChange(teamID, boardID, &model.BoardMember{UserID: userID})
 	pa.BroadcastMemberDelete(teamID, boardID, userID)
-	
+
 	pa.BroadcastSubscriptionChange(teamID, &model.Subscription{BlockID: "block-1", SubscriberID: userID})
 	pa.BroadcastCardLimitTimestampChange(100)
 }
 
 func TestPluginAdapter_ClusterEvent(t *testing.T) {
 	pa, _, _, _ := setupPluginAdapterTest(t)
-	
+
 	// Test cluster event handling
 	ev := mmModel.PluginClusterEvent{
-		Id: "custom_focalboard_",
+		Id:   "custom_focalboard_",
 		Data: []byte(`{"teamId": "team-1", "payload": {}}`),
 	}
 	pa.HandleClusterEvent(ev)
-	
+
 	evUser := mmModel.PluginClusterEvent{
-		Id: "custom_focalboard_",
+		Id:   "custom_focalboard_",
 		Data: []byte(`{"userId": "user-1", "payload": {}}`),
 	}
 	pa.HandleClusterEvent(evUser)
 
 	// Test invalid JSON
 	evInvalid := mmModel.PluginClusterEvent{
-		Id: "custom_focalboard_",
+		Id:   "custom_focalboard_",
 		Data: []byte(`{invalid-json}`),
 	}
 	pa.HandleClusterEvent(evInvalid)
