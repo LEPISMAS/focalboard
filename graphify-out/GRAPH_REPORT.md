@@ -1,16 +1,16 @@
 # Graph Report - focalboard  (2026-07-18)
 
 ## Corpus Check
-- 1224 files · ~3,074,262 words
+- 1224 files · ~3,074,428 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 8902 nodes · 18818 edges · 927 communities (430 shown, 497 thin omitted)
+- 8902 nodes · 18818 edges · 929 communities (431 shown, 498 thin omitted)
 - Extraction: 92% EXTRACTED · 8% INFERRED · 0% AMBIGUOUS · INFERRED: 1464 edges (avg confidence: 0.77)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `49a3564f`
+- Built from commit: `a65164b5`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -339,6 +339,7 @@
 - Post Search API
 - Heading 1 Component
 - Heading 3 Component
+- New
 - Top Board API
 - UI Icons and Dashboard
 - Blog Layout Templates
@@ -350,6 +351,8 @@
 - Color Utility
 - .getBlocksWithPath
 - Environment Variable Utility
+- eslint
+- .GetMasterDB
 - Docker Deployment Configuration
 - CSS Class Utility
 - api_commands.ts
@@ -675,7 +678,6 @@
 - Go Build Output 1
 - Go Build Output 2
 - Pull Request Template
-- ts-jest
 - jest-mock
 - lodash
 - @mattermost/compass-icons
@@ -867,19 +869,19 @@
 ## Import Cycles
 - 3-file cycle: `webapp/src/components/cardDetail/cardDetail.tsx -> webapp/src/components/cardDetail/cardDetailProperties.tsx -> webapp/src/components/onboardingTour/addProperties/add_properties.tsx -> webapp/src/components/cardDetail/cardDetail.tsx`
 - 3-file cycle: `webapp/src/widgets/menu/index.tsx -> webapp/src/widgets/menu/menu.tsx -> webapp/src/widgets/menu/subMenuOption.tsx -> webapp/src/widgets/menu/index.tsx`
-- 3-file cycle: `webapp/src/store/index.ts -> webapp/src/store/limits.ts -> webapp/src/store/initialLoad.ts -> webapp/src/store/index.ts`
+- 3-file cycle: `webapp/src/octoClient.ts -> webapp/src/store/teams.ts -> webapp/src/store/initialLoad.ts -> webapp/src/octoClient.ts`
 - 3-file cycle: `webapp/src/store/index.ts -> webapp/src/store/teams.ts -> webapp/src/store/initialLoad.ts -> webapp/src/store/index.ts`
-- 3-file cycle: `webapp/src/store/index.ts -> webapp/src/store/users.ts -> webapp/src/store/initialLoad.ts -> webapp/src/store/index.ts`
 - 3-file cycle: `webapp/src/store/boards.ts -> webapp/src/store/index.ts -> webapp/src/store/views.ts -> webapp/src/store/boards.ts`
 - 3-file cycle: `webapp/src/store/index.ts -> webapp/src/store/views.ts -> webapp/src/store/initialLoad.ts -> webapp/src/store/index.ts`
-- 3-file cycle: `webapp/src/octoClient.ts -> webapp/src/store/teams.ts -> webapp/src/store/initialLoad.ts -> webapp/src/octoClient.ts`
-- 3-file cycle: `webapp/src/blocks/block.ts -> webapp/src/utils.ts -> webapp/src/blocks/card.ts -> webapp/src/blocks/block.ts`
-- 3-file cycle: `webapp/src/blocks/board.ts -> webapp/src/utils.ts -> webapp/src/wsclient.ts -> webapp/src/blocks/board.ts`
-- 3-file cycle: `webapp/src/store/sidebar.ts -> webapp/src/utils.ts -> webapp/src/wsclient.ts -> webapp/src/store/sidebar.ts`
-- 3-file cycle: `webapp/src/blocks/block.ts -> webapp/src/utils.ts -> webapp/src/blocks/boardView.ts -> webapp/src/blocks/block.ts`
+- 3-file cycle: `webapp/src/store/index.ts -> webapp/src/store/users.ts -> webapp/src/store/initialLoad.ts -> webapp/src/store/index.ts`
+- 3-file cycle: `webapp/src/store/index.ts -> webapp/src/store/limits.ts -> webapp/src/store/initialLoad.ts -> webapp/src/store/index.ts`
 - 3-file cycle: `webapp/src/blocks/block.ts -> webapp/src/utils.ts -> webapp/src/blocks/commentBlock.ts -> webapp/src/blocks/block.ts`
+- 3-file cycle: `webapp/src/blocks/block.ts -> webapp/src/utils.ts -> webapp/src/blocks/card.ts -> webapp/src/blocks/block.ts`
+- 3-file cycle: `webapp/src/blocks/block.ts -> webapp/src/utils.ts -> webapp/src/blocks/boardView.ts -> webapp/src/blocks/block.ts`
 - 3-file cycle: `webapp/src/blocks/block.ts -> webapp/src/utils.ts -> webapp/src/wsclient.ts -> webapp/src/blocks/block.ts`
+- 3-file cycle: `webapp/src/blocks/board.ts -> webapp/src/utils.ts -> webapp/src/wsclient.ts -> webapp/src/blocks/board.ts`
 - 3-file cycle: `webapp/src/octoUtils.tsx -> webapp/src/utils.ts -> webapp/src/wsclient.ts -> webapp/src/octoUtils.tsx`
+- 3-file cycle: `webapp/src/store/sidebar.ts -> webapp/src/utils.ts -> webapp/src/wsclient.ts -> webapp/src/store/sidebar.ts`
 - 4-file cycle: `webapp/src/components/cardDetail/cardDetail.tsx -> webapp/src/components/cardDetail/cardDetailProperties.tsx -> webapp/src/components/onboardingTour/addProperties/add_properties.tsx -> webapp/src/components/onboardingTour/tourTipRenderer/tourTipRenderer.tsx -> webapp/src/components/cardDetail/cardDetail.tsx`
 - 4-file cycle: `webapp/src/components/cardDetail/cardDetail.tsx -> webapp/src/components/cardDetail/cardDetailContents.tsx -> webapp/src/components/onboardingTour/addDescription/add_description.tsx -> webapp/src/components/onboardingTour/tourTipRenderer/tourTipRenderer.tsx -> webapp/src/components/cardDetail/cardDetail.tsx`
 - 4-file cycle: `webapp/src/components/cardDetail/cardDetail.tsx -> webapp/src/components/cardDetail/commentsList.tsx -> webapp/src/components/onboardingTour/addComments/addComments.tsx -> webapp/src/components/onboardingTour/tourTipRenderer/tourTipRenderer.tsx -> webapp/src/components/cardDetail/cardDetail.tsx`
@@ -925,7 +927,7 @@
 - **Press and Media Mentions** — website_site_static_img_mentioned_newstack, website_site_static_img_mentioned_producthunt, website_site_static_img_mentioned_techrepublic, website_site_static_img_mentioned_venturebeat, website_site_static_img_mentioned_ycombinator [EXTRACTED 1.00]
 - **Hugo Theme Partials** — website_site_themes_layouts_partials_contact, website_site_themes_layouts_partials_counters, website_site_themes_layouts_partials_footer, website_site_themes_layouts_partials_head, website_site_themes_layouts_partials_hero, website_site_themes_layouts_partials_intro, website_site_themes_layouts_partials_js, website_site_themes_layouts_partials_nav, website_site_themes_layouts_partials_services, website_site_themes_layouts_partials_testimonials, website_site_themes_layouts_partials_work [EXTRACTED 1.00]
 
-## Communities (927 total, 497 thin omitted)
+## Communities (929 total, 498 thin omitted)
 
 ### Community 0 - "Asana Import Utility"
 Cohesion: 0.12
@@ -961,7 +963,7 @@ Nodes (101): Clients, FakePermissionPluginAPI, LicenseType, TestCase, TestData, 
 
 ### Community 11 - "Board Member Commands"
 Cohesion: 0.02
-Nodes (170): Frontend Directory Structure Diagram, Frontend Directory Structure, App(), Props, BoardPatch, BoardsAndBlocksPatch, MemberRole, BoardSwitcherDialog() (+162 more)
+Nodes (178): Frontend Directory Structure Diagram, Frontend Directory Structure, App(), Props, BoardPatch, BoardsAndBlocksPatch, MemberRole, BoardSwitcherDialog() (+170 more)
 
 ### Community 12 - "Board View Filtering"
 Cohesion: 0.02
@@ -1000,8 +1002,8 @@ Cohesion: 0.12
 Nodes (19): PropertyTypeEnum, BaseCalculationOptionProps, baseStyles, CalculationOptions(), CommonCalculationOptionProps, DropdownIndicator(), Option, optionDisplayNameString() (+11 more)
 
 ### Community 21 - "Card Badge Components"
-Cohesion: 0.21
-Nodes (9): Int, API, Request, ResponseWriter, Router, API, Request, ResponseWriter (+1 more)
+Cohesion: 0.15
+Nodes (12): Int, API, Request, ResponseWriter, Router, API, Request, ResponseWriter (+4 more)
 
 ### Community 22 - "User Onboarding Tours"
 Cohesion: 0.05
@@ -1021,7 +1023,7 @@ Nodes (8): T, TestBlock2Card(), T, TestUtils(), GetMillis(), GetMillisForTime(),
 
 ### Community 27 - "Workspace State Management"
 Cohesion: 0.02
-Nodes (130): Badges, calculateBadges(), CardBadges(), Checkboxes, ContentsType, hasBadges(), Props, CardDialog() (+122 more)
+Nodes (122): Badges, calculateBadges(), CardBadges(), Checkboxes, ContentsType, hasBadges(), Props, CardDialog() (+114 more)
 
 ### Community 28 - "Archive Import Export"
 Cohesion: 0.05
@@ -1116,8 +1118,8 @@ Cohesion: 0.11
 Nodes (10): InvalidPasswordError, PasswordSettings, App, User, ComparePassword(), HashPassword(), IsPasswordValid(), T (+2 more)
 
 ### Community 52 - "API Error Handling"
-Cohesion: 0.11
-Nodes (20): ErrForbidden, ErrInvalidCategory, ErrNotAllFound, ErrNotImplemented, ErrPermission, ErrUnauthorized, T, TestErrorResponse() (+12 more)
+Cohesion: 0.10
+Nodes (21): ErrForbidden, ErrInvalidCategory, ErrNotAllFound, ErrNotFound, ErrNotImplemented, ErrPermission, ErrUnauthorized, T (+13 more)
 
 ### Community 53 - "Card Calculation Logic"
 Cohesion: 0.15
@@ -1144,15 +1146,15 @@ Cohesion: 0.11
 Nodes (14): Auth, Board, Card, Comment, CommentResponse, defaultHeaders, Label, NextcloudDeckClient (+6 more)
 
 ### Community 59 - "Mock Plugin API"
-Cohesion: 0.06
-Nodes (9): Bot, BotGetOptions, BotPatch, Command, CommandArgs, CommandResponse, Config, Controller (+1 more)
+Cohesion: 0.07
+Nodes (7): Bot, BotGetOptions, BotPatch, Command, Config, Controller, NewMockAPI()
 
 ### Community 60 - "Mock Plugin API"
 Cohesion: 0.07
 Nodes (7): Bot, BotGetOptions, BotPatch, Command, Config, Controller, NewMockAPI()
 
 ### Community 61 - "Native App Settings"
-Cohesion: 0.38
+Cohesion: 0.36
 Nodes (4): API, Request, ResponseWriter, Router
 
 ### Community 62 - "Webpack Build Configuration"
@@ -1224,8 +1226,8 @@ Cohesion: 0.30
 Nodes (21): Store, T, StoreTestBlocksStore(), testDeleteBlock(), testDuplicateBlock(), testGetBlock(), testGetBlockMetadata(), testGetBlocks() (+13 more)
 
 ### Community 79 - "Plugin Delivery Services"
-Cohesion: 0.10
-Nodes (16): ErrNotFound, servicesAPI, servicesAPIMock, NewErrNotFound(), PluginDelivery, New(), ChannelMember, Post (+8 more)
+Cohesion: 0.12
+Nodes (13): servicesAPIMock, API, Request, ResponseWriter, Router, NewErrNotFound(), ChannelMember, Post (+5 more)
 
 ### Community 80 - "Category Metadata Store"
 Cohesion: 0.27
@@ -1269,7 +1271,7 @@ Nodes (9): BaseRunner, Config, DB, License, LoggerIFace, servicesAPI, SQLStore, 
 
 ### Community 90 - "Mock Channel Permissions"
 Cohesion: 0.12
-Nodes (6): ChannelList, MockServicesAPI, Controller, DB, Preferences, NewMockServicesAPI()
+Nodes (6): ChannelList, MockServicesAPI, Bot, Controller, Preferences, NewMockServicesAPI()
 
 ### Community 91 - "Todoist Integration Types"
 Cohesion: 0.08
@@ -1328,8 +1330,8 @@ Cohesion: 0.11
 Nodes (17): Block, Board, BoardCategoryWebsocketData, BoardMember, Category, ClientConfig, Subscription, CategoryBoardReorderMessage (+9 more)
 
 ### Community 105 - "Category API Handlers"
-Cohesion: 0.19
-Nodes (9): jsonBytesResponse(), API, Request, ResponseWriter, Router, API, Request, ResponseWriter (+1 more)
+Cohesion: 0.21
+Nodes (10): jsonBytesResponse(), API, Request, ResponseWriter, Router, API, Request, ResponseWriter (+2 more)
 
 ### Community 106 - "Audit Record Metadata"
 Cohesion: 0.14
@@ -1349,7 +1351,7 @@ Nodes (9): Environment, HTTPService, Mock, ServerIface, Role, Scheme, AppError, 
 
 ### Community 110 - "Development Dependencies"
 Cohesion: 0.12
-Nodes (17): devDependencies, eslint, jest, ts-node, @types/jest, @types/node, @types/turndown, typescript (+9 more)
+Nodes (17): devDependencies, jest, ts-jest, ts-node, @types/jest, @types/node, @types/turndown, typescript (+9 more)
 
 ### Community 111 - "Database Schema Migrations"
 Cohesion: 0.20
@@ -1473,7 +1475,7 @@ Nodes (18): Addr, T, TestCreateBoard(), TestCreateBoardsAndBlocks(), TestDeleteB
 
 ### Community 144 - "Frontend Test Dependencies"
 Cohesion: 0.06
-Nodes (35): copy-webpack-plugin, cypress-failed-log, eslint-plugin-babel, eslint-plugin-jquery, eslint-plugin-no-only-tests, @formatjs/cli, @formatjs/ts-transformer, isomorphic-fetch (+27 more)
+Nodes (35): copy-webpack-plugin, cross-env, eslint-plugin-babel, eslint-plugin-jquery, eslint-plugin-no-only-tests, @formatjs/cli, @formatjs/ts-transformer, isomorphic-fetch (+27 more)
 
 ### Community 145 - "Frontend Networking Client"
 Cohesion: 0.26
@@ -1536,8 +1538,8 @@ Cohesion: 0.17
 Nodes (11): ../@custom_types/*, ./**/*.tsx, compilerOptions, baseUrl, paths, extends, include, ../node_modules/* (+3 more)
 
 ### Community 161 - "Board API Integration Tests"
-Cohesion: 0.15
-Nodes (14): getUserID(), API, Request, ResponseWriter, Router, API, Request, ResponseWriter (+6 more)
+Cohesion: 0.20
+Nodes (9): getUserID(), API, Request, ResponseWriter, Router, API, Request, ResponseWriter (+1 more)
 
 ### Community 162 - "Category Database Store"
 Cohesion: 0.36
@@ -2011,6 +2013,10 @@ Nodes (4): T, TestBlocksSubscription(), TestGetUserIDForTokenInSingleUserMode(),
 Cohesion: 0.53
 Nodes (5): Editable(), EditableProps, useEditable(), EditableArea(), getBorderWidth()
 
+### Community 324 - "New"
+Cohesion: 1.00
+Nodes (3): servicesAPI, PluginDelivery, New()
+
 ### Community 326 - "UI Icons and Dashboard"
 Cohesion: 0.67
 Nodes (3): UI: App Bar Bullseye Icon, UI: Boards Welcome Dashboard, Bullseye Icon
@@ -2238,7 +2244,7 @@ Nodes (10): Adding new Boards, Adding new Views, Archives, Board templates, Card
 ## Knowledge Gaps
 - **2073 isolated node(s):** `manifest_version`, `name`, `version`, `description`, `48` (+2068 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **497 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **498 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
