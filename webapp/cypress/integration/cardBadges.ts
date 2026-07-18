@@ -28,7 +28,7 @@ describe('Card badges', () => {
         // Add card description
         cy.log('**Add card description**')
         cy.findByText('Add a description...').click()
-        cy.findByRole('combobox').type('## Header\n- [ ] one\n- [x] two{esc}')
+        cy.get('.MarkdownEditor.active [contenteditable="true"]', {timeout: 10000}).should('be.visible').type('## Header\n- [ ] one\n- [x] two{esc}')
 
         // Add checkboxes
         cy.log('**Add checkboxes**')
@@ -63,7 +63,7 @@ describe('Card badges', () => {
 
     const addComment = (text: string) => {
         cy.findByText('Add a comment...').click()
-        cy.findByRole('combobox').type(text).blur()
+        cy.get('.MarkdownEditor.active [contenteditable="true"]', {timeout: 10000}).should('be.visible').type(text).blur()
         cy.findByRole('button', {name: 'Send'}).click()
     }
 })
