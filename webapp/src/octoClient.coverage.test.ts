@@ -45,7 +45,7 @@ describe('OctoClient API contracts', () => {
         await client.patchUserConfig('user/1', {category: 'boards', name: 'welcomePageViewed', value: 'true'} as any)
         await client.logout()
 
-        const calls = FetchMock.fn.mock.calls.map(([url]) => String(url))
+        const calls = (FetchMock.fn as jest.Mock).mock.calls.map(([url]) => String(url))
         expect(calls).toEqual(expect.arrayContaining([
             'http://focalboard.test/api/v2/login',
             'http://focalboard.test/api/v2/register',
