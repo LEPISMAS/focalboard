@@ -1,0 +1,222 @@
+name: Academic QA - Non-Functional Tests
+
+on:
+  push:
+    branches:
+      - main
+      - 'feature/**'
+    paths:
+      - 'non_functional_tests/**'
+      - 'server/**'
+      - 'webapp/**'
+      - 'server-test-config.json'
+      - 'run_non_functional_tests.sh'
+      - 'Makefile'
+      - '.github/workflows/academic-non-functional.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'non_functional_tests/**'
+      - 'server/**'
+      - 'webapp/**'
+      - 'server-test-config.json'
+      - 'run_non_functional_tests.sh'
+      - 'Makefile'
+      - '.github/workflows/academic-non-functional.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: academic-non-functional-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  concurrency-and-ui-latency:
+    name: CON-01/03 and PER-02 - Playwright
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+
+      - name: Set up Go
+        uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5
+        with:
+          go-version-file: server/go.mod
+          cache-dependency-path: server/go.sum
+
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version-file: webapp/.nvmrc
+          cache: npm
+          cache-dependency-path: |
+            webapp/package-lock.json
+            non_functional_tests/package-lock.json
+
+      - name: Install dependencies
+        run: |
+          npm ci --prefix webapp
+          npm ci --prefix non_functional_tests
+          cd non_functional_tests
+          npx playwright install --with-deps chromium
+
+      - name: Build Focalboard
+        run: |
+          make webapp
+          make server
+
+      - name: Start isolated Focalboard server
+        run: |
+          rm -f focalboard_test.db focalboard_test.db-wal focalboard_test.db-shm
+          ./bin/focalboard-server --config server-test-config.json > server.log 2>&1 &
+          echo $! > focalboard-server.pid
+          for attempt in {1..30}; do
+            if curl --fail --silent http://localhost:8000/ > /dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat server.log
+          exit 1
+
+      - name: Run concurrency and optimistic UI latency scenarios
+        working-directory: non_functional_tests
+        run: npm run test:concurrency
+
+      - name: Publish Playwright summary
+        if: always()
+        run: |
+          echo '### Concurrency and UI latency' >> "$GITHUB_STEP_SUMMARY"
+          echo '- CON-01: simultaneous card-title writes.' >> "$GITHUB_STEP_SUMMARY"
+          echo '- CON-02: card movement while a board option is deleted.' >> "$GITHUB_STEP_SUMMARY"
+          echo '- CON-03: WebSocket disconnection and catch-up.' >> "$GITHUB_STEP_SUMMARY"
+          echo '- PER-02: optimistic UI latency below 200 ms.' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload Playwright and server evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: academic-non-functional-playwright
+          path: |
+            non_functional_tests/playwright-report/
+            non_functional_tests/test-results/
+            server.log
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Stop Focalboard server
+        if: always()
+        run: |
+          if [ -f focalboard-server.pid ]; then
+            kill "$(cat focalboard-server.pid)" || true
+          fi
+
+  experimental-performance:
+    name: PER-01/03 - k6 experimental baseline
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+
+      - name: Set up Go
+        uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5
+        with:
+          go-version-file: server/go.mod
+          cache-dependency-path: server/go.sum
+
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version-file: webapp/.nvmrc
+          cache: npm
+          cache-dependency-path: |
+            webapp/package-lock.json
+            non_functional_tests/package-lock.json
+
+      - name: Install dependencies
+        run: |
+          npm ci --prefix webapp
+          npm ci --prefix non_functional_tests
+          cd non_functional_tests
+          npx playwright install --with-deps chromium
+
+      - name: Build Focalboard
+        run: |
+          make webapp
+          make server
+
+      - name: Start isolated Focalboard server
+        run: |
+          rm -f focalboard_test.db focalboard_test.db-wal focalboard_test.db-shm
+          ./bin/focalboard-server --config server-test-config.json > server.log 2>&1 &
+          echo $! > focalboard-server.pid
+          for attempt in {1..30}; do
+            if curl --fail --silent http://localhost:8000/ > /dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat server.log
+          exit 1
+
+      - name: Create the 2,000-card performance dataset
+        working-directory: non_functional_tests
+        run: npx playwright test setup_perf.spec.ts
+
+      - name: Run k6 experimental thresholds
+        id: k6
+        continue-on-error: true
+        working-directory: non_functional_tests
+        run: |
+          set +e
+          ./k6-v0.51.0-linux-amd64/k6 run --summary-export=perf-load-summary.json perf_load.js 2>&1 | tee perf-load.log
+          load_status=${PIPESTATUS[0]}
+          ./k6-v0.51.0-linux-amd64/k6 run --summary-export=perf-insert-summary.json perf_insert.js 2>&1 | tee perf-insert.log
+          insert_status=${PIPESTATUS[0]}
+          echo "load_status=$load_status" >> "$GITHUB_OUTPUT"
+          echo "insert_status=$insert_status" >> "$GITHUB_OUTPUT"
+          if [ "$load_status" -ne 0 ] || [ "$insert_status" -ne 0 ]; then
+            exit 1
+          fi
+
+      - name: Publish experimental performance summary
+        if: always()
+        run: |
+          echo '### Experimental k6 performance baseline' >> "$GITHUB_STEP_SUMMARY"
+          echo 'This job is non-blocking: a green workflow means the experiment completed, not that the thresholds passed.' >> "$GITHUB_STEP_SUMMARY"
+          echo '- PER-01 target: P95 response time below 300 ms.' >> "$GITHUB_STEP_SUMMARY"
+          echo '- PER-03 target: failed-request rate below 1%.' >> "$GITHUB_STEP_SUMMARY"
+          echo '- PER-01 k6 exit code: `${{ steps.k6.outputs.load_status }}`.' >> "$GITHUB_STEP_SUMMARY"
+          echo '- PER-03 k6 exit code: `${{ steps.k6.outputs.insert_status }}`.' >> "$GITHUB_STEP_SUMMARY"
+          echo '- Threshold step outcome: **${{ steps.k6.outcome }}**.' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload k6 and server evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: academic-non-functional-k6
+          path: |
+            non_functional_tests/perf-load.log
+            non_functional_tests/perf-insert.log
+            non_functional_tests/perf-load-summary.json
+            non_functional_tests/perf-insert-summary.json
+            non_functional_tests/perf_context.json
+            non_functional_tests/playwright-report/
+            non_functional_tests/test-results/
+            server.log
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Stop Focalboard server
+        if: always()
+        run: |
+          if [ -f focalboard-server.pid ]; then
+            kill "$(cat focalboard-server.pid)" || true
+          fi
